@@ -2,19 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="29218f60-06ce-4752-87fb-e9192c3b5123" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/Jdk7Platform.iml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/PathFileHello.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/secondpathfile/t1.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/secondpathfile/t2.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/secondpathfile/t3.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/t1.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/t2.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/t2副本.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/t3.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/t4.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Jdk7Platform/src/com/jdk7/pathfile/testfile/thirdpathfile/t1.txt" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -291,7 +278,7 @@
       <workItem from="1528945432543" duration="624000" />
       <workItem from="1528946070442" duration="2155000" />
       <workItem from="1528948400432" duration="1784000" />
-      <workItem from="1528955830535" duration="69000" />
+      <workItem from="1528955830535" duration="113000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1528945459630</created>
@@ -300,7 +287,14 @@
       <option name="project" value="LOCAL" />
       <updated>1528945459630</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="first commit">
+      <created>1528955914831</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1528955914831</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -312,7 +306,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6251000" />
+    <option name="totallyTimeSpent" value="6295000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
