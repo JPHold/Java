@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Java.iml" filepath="$PROJECT_DIR$/.idea/Java.iml" />
       <module fileurl="file://$PROJECT_DIR$/Jdk7Platform/Jdk7Platform.iml" filepath="$PROJECT_DIR$/Jdk7Platform/Jdk7Platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Jdk7Platform/Jdk7Platform.iml" filepath="$PROJECT_DIR$/Jdk7Platform/Jdk7Platform.iml" />
     </modules>
   </component>
 </project>
