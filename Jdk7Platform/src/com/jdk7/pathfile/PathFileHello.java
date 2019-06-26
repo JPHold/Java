@@ -11,13 +11,14 @@ import java.nio.file.attribute.BasicFileAttributes;
  *
  * @author HJP
  * @date 2018/6/12 17:22
+ * @Description 路径与文件API初探
  */
 public class PathFileHello {
 
     @Test
     public void testNormalize() {
         Path path = Paths.get(".\\src\\com\\jdk7\\pathfile\\testfile\\t1.txt\\..\\t2.txt");
-        System.out.println("原始的路径:" + path.normalize());
+        System.out.println("原始的路径:" + path);
         System.out.println("格式化的真实路径:" + path.normalize());
     }
 
@@ -29,13 +30,13 @@ public class PathFileHello {
 
                 @Override
                 public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                    System.out.println("visit file failed: " + file + "error:" + exc);
+                    System.out.println("访问文件失败: " + file + "error:" + exc);
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    System.out.println("pre visit dir:" + dir);
+                    System.out.println("开始访问文件夹:" + dir);
                     if ("testfile".equals(dir.getFileName().toString())) {
                         return FileVisitResult.CONTINUE;
                     }
@@ -44,13 +45,13 @@ public class PathFileHello {
 
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    System.out.println("visit file: " + file);
+                    System.out.println("访问文件: " + file);
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    System.out.println("post visit directory: " + dir);
+                    System.out.println("结束访问文件夹: " + dir);
                     return FileVisitResult.CONTINUE;
                 }
             });
