@@ -13,9 +13,7 @@ import java.util.*;
  * @since 2019年7月8日21:50:00
  */
 @Component
-public class ResourcesUtil implements Serializable {
-
-    private final long serialVersionUID = -7657898714983901418L;
+public class ResourcesUtil {
 
     /**
      * 系统语言环境，默认为中文zh
