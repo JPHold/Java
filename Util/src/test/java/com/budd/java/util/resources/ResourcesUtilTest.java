@@ -1,8 +1,8 @@
-package com.budd.java.util;
+package com.budd.java.util.resources;
 
-import org.junit.Before;
+import com.budd.java.util.BaseTest;
+import com.budd.java.util.ResourcesUtil;
 import org.junit.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Map;
 
@@ -11,16 +11,11 @@ import java.util.Map;
  * @author budd
  * @since 2019年7月8日21:50:00
  */
-public class ResourcesUtilTest {
+public class ResourcesUtilTest extends BaseTest<ResourcesUtil> {
 
-    private AnnotationConfigApplicationContext ctx;
-
-    private ResourcesUtil resourcesUtil;
-
-    @Before
-    public void init() {
-        ctx = new AnnotationConfigApplicationContext(ApplicationContextConfig.class);
-        resourcesUtil = ctx.getBean(ResourcesUtil.class);
+    @Override
+    protected Class<ResourcesUtil> assignBeanClass() {
+        return ResourcesUtil.class;
     }
 
     /**
@@ -28,7 +23,7 @@ public class ResourcesUtilTest {
      */
     @Test
     public void getValue() {
-        String value = resourcesUtil.getValue("hello", "key1");
+        String value = getBean().getValue("hello", "key1");
         System.out.println(value);
     }
 
@@ -37,7 +32,7 @@ public class ResourcesUtilTest {
      */
     @Test
     public void getKeyValueMap() {
-        Map<String, String> valueMap = resourcesUtil.getKeyValueMap("hello");
+        Map<String, String> valueMap = getBean().getKeyValueMap("hello");
         System.out.println(valueMap);
     }
 
@@ -46,7 +41,7 @@ public class ResourcesUtilTest {
      */
     @Test
     public void getParamValue() {
-        String value = resourcesUtil.getValue("hello", "key2", new Object[]{"value2"});
+        String value = getBean().getValue("hello", "key2", new Object[]{"value2"});
         System.out.println(value);
     }
 
