@@ -10,4 +10,10 @@ public class ApplicationContextConfig {
         return new ResourcesUtil();
     }
 
+    @Bean
+    public TemplateUtil templateUtil() {
+        return new TemplateUtil("/template");
+    }
+
+
 }
