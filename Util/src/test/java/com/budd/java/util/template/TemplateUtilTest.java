@@ -176,4 +176,22 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         //https://www.imooc.com/qadetail/200232
     }
 
+    @Test
+    public void testList(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+
+        ArrayList<String> emptyList = Lists.newArrayList();
+        valueMap.put("emptyList",emptyList);
+
+        ArrayList<String> contentList = Lists.newArrayList();
+        contentList.add("橙子");
+        contentList.add("橘子");
+        valueMap.put("contentList",contentList);
+
+        String xmlContent = templateUtil.showTemplate("list.ftl", valueMap);
+        System.out.println(xmlContent);
+    }
+
 }
