@@ -214,4 +214,25 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         System.out.println(xmlContent);
     }
 
+    @Test
+    public void processNull(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+
+        String nullStr=null;
+        String emptyStr="";
+        valueMap.put("nullStr",nullStr);
+        valueMap.put("emptyStr",emptyStr);
+
+        HashMap<Object, Object> grandFatherValueMap = Maps.newHashMap();
+        HashMap<Object, Object> fatherValueMap = Maps.newHashMap();
+        fatherValueMap.put("name",null);
+        grandFatherValueMap.put("father",fatherValueMap);
+        valueMap.put("grandFather",grandFatherValueMap);
+
+        String xmlContent = templateUtil.showTemplate("nullProcess.ftlh", valueMap);
+        System.out.println(xmlContent);
+    }
+
 }
