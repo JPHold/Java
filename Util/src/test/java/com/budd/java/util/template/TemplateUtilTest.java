@@ -194,4 +194,24 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         System.out.println(xmlContent);
     }
 
+    @Test
+    public void testFunction(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+
+        valueMap.put("upperCase","upper_Case");
+        valueMap.put("capFirst","cap_first");
+        valueMap.put("strLength","length");
+        valueMap.put("startsWith","starts_with");
+        valueMap.put("booleanStr",true);
+        ArrayList<String> contentList = Lists.newArrayList();
+        contentList.add("橙子");
+        contentList.add("橘子");
+        valueMap.put("contentList",contentList);
+
+        String xmlContent = templateUtil.showTemplate("function.ftlh", valueMap);
+        System.out.println(xmlContent);
+    }
+
 }
