@@ -190,8 +190,8 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         contentList.add("橘子");
         valueMap.put("contentList",contentList);
 
-        String xmlContent = templateUtil.showTemplate("list.ftl", valueMap);
-        System.out.println(xmlContent);
+        String unknownTypeContent = templateUtil.showTemplate("list.ftl", valueMap);
+        System.out.println(unknownTypeContent);
     }
 
     @Test
@@ -210,8 +210,8 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         contentList.add("橘子");
         valueMap.put("contentList",contentList);
 
-        String xmlContent = templateUtil.showTemplate("function.ftlh", valueMap);
-        System.out.println(xmlContent);
+        String htmlContent = templateUtil.showTemplate("function.ftlh", valueMap);
+        System.out.println(htmlContent);
     }
 
     @Test
@@ -231,7 +231,26 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         grandFatherValueMap.put("father",fatherValueMap);
         valueMap.put("grandFather",grandFatherValueMap);
 
-        String xmlContent = templateUtil.showTemplate("nullProcess.ftlh", valueMap);
+        String htmlContent = templateUtil.showTemplate("nullProcess.ftlh", valueMap);
+        System.out.println(htmlContent);
+    }
+
+    @Test
+    public void testEscape(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+        valueMap.put("escapeStr","budd&25");
+
+        String unknownContent = templateUtil.showTemplate("unknownEscape.ftl", valueMap);
+        String xmlContent = templateUtil.showTemplate("xmlEscape.ftlx", valueMap);
+        String htmlContent = templateUtil.showTemplate("xmlEscape.ftlx", valueMap);
+
+        System.out.println("未知格式内容");
+        System.out.println(unknownContent);
+        System.out.println("html内容");
+        System.out.println(htmlContent);
+        System.out.println("xml内容");
         System.out.println(xmlContent);
     }
 
