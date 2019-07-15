@@ -185,7 +185,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
                 @Override
                 public void run() {
                     long start = System.currentTimeMillis();
-                    String xmlContent = templateUtil.showTemplate("HIP1000.ftl", valueMap);
+                    String xmlContent = templateUtil.showTemplate("/performance/HIP1000.ftl", valueMap);
                     long end = System.currentTimeMillis();
 //        System.out.println("--------xml---------");
 //        System.out.println(xmlContent);
@@ -208,7 +208,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
     private void maxThreadSize(Integer stopSize,final HashMap<Object, Object> valueMap, final TemplateUtil templateUtil, final List<Long> executeTimes, final CountDownLatch countDownLatch) {
         for (int i = 0; i < stopSize; i++) {
             try {
-                Thread.sleep(1);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -216,7 +216,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
                 @Override
                 public void run() {
                     long start = System.currentTimeMillis();
-                    String xmlContent = templateUtil.showTemplate("HIP1000.ftl", valueMap);
+                    String xmlContent = templateUtil.showTemplate("/performance/HIP1000.ftl", valueMap);
                     long end = System.currentTimeMillis();
 //        System.out.println("--------xml---------");
 //        System.out.println(xmlContent);
@@ -252,7 +252,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         contentList.add("橘子");
         valueMap.put("contentList",contentList);
 
-        String unknownTypeContent = templateUtil.showTemplate("list.ftl", valueMap);
+        String unknownTypeContent = templateUtil.showTemplate("/valueType/list.ftl", valueMap);
         System.out.println(unknownTypeContent);
     }
 
@@ -272,7 +272,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         contentList.add("橘子");
         valueMap.put("contentList",contentList);
 
-        String htmlContent = templateUtil.showTemplate("function.ftlh", valueMap);
+        String htmlContent = templateUtil.showTemplate("/built-ins/function.ftlh", valueMap);
         System.out.println(htmlContent);
     }
 
@@ -293,7 +293,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         grandFatherValueMap.put("father",fatherValueMap);
         valueMap.put("grandFather",grandFatherValueMap);
 
-        String htmlContent = templateUtil.showTemplate("nullProcess.ftlh", valueMap);
+        String htmlContent = templateUtil.showTemplate("/nullProcess/nullProcess.ftlh", valueMap);
         System.out.println(htmlContent);
     }
 
@@ -304,9 +304,9 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         HashMap<Object, Object> valueMap = Maps.newHashMap();
         valueMap.put("escapeStr","budd&25");
 
-        String unknownContent = templateUtil.showTemplate("unknownEscape.ftl", valueMap);
-        String xmlContent = templateUtil.showTemplate("xmlEscape.ftlx", valueMap);
-        String htmlContent = templateUtil.showTemplate("xmlEscape.ftlx", valueMap);
+        String unknownContent = templateUtil.showTemplate("/outputType/unknownEscape.ftl", valueMap);
+        String xmlContent = templateUtil.showTemplate("/outputType/xmlEscape.ftlx", valueMap);
+        String htmlContent = templateUtil.showTemplate("/outputType/xmlEscape.ftlx", valueMap);
 
         System.out.println("未知格式内容");
         System.out.println(unknownContent);
