@@ -238,6 +238,9 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         //https://www.imooc.com/qadetail/200232
     }
 
+    /**
+     * 数据类型
+     */
     @Test
     public void testList(){
         TemplateUtil templateUtil = getBean();
@@ -256,6 +259,24 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         System.out.println(unknownTypeContent);
     }
 
+    @Test
+    public void testDateTime(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+        valueMap.put("dateTime",new Date());
+        valueMap.put("dateStr1","20190715");
+        valueMap.put("dateStr2","2019-07-15");
+        valueMap.put("timeStr","22:42:00");
+
+        valueMap.put("isoDateTimeStr","1995-10-25T15:05");
+        String htmlContent = templateUtil.showTemplate("/valueType/dateTime.ftlh", valueMap);
+        System.out.println(htmlContent);
+    }
+
+    /**
+     * 内置
+     */
     @Test
     public void testFunction(){
         TemplateUtil templateUtil = getBean();
