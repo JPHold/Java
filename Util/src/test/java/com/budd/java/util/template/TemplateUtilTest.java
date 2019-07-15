@@ -8,10 +8,10 @@ import com.google.common.collect.Maps;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TemplateUtilTest extends BaseTest<TemplateUtil> {
 
@@ -145,12 +145,73 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         valueMap.put("prescription", prescription);
         valueMap.put("visitDiagnosis", visitDiagnosis);
         valueMap.put("prescriptionDetailList", prescriptionDetails);
-        Integer stopSize = 10;
-        String xmlContent = templateUtil.showTemplate("HIP1000.ftl", valueMap);
+        Integer stopSize = 50;
+//        String xmlContent = templateUtil.showTemplate("HIP1000.ftl", valueMap);
 
         final CountDownLatch countDownLatch = new CountDownLatch(stopSize);
 
+        final List<Long> executeTimes = Lists.newArrayList();
+
+//        assignThreadSize(stopSize,valueMap, templateUtil,executeTimes,countDownLatch);
+        maxThreadSize(stopSize,valueMap, templateUtil,executeTimes,countDownLatch);
+
+        countDownLatch.await();
+        //计算平均值
+        Long msAll = 0L;
+        executeTimes.stream().sorted(Comparator.reverseOrder());
+        for (Long ms : executeTimes) {
+            msAll += ms;
+        }
+        System.out.println("平均耗时:" + (msAll / executeTimes.size()));
+        /**
+         * 结论:
+         *  1、50条新线程-50并发,平均耗时665
+         *  2、10条新线程-50并发,平均耗时217
+         */
+    }
+
+    /**
+     * 限定线程数
+     * @param stopSize
+     * @param templateUtil
+     * @param executeTimes
+     * @param countDownLatch
+     */
+    private void assignThreadSize(Integer stopSize,final HashMap<Object, Object> valueMap, final TemplateUtil templateUtil, final List<Long> executeTimes, final CountDownLatch countDownLatch) {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
         for (int i = 0; i < stopSize; i++) {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    long start = System.currentTimeMillis();
+                    String xmlContent = templateUtil.showTemplate("HIP1000.ftl", valueMap);
+                    long end = System.currentTimeMillis();
+//        System.out.println("--------xml---------");
+//        System.out.println(xmlContent);
+                    System.out.println("threadId:" + Thread.currentThread().getName() + ", 耗时:" + (end - start));
+                    executeTimes.add((end - start));
+                    countDownLatch.countDown();
+                }
+            });
+        }
+    }
+
+    /**
+     * 硬件支持下的最大线程数
+     * @param stopSize
+     * @param valueMap
+     * @param templateUtil
+     * @param executeTimes
+     * @param countDownLatch
+     */
+    private void maxThreadSize(Integer stopSize,final HashMap<Object, Object> valueMap, final TemplateUtil templateUtil, final List<Long> executeTimes, final CountDownLatch countDownLatch) {
+        for (int i = 0; i < stopSize; i++) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -159,20 +220,21 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
                     long end = System.currentTimeMillis();
 //        System.out.println("--------xml---------");
 //        System.out.println(xmlContent);
-                    System.out.println("--------耗时---------");
-                    System.out.println(end - start);
+                    System.out.println("threadId:" + Thread.currentThread().getName() + ", 耗时:" + (end - start));
+                    executeTimes.add((end - start));
                     countDownLatch.countDown();
+                    //测试缓存
+                    templateUtil.clearCache();
                 }
             }).start();
         }
-        countDownLatch.await();
     }
 
     /**
      * 模板性能
      */
     @Test
-    public void templateBest(){
+    public void templateBest() {
         //https://www.imooc.com/qadetail/200232
     }
 
