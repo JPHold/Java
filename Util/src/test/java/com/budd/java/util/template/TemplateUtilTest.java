@@ -268,8 +268,14 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         valueMap.put("dateStr1","20190715");
         valueMap.put("dateStr2","2019-07-15");
         valueMap.put("timeStr","22:42:00");
-
-        valueMap.put("isoDateTimeStr","1995-10-25T15:05");
+        valueMap.put("xsDateStr","2019-07-16");
+        valueMap.put("xsTimeStr","20:25:00");
+        valueMap.put("xsDateTimeStr","2019-07-16T20:25:00");
+        valueMap.put("isoDateStr","2019-07-16");
+        valueMap.put("isoTimeStr","20:37:00");
+        valueMap.put("isoDateTimeStr","2019-07-16T20:37:00");
+        //TODO 官方例子,报错
+        valueMap.put("workLogDateTimeStr","July/16/2019 20:42 PM");
         String htmlContent = templateUtil.showTemplate("/valueType/dateTime.ftlh", valueMap);
         System.out.println(htmlContent);
     }
