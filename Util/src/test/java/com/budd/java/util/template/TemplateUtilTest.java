@@ -8,6 +8,8 @@ import com.google.common.collect.Maps;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -265,6 +267,13 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
 
         HashMap<Object, Object> valueMap = Maps.newHashMap();
         valueMap.put("dateTime",new Date());
+        SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            valueMap.put("unknownDate",simpleDateFormat.parse("2019-07-17"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         valueMap.put("dateStr1","20190715");
         valueMap.put("dateStr2","2019-07-15");
         valueMap.put("timeStr","22:42:00");
