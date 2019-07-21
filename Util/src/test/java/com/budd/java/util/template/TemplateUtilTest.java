@@ -293,7 +293,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
      * 内置
      */
     @Test
-    public void testFunction(){
+    public void testBuildIns(){
         TemplateUtil templateUtil = getBean();
 
         HashMap<Object, Object> valueMap = Maps.newHashMap();
@@ -308,8 +308,23 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         contentList.add("橘子");
         valueMap.put("contentList",contentList);
 
-        String htmlContent = templateUtil.showTemplate("/built-ins/function.ftlh", valueMap);
+        String htmlContent = templateUtil.showTemplate("/built-ins/method.ftlh", valueMap);
         System.out.println(htmlContent);
+    }
+
+    @Test
+    public void testDirective(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+
+        String htmlFunctionContent = templateUtil.showTemplate("/directive/function.ftlh", valueMap);
+        System.out.println("自定义函数");
+        System.out.println(htmlFunctionContent);
+
+        String htmlDirectiveContent = templateUtil.showTemplate("/directive/customDirective.ftlh", valueMap);
+        System.out.println("自定义指令");
+        System.out.println(htmlDirectiveContent);
     }
 
     @Test
