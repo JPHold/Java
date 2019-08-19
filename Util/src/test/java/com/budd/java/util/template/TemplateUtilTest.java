@@ -210,7 +210,7 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
     private void maxThreadSize(Integer stopSize,final HashMap<Object, Object> valueMap, final TemplateUtil templateUtil, final List<Long> executeTimes, final CountDownLatch countDownLatch) {
         for (int i = 0; i < stopSize; i++) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -289,6 +289,18 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         System.out.println(htmlContent);
     }
 
+    @Test
+    public void testNumber(){
+        TemplateUtil templateUtil = getBean();
+
+        HashMap<Object, Object> valueMap = Maps.newHashMap();
+        valueMap.put("n1",1000L);
+        valueMap.put("n2",1.199999D);
+        valueMap.put("n3","2.299999");
+        String htmlContent = templateUtil.showTemplate("/valueType/number.ftlx", valueMap);
+        System.out.println(htmlContent);
+    }
+
     /**
      * 内置
      */
@@ -353,11 +365,11 @@ public class TemplateUtilTest extends BaseTest<TemplateUtil> {
         TemplateUtil templateUtil = getBean();
 
         HashMap<Object, Object> valueMap = Maps.newHashMap();
-        valueMap.put("escapeStr","budd&25");
+        valueMap.put("escapeStr",">,<,>=,<=");
 
         String unknownContent = templateUtil.showTemplate("/outputType/unknownEscape.ftl", valueMap);
         String xmlContent = templateUtil.showTemplate("/outputType/xmlEscape.ftlx", valueMap);
-        String htmlContent = templateUtil.showTemplate("/outputType/xmlEscape.ftlx", valueMap);
+        String htmlContent = templateUtil.showTemplate("/outputType/htmlEscape.ftlh", valueMap);
 
         System.out.println("未知格式内容");
         System.out.println(unknownContent);
