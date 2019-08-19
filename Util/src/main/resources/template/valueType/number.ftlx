@@ -1,0 +1,6 @@
+<#setting number_format="computer">
+<number>
+    <n1>${n1}</n1>
+    <n2>${n2}</n2>
+    <n3>${n3}</n3>
+</number>
