@@ -2,7 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.budd.java</groupId>
+        <artifactId>JavaMain</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>Jdk7platform</artifactId>
+    <name>Jdk7Platform</name>
+    <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -11,16 +20,6 @@
         </dependency>
     </dependencies>
 
-    <parent>
-        <groupId>com.budd.java</groupId>
-        <artifactId>main</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>jdk7platform</artifactId>
-    <name>Jdk7Platform</name>
-    <packaging>jar</packaging>
-
     <build>
         <plugins>
             <plugin>
@@ -28,8 +27,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>
