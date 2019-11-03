@@ -1,4 +1,4 @@
-package com.jdk7.asyncfile;
+package com.budd.java.jdk7.file.pathfile;
 
 import org.junit.Test;
 
@@ -20,32 +20,30 @@ import java.util.concurrent.Future;
  */
 public class AsynchronousFileChannelHello {
 
+    private final static String ROOT_PATH = ".\\src\\main\\resources\\file\\pathfile\\";
+
     @Test
-    public void testRead() {
-        Path path = Paths.get(".\\src\\com\\jdk7\\asyncfile\\file\\潮剧介绍.txt");
+    public void testRead() throws IOException {
+        Path path = Paths.get(ROOT_PATH, "潮剧介绍.txt");
 
-        try {
-            AsynchronousFileChannel fileChannel =
-                    AsynchronousFileChannel.open(path, StandardOpenOption.READ);
+        AsynchronousFileChannel fileChannel =
+                AsynchronousFileChannel.open(path, StandardOpenOption.READ);
 
-            long fileSize = fileChannel.size();
-            System.out.println("文件大小:" + fileSize);
+        long fileSize = fileChannel.size();
+        System.out.println(String.format("文件大小: %s", fileSize));
 
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            int position = 0, count = 0;
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        int position = 0, count = 0;
 
-            StringBuilder fileDataStringBuilder = new StringBuilder();
+        StringBuilder fileDataStringBuilder = new StringBuilder();
 
-            //循环
-            while (position < fileSize) {
-                count = read(fileChannel, buffer, position, fileDataStringBuilder);
-                position += count;
-            }
-            System.out.println("文件内容:" + fileDataStringBuilder);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        //循环
+        while (position < fileSize) {
+            count = read(fileChannel, buffer, position, fileDataStringBuilder);
+            position += count;
         }
+        System.out.println(String.format("文件内容: %s", fileDataStringBuilder));
+
     }
 
     private int read(AsynchronousFileChannel fileChannel, ByteBuffer buffer, int position, StringBuilder fileDataStringBuilder) {
