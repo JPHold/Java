@@ -23,15 +23,44 @@ public class HelloStringTest {
     private final String BASIC_CODEPOINT_PATH = ".\\src\\main\\resources\\string\\basicCodepointPath.txt";
     private final String SUPPLEMENT_CHAR_PATH = ".\\src\\main\\resources\\string\\supplementChar.txt";
 
+    /**
+     * 测试字符串创建
+     */
     @Test
     public void testCreate() {
         String s1 = new String();//创建空串
         String s2 = new String(s1);//复制字符串
         String s3 = "s3";
 
-        new String(new StringBuffer());//等于new StringBuffer().toString()
+        new String(new StringBuffer());//等于new StringBuffer()9.toString()
         new String(new StringBuilder());//等于new StringBuilder().toString()
     }
+
+    @Test
+    public void testTransform() throws UnsupportedEncodingException {
+        /**
+         * string转byte[]
+         */
+        String baseStr = "测试字符串转换";
+        byte[] b0 = baseStr.getBytes();
+        byte[] b1 = baseStr.getBytes("utf-8");
+        byte[] b2 = baseStr.getBytes(Charset.forName("utf-8"));
+        System.out.println("\n-----------string转byte[]");
+        System.out.println(String.format("未指定转换格式:%s", b0));
+        System.out.println(String.format("指定转换格式(utf-8):%s", b0));
+
+        /**
+         * byte[]转string
+         */
+        System.out.println("-----------byte[]转string");
+        String s0 = new String(b0);
+        String s1 = new String(b0, Charset.forName("utf-8"));
+
+        System.out.println(String.format("未指定转换格式:%s", s0));
+        System.out.println(String.format("指定转换格式(utf-8):%s", s1));
+
+    }
+
 
     public class TipNullString {
         private String s;

@@ -8,6 +8,10 @@
 1. new String(s1),将源s1的value和hash值给目标s2,因为string.value是private final,所以无须担心s1会影响s2
 2. 很少用StringBuilder和StringBuffer构建string(通过toString方法来构建string)(后者toString是同步方式,则前者比后者更快创建字符串)
 
+#转换字符串
+- com.budd.java.jdkBasic.string.HelloStringTest.testTransform
+1.String转byte[],跟环境有强关联(win10中文是UTF-8),所以最好指定编码格式(一般是utf-8)
+2.byte[]转String,如果没指定编码格式charset,会获取本地环境默认的编码格式(win10中文是UTF-8),如果还没有则采用ISO-8859-1
 # 空提示
 - com.budd.java.jdkBasic.string.HelloStringTest#testTipNull
 1. 属于编译级别的问题发现，通常由IDE发现并提示
