@@ -1,3 +1,13 @@
+#基础知识
+1. 层级结构
+    - 无继承,实现java.io.Serializable,Comparable<String>, CharSequence
+    - 是用char[]存储的,并且private final的,所以无须担心外部代码修改会影响string的值
+
+#创建字符串
+- com.budd.java.jdkBasic.string.HelloStringTest.testCreate
+1. new String(s1),将源s1的value和hash值给目标s2,因为string.value是private final,所以无须担心s1会影响s2
+2. 很少用StringBuilder和StringBuffer构建string(通过toString方法来构建string)(后者toString是同步方式,则前者比后者更快创建字符串)
+
 # 空提示
 - com.budd.java.jdkBasic.string.HelloStringTest#testTipNull
 1. 属于编译级别的问题发现，通常由IDE发现并提示

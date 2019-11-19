@@ -23,6 +23,16 @@ public class HelloStringTest {
     private final String BASIC_CODEPOINT_PATH = ".\\src\\main\\resources\\string\\basicCodepointPath.txt";
     private final String SUPPLEMENT_CHAR_PATH = ".\\src\\main\\resources\\string\\supplementChar.txt";
 
+    @Test
+    public void testCreate() {
+        String s1 = new String();//创建空串
+        String s2 = new String(s1);//复制字符串
+        String s3 = "s3";
+
+        new String(new StringBuffer());//等于new StringBuffer().toString()
+        new String(new StringBuilder());//等于new StringBuilder().toString()
+    }
+
     public class TipNullString {
         private String s;
 
@@ -107,6 +117,7 @@ public class HelloStringTest {
 
     /**
      * 增补字符
+     *
      * @throws IOException
      */
     @Test
