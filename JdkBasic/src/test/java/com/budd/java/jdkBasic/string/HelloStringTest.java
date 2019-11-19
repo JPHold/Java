@@ -105,6 +105,10 @@ public class HelloStringTest {
         return codePointChars;
     }
 
+    /**
+     * 增补字符
+     * @throws IOException
+     */
     @Test
     public void testSupplementChar() throws IOException {
         int[] supplementCodePoints = {0x100001, 0x100002}; //增补字符
@@ -138,6 +142,9 @@ public class HelloStringTest {
         }
     }
 
+    /**
+     * 好玩的码点
+     */
     @Test
     public void testFunCodePoint() {
         makeBasicCodepoint(new int[]{0x0B8A});
