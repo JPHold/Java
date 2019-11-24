@@ -36,6 +36,11 @@ public class HelloStringTest {
         new String(new StringBuilder());//等于new StringBuilder().toString()
     }
 
+    /**
+     * 测试转换
+     *
+     * @throws UnsupportedEncodingException
+     */
     @Test
     public void testTransform() throws UnsupportedEncodingException {
         /**
@@ -81,7 +86,7 @@ public class HelloStringTest {
     }
 
     /**
-     * 使用jdk7-Path/Files写入/读取码点
+     * 测试jdk7-Path/Files写入/读取码点
      *
      * @throws IOException
      */
@@ -101,7 +106,7 @@ public class HelloStringTest {
     }
 
     /**
-     * String 的字符(char[])是用utf-16(unicode)标示,在jdk5以后增加增补字符:https://www.aliyun.com/jiaocheng/348736.html
+     * 测试字节写入/读取码点
      */
     @Test
     public void testStreamBasicCodePoint() throws IOException {
@@ -145,7 +150,7 @@ public class HelloStringTest {
     }
 
     /**
-     * 增补字符
+     * 测试增补字符
      *
      * @throws IOException
      */
@@ -183,7 +188,7 @@ public class HelloStringTest {
     }
 
     /**
-     * 好玩的码点
+     * 测试好玩的码点
      */
     @Test
     public void testFunCodePoint() {
