@@ -120,25 +120,34 @@ public class HelloStringTest {
      * @throws IOException
      */
     @Test
-    public void testFilesBasicCodePoint() throws IOException {
-        char[] codePointChars = makeBasicCodepoint(null);
+    public void testFilesBasicCodePoint() throws IOException, InterruptedException {
+        Path plusCharPath = Paths.get(BASIC_CODEPOINT_PATH);
+        Files.createFile(plusCharPath);
+        try {
+            char[] codePointChars = makeBasicCodepoint(null);
 
-        List<String> codePointCharList = new ArrayList<>();
-        for (char singleChar : codePointChars) {
-            codePointCharList.add(String.valueOf(singleChar));
+            List<String> codePointCharList = new ArrayList<>();
+            for (char singleChar : codePointChars) {
+                codePointCharList.add(String.valueOf(singleChar));
+            }
+
+            Files.write(plusCharPath, codePointCharList, Charset.forName("utf-16"), StandardOpenOption.WRITE);
+            byte[] bytes = Files.readAllBytes(plusCharPath);
+            System.out.println(new String(bytes));
+
+        } finally {
+            //还原
+            Thread.sleep(5000);
+            Files.delete(plusCharPath);
         }
 
-        Path plusCharPath = Paths.get(BASIC_CODEPOINT_PATH);
-        Files.write(plusCharPath, codePointCharList, Charset.forName("utf-16"), StandardOpenOption.WRITE);
-        byte[] bytes = Files.readAllBytes(plusCharPath);
-        System.out.println(new String(bytes));
     }
 
     /**
      * 测试字节写入/读取码点
      */
     @Test
-    public void testStreamBasicCodePoint() throws IOException {
+    public void testStreamBasicCodePoint() throws IOException, InterruptedException {
         char[] codePointChars = makeBasicCodepoint(null);
 
         FileWriter out = new FileWriter(BASIC_CODEPOINT_PATH);
@@ -155,6 +164,12 @@ public class HelloStringTest {
             System.out.print(Integer.toHexString(c) + "\n");//为什么是3f?
         }
         in.close();
+
+
+        //还原
+        Thread.sleep(5000);
+        Path plusCharPath = Paths.get(BASIC_CODEPOINT_PATH);
+        Files.delete(plusCharPath);
 
     }
 
@@ -184,7 +199,7 @@ public class HelloStringTest {
      * @throws IOException
      */
     @Test
-    public void testSupplementChar() throws IOException {
+    public void testSupplementChar() throws IOException, InterruptedException {
         int[] supplementCodePoints = {0x100001, 0x100002}; //增补字符
         String supplementStrs = new String(supplementCodePoints, 0, supplementCodePoints.length);
 
@@ -212,8 +227,11 @@ public class HelloStringTest {
             if (Character.isSupplementaryCodePoint(supplementCodePoint))
                 System.out.println(String.format("%s是增补字符", supplementCodePoint));
             else System.out.println(String.format("%s不是增补字符", supplementCodePoint));
-
         }
+
+        //还原
+        Thread.sleep(5000);
+        Files.delete(supplementPath);
     }
 
     /**
