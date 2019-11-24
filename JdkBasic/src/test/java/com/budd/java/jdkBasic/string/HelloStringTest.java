@@ -32,7 +32,7 @@ public class HelloStringTest {
         String s2 = new String(s1);//复制字符串
         String s3 = "s3";
 
-        new String(new StringBuffer());//等于new StringBuffer()9.toString()
+        new String(new StringBuffer());//等于new StringBuffer().toString()
         new String(new StringBuilder());//等于new StringBuilder().toString()
     }
 
