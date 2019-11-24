@@ -26,6 +26,13 @@
 1. [@Contract预判结果](https://www.w3cschool.cn/intellij_idea_doc/intellij_idea_doc-u4jy2ems.html)
 [JetBrains的@Contract批注问问题](https://stackoverflow.com/questions/34620494/jetbrains-contract-annotation)，没找到该注解
 
+#重载运算符
+- com.budd.java.jdkBasic.string.HelloStringTest.testPlusOverload
+1. java唯一的重载运算符为"+"
+2. 在编译期间,根据不同类型,采用不同类+方法转换,将运算对象作为参数传入
+2. 在jdk5之后,在编译期间采用StringBuilder来拼接,之前版本都是新建String对象再相加。该特性叫做静态字符串连接优化(a static string concatenation optimization)
+3. 虽然+采用StringBuilder拼接,但循环时不能使用,因为字节码可以看到每循环一次都新建StringBuilder,增加GC(IDEA会提示)。在外层新建全局StringBuilder,append操作
+
 # 增补字符
 - com.budd.java.jdkBasic.string.HelloStringTest.testFilesBasicCodePoint、com.budd.java.jdkBasic.string.HelloStringTest.testStreamBasicCodePoint
 1. 在Unicode出现前的现状:

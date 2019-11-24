@@ -66,6 +66,35 @@ public class HelloStringTest {
 
     }
 
+    /**
+     * 测试java的唯一重载运算符"+"
+     */
+    @Test
+    public void testPlusOverloadOperators() {
+        //重载运算符是根据不同基本类型转换为不同方法,运算对象成为方法的参数,在编译过程完成
+        //Java唯一的重载运算符
+        String s1 = "1";
+        String s2 = s1 + "2";
+        String s3 = s1 + 3;
+        System.out.println(s1);
+        System.out.println(s2);
+        System.out.println(s3);
+
+        System.out.println("循环直接拼接(不推荐)");
+        String str = "";
+        for (int i = 0, size = 5; i < size; i++) {
+            str += i;
+        }
+        System.out.println(str);
+
+        System.out.println("循环StringBuilder.append");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0, size = 5; i < size; i++) {
+            stringBuilder.append(i);
+        }
+        System.out.println(stringBuilder);
+    }
+
 
     public class TipNullString {
         private String s;
