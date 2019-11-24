@@ -33,6 +33,12 @@
 2. 在jdk5之后,在编译期间采用StringBuilder来拼接,之前版本都是新建String对象再相加。该特性叫做静态字符串连接优化(a static string concatenation optimization)
 3. 虽然+采用StringBuilder拼接,但循环时不能使用,因为字节码可以看到每循环一次都新建StringBuilder,增加GC(IDEA会提示)。在外层新建全局StringBuilder,append操作
 
+#常量池
+- String创建与常量池的关系
+1. 编译期：编译成class,有个contact pool将字符串的字面量和符号引用维护进来
+2. 类加载期：从编译器的contact pool取出字符串,在JVM的常量池查找是否存在该字面量,存在则直接返回引用,不存在则创建字面量对象并返回该引用
+3. 运行期：String s = new String("1")在栈上创建变量,在堆上创建对象实例,在常量池上创建字面量和字面量实例(常量池存储着对象实例引用)(变量=>对象实例,对象实例=>字面量)
+
 # 增补字符
 - com.budd.java.jdkBasic.string.HelloStringTest.testFilesBasicCodePoint、com.budd.java.jdkBasic.string.HelloStringTest.testStreamBasicCodePoint
 1. 在Unicode出现前的现状:
