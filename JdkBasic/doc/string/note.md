@@ -57,5 +57,6 @@
 3. 通过Character.isSupplementaryCodePoint判断是否为增补字符
 
 - 资料
+1. [增补字符](https://www.aliyun.com/jiaocheng/348736.html)
 1. [unicode字符集](http://graphemica.com/)   
 2. [oracle官方详细讲解unicode渊源](https://www.oracle.com/technical-resources/articles/javase/supplementary.html)     
