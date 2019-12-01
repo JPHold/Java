@@ -36,8 +36,8 @@
 #常量池
 - String创建与常量池的关系
 1. 编译期：编译成class,有个contact pool将字符串的字面量和符号引用维护进来
-2. 类加载期：从编译器的contact pool取出字符串,在JVM的常量池查找是否存在该字面量,存在则直接返回引用,不存在则创建字面量对象并返回该引用
-3. 运行期：String s = new String("1")在栈上创建变量,在堆上创建对象实例,在常量池上创建字面量和字面量实例(常量池存储着对象实例引用)(变量=>对象实例,对象实例=>字面量)
+2. 类加载期：从编译器的contact pool取出字符串,在JVM的常量池查找是否存在该字面量,存在则返回直接引用,不存在则创建字面量对象并返回该直接引用
+3. 运行期：String s = new String("1")在栈上创建变量,在堆上创建对象实例,在常量池上创建字面量和对象实例引用(常量池存储着对象实例引用)(变量=>对象实例,对象实例=>字面量)
 
 # 增补字符
 - com.budd.java.jdkBasic.string.HelloStringTest.testFilesBasicCodePoint、com.budd.java.jdkBasic.string.HelloStringTest.testStreamBasicCodePoint
