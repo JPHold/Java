@@ -115,6 +115,87 @@ public class HelloStringTest {
     }
 
     /**
+     * 测试创建与常量池的影响
+     */
+    @Test
+    public void testCreateRelContact() {
+        /**
+         * 比较""和""
+         */
+        String s1 = "hello12";
+        String s2 = "hello12";
+        System.out.println("比较\"\"和\"\"：" + (s1 == s2));//输出是true
+
+        /**
+         * 比较new+""和""
+         */
+        String s3 = new String("hello34");
+        String s4 = "hello34";
+        System.out.println("比较new+\"\"和+\"\"：" + (s3 == s4));//输出是false
+    }
+
+    /**
+     * 测试intern方法
+     * intern对创建对象实例和字面量的影响
+     */
+    @Test
+    public void testIntern() {
+
+        /**
+         * new.intern()与""比较
+         */
+        System.out.println("new.intern()与\"\"比较");
+        String s1 = new String("he") + "llo12";
+        String s1Reference = s1.intern();
+        String s2 = "hello12";
+        System.out.println("比较new和\"\"：" + (s2 == s1));//输出是true
+        System.out.println("比较new的intern引用和+\"\"：" + (s2 == s1Reference));//输出是true
+
+        System.out.println("------------------");
+
+        /**
+         * ""与new.intern()比较
+         */
+        System.out.println("\"\"与new.intern()比较");
+        String s3 = "hello345";
+        String s4 = new String("he") + "llo345";
+        String s4Reference = s4.intern();
+        String s5 = "hello345";
+        System.out.println("比较\"\"与intern的源对象：" + (s5 == s4));//输出是false
+        System.out.println("比较\"\"与intern返回引用：" + (s5 == s4Reference));//输出是true
+        System.out.println("比较\"\"与intern前已存在对象：" + (s5 == s3));//输出是true
+
+        System.out.println("------------------");
+
+        /**
+         * new与new比较
+         */
+        System.out.println("new与new比较");
+        String s6 = new String("hello678");
+        String s7 = new String("hello678");
+        String s7Reference = s7.intern();
+        String s8 = "hello678";
+        System.out.println("比较new.intern()与new(与s2 == s1对比)：" + (s7Reference == s6));//输出是false
+        System.out.println("比较new.intern()与new(与s2 == s1对比)：" + (s7Reference == s7));//输出是false
+        System.out.println("比较new.intern()与源\"\"(与s7Reference == s7对比)：" + (s7Reference == s8));//输出是true
+        System.out.println("比较new与源\"\"(与s7Reference == s8对比)：" + (s6 == s8));//输出是false
+
+        System.out.println("------------------");
+
+        /**
+         * 特殊new与new.intern()比较
+         */
+        System.out.println("特殊new与new.intern()比较");
+        String s9 = new String(new char[]{'漠', '然'}, 0, 2);
+        System.out.println("比较new String(char[]).intern()与new String(char[])：" + (s9.intern() == s9));//输出是true
+
+        String s10 = new StringBuilder("漠").append("然").toString();
+        System.out.println("比较new StringBuilder与源new StringBuilder.intern()：" + (s10.intern() == s10));//输出是false
+        System.out.println("比较new StringBuilder与源\"\"：" + (s10.intern() == s9));//输出是true
+
+    }
+
+    /**
      * 测试jdk7-Path/Files写入/读取码点
      *
      * @throws IOException

@@ -34,11 +34,14 @@
 3. 虽然+采用StringBuilder拼接,但循环时不能使用,因为字节码可以看到每循环一次都新建StringBuilder,增加GC(IDEA会提示)。在外层新建全局StringBuilder,append操作
 
 #常量池
-- String创建与常量池的关系
+- String创建与常量池的关系,com.budd.java.jdkBasic.string.HelloStringTest.testCreateRelContact
 1. 编译期：编译成class,有个contact pool将字符串的字面量和符号引用维护进来
 2. 类加载期：从编译器的contact pool取出字符串,在JVM的常量池查找是否存在该字面量,存在则返回直接引用,不存在则创建字面量对象并返回该直接引用
-3. 运行期：String s = new String("1")在栈上创建变量,在堆上创建对象实例,在常量池上创建字面量和对象实例引用(常量池存储着对象实例引用)(变量=>对象实例,对象实例=>字面量)
-
+3. 运行期：String s = new String("hello")在栈上创建变量。如果常量池已存在"hello"则不创建字面量但会创建对象实例和符号引用
+    ,否则在堆上创建对象实例+在常量池上创建字面量和符号引用。String s = "hello2",如果常量池已存在"hello"则直接复用对象实例、字面量和符号引用
+    (常量池存储着对象实例引用)(变量=>对象实例,对象实例=>字面量)
+4. new +""与""不同
+-- intern对创建对象实例和字面量的影响,com.budd.java.jdkBasic.string.HelloStringTest.testIntern
 # 增补字符
 - com.budd.java.jdkBasic.string.HelloStringTest.testFilesBasicCodePoint、com.budd.java.jdkBasic.string.HelloStringTest.testStreamBasicCodePoint
 1. 在Unicode出现前的现状:
