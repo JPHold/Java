@@ -33,6 +33,47 @@
 2. 在jdk5之后,在编译期间采用StringBuilder来拼接,之前版本都是新建String对象再相加。该特性叫做静态字符串连接优化(a static string concatenation optimization)
 3. 虽然+采用StringBuilder拼接,但循环时不能使用,因为字节码可以看到每循环一次都新建StringBuilder,增加GC(IDEA会提示)。在外层新建全局StringBuilder,append操作
 
+#比较
+- com.budd.java.jdkBasic.string.HelloStringTest.testCompare
+    - eqauls
+        - 内容比较只能比较String
+        - 源码逻辑
+        `
+          //  1、先比较是否同个对象,否走下一步
+          //  2、判断是否为String类型,否返回false,是走下一步
+          //  2、比较长度是否一致,是走下一步
+          //  3、遍历两者的内部数组的字符,做字符比较
+        `
+    - contentEquals
+        - 内容比较，除了比较String,也支持其它类型：StringBuilder、StringBuffer以及其它CharSequence实现
+        - String比较采用equals比较，其它类型都采用遍历数组做字符比较
+        - 源码逻辑
+        `
+          //  1、是否AbstractStringBuilder实现,否走下一步
+          //    1.1、是StringBuffer,对StringBuffer对象加锁
+          //    1.2、不是StringBuffer(jdk8目前是StringBuilder)
+          //    1.3、上述两种类型的比较处理逻辑都一样：遍历字符数组，做字符比较
+          //  2、是否String实现,否走下一步
+          //    2.1、查看equals逻辑
+          //  3、是否其他CharSequence实现(非String非AbstractStringBuilder)
+          //    3.1、遍历数组，做字符比较
+        `
+    - equalsIgnoreCase
+        - 忽略大小写的比较
+        - 源码逻辑
+        `
+          // 1、最主要的是regionMatches方法
+          //    1.1、比较Character.toUpperCase和Character.toLowerCase结果
+        `
+    - compareTo(compareToIgnoreCase)
+        - 比较String的字符数组：按Unicode值字典比较内部字符数组
+        - 返回结果说明，=0(完全相同)、<0(比参数小(在Unicode字典顺序排名低))、>0(比参数大(在Unicode字典顺序排名高)))
+        - 源码逻辑
+        `
+          // 如果不同会返回两个字符的Unicode值之差,如果完全相同返回两字符串的长度之差
+        `
+    - regionMatches(regionMatches(boolean))
+        - 局部比较，可支持从哪个个位置开始、比较字符个数、忽略大小比较
 #常量池
 - String创建与常量池的关系,com.budd.java.jdkBasic.string.HelloStringTest.testCreateRelContact
 1. 编译期：编译成class,有个contact pool将字符串的字面量和符号引用维护进来

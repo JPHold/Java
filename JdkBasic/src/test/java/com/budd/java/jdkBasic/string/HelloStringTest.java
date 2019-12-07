@@ -3,6 +3,7 @@ package com.budd.java.jdkBasic.string;
 import com.sun.istack.internal.NotNull;
 import org.junit.Test;
 
+import javax.swing.text.Segment;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -51,8 +52,8 @@ public class HelloStringTest {
         byte[] b1 = baseStr.getBytes("utf-8");
         byte[] b2 = baseStr.getBytes(Charset.forName("utf-8"));
         System.out.println("\n-----------string转byte[]");
-        System.out.println(String.format("未指定转换格式:%s", b0));
-        System.out.println(String.format("指定转换格式(utf-8):%s", b0));
+        System.out.println(String.format("未指定转换格式：%s", b0));
+        System.out.println(String.format("指定转换格式(utf-8)：%s", b0));
 
         /**
          * byte[]转string
@@ -61,8 +62,8 @@ public class HelloStringTest {
         String s0 = new String(b0);
         String s1 = new String(b0, Charset.forName("utf-8"));
 
-        System.out.println(String.format("未指定转换格式:%s", s0));
-        System.out.println(String.format("指定转换格式(utf-8):%s", s1));
+        System.out.println(String.format("未指定转换格式：%s", s0));
+        System.out.println(String.format("指定转换格式(utf-8)：%s", s1));
 
     }
 
@@ -95,7 +96,9 @@ public class HelloStringTest {
         System.out.println(stringBuilder);
     }
 
-
+    /**
+     * 测试null
+     */
     public class TipNullString {
         private String s;
 
@@ -103,15 +106,59 @@ public class HelloStringTest {
             s = test;
         }
     }
-
-    /**
-     * 测试null
-     */
     @Test
     public void testTipNull() {
         String nullStr = null;
         String s1 = new String(nullStr);
         TipNullString testString = new TipNullString(nullStr);
+    }
+
+    /**
+     * 测试比较
+     */
+    @Test
+    public void testCompare() {
+        System.out.println("equals比较(只比较String)");
+        String s1 = "budd12";
+        String s2 = s1;
+        System.out.println("equals比较：" + (s1.equals(s2)));
+
+        System.out.println("-----------------");
+        System.out.println("contentEquals比较(比较CharSequence)");
+        String s3 = "budd3";
+        String s4 = "budd4";
+        StringBuffer s5 = new StringBuffer("budd5");
+        Segment s6 = new Segment("budd5".toCharArray(), 0, 13);
+        System.out.println("contentEquals(StringBuffer)：" + s3.contentEquals(s5));//同步比较
+        System.out.println("contentEquals(String)：" + s3.contentEquals(s4));//类型为String
+        System.out.println("contentEquals(Segment)：" + s3.contentEquals(s6));//类型为除String以外的CharSequence
+
+        System.out.println("-----------------");
+        System.out.println("equalsIgnoreCase比较(忽略大小写)");
+        String s7 = "budd7";
+        String s8 = "budd7";
+        System.out.println("equalsIgnoreCase(String)：" + s7.equalsIgnoreCase(s8));
+
+        System.out.println("-----------------");
+        System.out.println("compare(compareToIgnoreCase)");
+        String s9 = "budd9";
+        String s10 = "budd10";
+        System.out.println("compare(存在字符不同)：" + s9.compareTo(s10));
+        String s11 = "budd11";
+        String s12 = "budd123";
+        System.out.println("compare(字符相同,但长度不一致)：" + s11.compareTo(s12));
+
+        System.out.println("-----------------");
+        System.out.println("regionMatches(regionMatches(boolean))");
+        String s13 = "budd13";
+        String s14 = "Budd14";
+        System.out.println("regionMatches(not ignoreCase)：" + s13.regionMatches(0
+                , "b", 0, 1));
+        System.out.println("regionMatches(not ignoreCase)：" + s13.regionMatches(0
+                , "budd14", 0, 6));
+        System.out.println("regionMatches(yes ignoreCase)：" + s14.regionMatches(true, 0
+                , "B", 0, 1));
+
     }
 
     /**
