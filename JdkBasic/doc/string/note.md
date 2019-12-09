@@ -74,6 +74,32 @@
         `
     - regionMatches(regionMatches(boolean))
         - 局部比较，可支持从哪个个位置开始、比较字符个数、忽略大小比较
+        
+#hashCode
+- 
+1. 质数的概念：除1和它本身外,无法被其他自然数整除的数
+2. 用于计算hash地址，多用于Map等
+3. hashCode保证相同字符串,hash值相同; hash值相同,字符串不一定相同
+4. 为何hashCode采用31(质数)作为系数: 
+    - 系数要尽量长且乘法尽量不会溢出的数(在Java乘法中,如果数字相乘过大会溢出造成数据丢失),长的系数计算出来的hash地址就越大
+    ,相同的hash地址的可能性就越小,hash链就越短,查询效率就越高
+    - 为了更好分配hash地址,31只占5bit
+5. 源码逻辑
+`
+int h = hash;
+if (h == 0 && value.length > 0) {
+    char val[] = value;
+
+    for (int i = 0; i < value.length; i++) {
+        h = 31 * h + val[i];
+    }
+    hash = h;
+}
+return h;
+`
+6. 资料
+- [31系数](http://jm-blog.aliapp.com/?p=1501)
+    
 #常量池
 - String创建与常量池的关系,com.budd.java.jdkBasic.string.HelloStringTest.testCreateRelContact
 1. 编译期：编译成class,有个contact pool将字符串的字面量和符号引用维护进来

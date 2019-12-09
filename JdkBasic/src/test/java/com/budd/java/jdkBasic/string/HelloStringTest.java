@@ -158,7 +158,14 @@ public class HelloStringTest {
                 , "budd14", 0, 6));
         System.out.println("regionMatches(yes ignoreCase)：" + s14.regionMatches(true, 0
                 , "B", 0, 1));
+    }
 
+    /**
+     * 测试hashCode
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode：" + "budd".hashCode());
     }
 
     /**
