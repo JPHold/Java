@@ -76,7 +76,7 @@
         - 局部比较，可支持从哪个个位置开始、比较字符个数、忽略大小比较
         
 #hashCode
-- 
+- com.budd.java.jdkBasic.string.HelloStringTest.testHashCode
 1. 质数的概念：除1和它本身外,无法被其他自然数整除的数
 2. 用于计算hash地址，多用于Map等
 3. hashCode保证相同字符串,hash值相同; hash值相同,字符串不一定相同
@@ -90,7 +90,7 @@ int h = hash;
 if (h == 0 && value.length > 0) {
     char val[] = value;
 
-    for (int i = 0; i < value.length; i++) {
+    for (int i = 0 ; i < value.length; i++) {
         h = 31 * h + val[i];
     }
     hash = h;
