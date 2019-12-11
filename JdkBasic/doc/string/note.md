@@ -99,6 +99,12 @@ return h;
 `
 6. 资料
 - [31系数](http://jm-blog.aliapp.com/?p=1501)
+ 
+#hashCode与equals
+- com.budd.java.jdkBasic.string.HelloStringTest.testEqualsHashCode
+1. 重写hashCode则必须重写equals
+2. 在HashMap、HashTable等链表-数组结构, put操作是比较hashCode判断是否要放在同个数组中,比较equals判断是否要放入到数组(重复则不放入)
+    get操作是根据hashCode拿到数组,逐个比较equals是否相同(相同则取出)   
     
 #常量池
 - String创建与常量池的关系,com.budd.java.jdkBasic.string.HelloStringTest.testCreateRelContact

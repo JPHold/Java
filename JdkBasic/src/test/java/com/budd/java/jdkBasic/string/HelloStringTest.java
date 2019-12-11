@@ -1,6 +1,8 @@
 package com.budd.java.jdkBasic.string;
 
 import com.sun.istack.internal.NotNull;
+import lombok.Getter;
+import lombok.ToString;
 import org.junit.Test;
 
 import javax.swing.text.Segment;
@@ -11,7 +13,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 字符串入门研究
@@ -167,6 +171,48 @@ public class HelloStringTest {
     public void testHashCode() {
         System.out.println("hashCode：" + "budd".hashCode());
     }
+
+    /**
+     * 测试hashCode与eqauls
+     */
+    @Getter
+    @ToString
+    public class HashCodeEqualsClass {
+
+        private String color;
+
+        public HashCodeEqualsClass(String color) {
+            this.color = color;
+        }
+
+        @Override
+        public int hashCode() {
+//            return this.color.hashCode();
+            //验证是否hashCode和equals同时判断
+            return 111;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) return false;
+            if (!(obj instanceof HashCodeEqualsClass)) return false;
+            if (this == obj) return true;
+//            return this.color.equals(((HashCodeEqualsClass) obj).getColor());
+            //验证是否hashCode和equals同时判断
+            return true;
+        }
+    }
+
+    @Test
+    public void testEqualsHashCode() {
+        Map<HashCodeEqualsClass, String> map = new HashMap<>();
+
+        map.put(new HashCodeEqualsClass("blue"), "red");
+        map.put(new HashCodeEqualsClass("blue"), "blue");
+        System.out.println("存储Map：" + map);
+        System.out.println("匹配到的值：" + map.get(new HashCodeEqualsClass("blue")));
+    }
+
 
     /**
      * 测试创建与常量池的影响
