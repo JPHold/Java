@@ -39,6 +39,7 @@ public class HelloStringTest {
 
         new String(new StringBuffer());//等于new StringBuffer().toString()
         new String(new StringBuilder());//等于new StringBuilder().toString()
+        System.out.println("copyValueOf：" + String.copyValueOf("123".toCharArray()));
     }
 
     /**
