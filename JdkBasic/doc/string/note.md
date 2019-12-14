@@ -74,7 +74,24 @@
         `
     - regionMatches(regionMatches(boolean))
         - 局部比较，可支持从哪个个位置开始、比较字符个数、忽略大小比较
-        
+
+#替换
+- com.budd.java.jdkBasic.string.HelloStringTest.testReplace
+    - replaceFirst
+        - 根据正则表达式,替换首个满足的字符串(如果regex不是正则表达式跟replace一样)
+    - replaceAll
+        - 根据正则表达式,扫描并替换所有满足的字符串(如果regex不是正则表达式跟replace一样)
+    - replace
+        - 直接替换相等的字符串
+        - 对\\和$这两个特殊字符进行转义保证，具体实现是：Matcher.quoteReplacement(replacement.toString())
+
+- 资料
+1. https://blog.csdn.net/CL_YD/article/details/80171064
+
+- 遗留
+1. replaceAll的$n：数字 n 将被替换为与正则中第 n 个通配符相匹配的内容。通配符从 0 开始编号(测试不来)
+System.out.println("指定匹配组的第几个：" + "budd-1,".replaceAll("[0-9]|[,]" , "$0老猿$1"));
+[传送](https://docs.oracle.com/cd/E19957-01/820-0513/bgajc/index.html)
 #hashCode
 - com.budd.java.jdkBasic.string.HelloStringTest.testHashCode
 1. 质数的概念：除1和它本身外,无法被其他自然数整除的数

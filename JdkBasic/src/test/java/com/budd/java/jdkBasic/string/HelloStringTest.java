@@ -165,6 +165,31 @@ public class HelloStringTest {
     }
 
     /**
+     * 测试替换
+     */
+    @Test
+    public void testReplace() {
+        System.out.println("\nreplaceFirst");
+        System.out.println("指定正则替换首个字符：" + "budd".replaceFirst("[b]"
+                , "老猿b"));
+
+        System.out.println("-----------------");
+        System.out.println("replaceAll");
+        System.out.println("指定正则替换所有字符：" + "budd".replaceAll("[d]"
+                , "bu"));
+
+        System.out.println("-----------------");
+        System.out.println("replace");
+        System.out.println("指定字符替换字符：" + "budd".replace("b"
+                , "老猿b"));
+        System.out.println("替换字符串带有特殊字符(通过replace保证转义)：" + "budd".replace("b"
+                , "\\b"));
+        System.out.println("替换字符串带有特殊字符(没有转义会报错)：" + "budd".replaceAll("b"
+                , "\\"));
+
+    }
+
+    /**
      * 测试hashCode
      */
     @Test
