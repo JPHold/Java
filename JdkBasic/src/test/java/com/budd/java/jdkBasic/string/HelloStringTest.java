@@ -187,7 +187,16 @@ public class HelloStringTest {
                 , "\\b"));
         System.out.println("替换字符串带有特殊字符(没有转义会报错)：" + "budd".replaceAll("b"
                 , "\\"));
+    }
 
+    /**
+     * 测试数组/字符串的长度
+     */
+    @Test
+    public void testLength() {
+        System.out.println("\n为什么数组获取长度是length，字符串获取长度是length()");
+        int length1 = "budd".length();
+        int length2 = new String[]{"budd"}.length;
     }
 
     /**

@@ -93,6 +93,11 @@
 1. replaceAll的$n：数字 n 将被替换为与正则中第 n 个通配符相匹配的内容。通配符从 0 开始编号(测试不来)
 System.out.println("指定匹配组的第几个：" + "budd-1,".replaceAll("[0-9]|[,]" , "$0老猿$1"));
 [传送](https://docs.oracle.com/cd/E19957-01/820-0513/bgajc/index.html)
+
+#长度
+- com.budd.java.jdkBasic.string.HelloStringTest.testLength
+    - 为什么数组获取长度是length，字符串获取长度是length()
+    
 #hashCode
 - com.budd.java.jdkBasic.string.HelloStringTest.testHashCode
 1. 质数的概念：除1和它本身外,无法被其他自然数整除的数
