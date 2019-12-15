@@ -1,6 +1,7 @@
 package com.budd.java.jdkBasic.string;
 
 import com.sun.istack.internal.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import org.junit.Test;
@@ -334,7 +335,7 @@ public class HelloStringTest {
     }
 
     /**
-     * 测试hashCode与equlas
+     * 测试hashCode与equals
      */
     @Getter
     @ToString
@@ -372,6 +373,50 @@ public class HelloStringTest {
         map.put(new HashCodeEqualsClass("blue"), "blue");
         System.out.println("存储Map：" + map);
         System.out.println("匹配到的值：" + map.get(new HashCodeEqualsClass("blue")));
+    }
+
+    /**
+     * 测试switch
+     */
+    @Test
+    public void testSwitch() {
+        System.out.println("\nint-switch");
+        int i = 1;
+        switch (i) {
+            case 1:
+                System.out.println(1);
+                break;
+            case 2:
+                System.out.println(2);
+                break;
+            default:
+                break;
+        }
+
+        System.out.println("-----------------");
+        System.out.println("char-switch");
+
+        char c = '2';
+        switch (c) {
+            case '2':
+                System.out.println(2);
+                break;
+            default:
+                break;
+        }
+
+        System.out.println("-----------------");
+        System.out.println("String-switch");
+
+        String str = "3";
+        switch (str) {
+            case "3":
+                System.out.println("3");
+                break;
+            default:
+                break;
+        }
+
     }
 
 

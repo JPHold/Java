@@ -115,7 +115,6 @@ System.out.println("指定匹配组的第几个：" + "budd-1,".replaceAll("[0-9
       ,concat是源string的内部数组和新string的内部数组拼接起来,所有字符都被用到,不会导致内存溢出,可以使用抠方法
       new String(new char[]{},false);
  
-
 #hashCode
 - com.budd.java.jdkBasic.string.HelloStringTest.testHashCode
 1. 质数的概念：除1和它本身外,无法被其他自然数整除的数
@@ -146,6 +145,10 @@ return h;
 1. 重写hashCode则必须重写equals
 2. 在HashMap、HashTable等链表-数组结构, put操作是比较hashCode判断是否要放在同个数组中,比较equals判断是否要放入到数组(重复则不放入)
     get操作是根据hashCode拿到数组,逐个比较equals是否相同(相同则取出)   
+    
+#switch
+- com.budd.java.jdkBasic.string.HelloStringTest.testSwitch
+1. 在JDK7, 支持String    
     
 #常量池
 - String创建与常量池的关系,com.budd.java.jdkBasic.string.HelloStringTest.testCreateRelContact
