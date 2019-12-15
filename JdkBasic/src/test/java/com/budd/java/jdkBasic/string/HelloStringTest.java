@@ -12,10 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 字符串入门研究
@@ -200,6 +197,135 @@ public class HelloStringTest {
     }
 
     /**
+     * 测试subString
+     */
+    public class SubStringMemoryLeak1 {
+        private static final int NUMBER_OF_BUFFERS = 15;
+        private static final int BUFFER_SIZE = 256 * 1024;
+        private static final String DUMMY_TEXT = "Hello world! This is a memory leak!";
+        private String longString;
+        private int size;
+
+        /**
+         * Creates a new instance of SubStringMemoryLeak1
+         */
+        public SubStringMemoryLeak1() {
+            StringBuffer sb = new StringBuffer(BUFFER_SIZE);
+            int count = (BUFFER_SIZE / DUMMY_TEXT.length());
+            for (int i = 0; i < count; i++) {
+                sb.append(DUMMY_TEXT);
+                this.size += DUMMY_TEXT.length();
+            }
+            this.longString = sb.toString();
+        }
+
+        public String getSubString() {
+            double rand1 = Math.random();
+            int begin = (int) Math.round((this.size - 10) * rand1);
+            int end = begin + 8;
+            return this.longString.substring(begin, end);
+        }
+
+        public void test() {
+            List subStrings = new ArrayList(NUMBER_OF_BUFFERS);
+            for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
+
+                //This call creates memory leaking
+                String subString = getSubString();
+
+                //This call avoids memory leaking
+                //String subString = new String(leak.getSubString());
+
+                System.out.println("Extracted substring: " + subString);
+                subStrings.add(subString);
+            }
+            //No release of buffer objects!!
+            System.out.println("Keeping the substrings means keeping the whole buffer!");
+            for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
+                System.out.println("List of subStrings: " + subStrings);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    System.exit(1);
+                }
+                System.gc();
+            }
+            //Releasing substring triggers release of buffer objects!!
+            System.out.println("Only releasing the substrings releases the whole buffer!");
+            for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
+                System.out.println("List of subStrings: " + subStrings);
+                subStrings.remove(0);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    System.exit(1);
+                }
+                System.gc();
+            }
+            System.exit(0);
+        }
+    }
+
+    public class SubStringMemoryLeak2 {
+
+        private static final int BUFFER_SIZE = 10 * 1024 * 1024;
+
+        private static final char DUMMY_CHAR = 'a';
+
+        public void test() {
+
+            //Create dummy char array
+            char[] bigCharArray = new char[BUFFER_SIZE];
+            Arrays.fill(bigCharArray, DUMMY_CHAR);
+
+            //Create String from char array, release dummy char array
+            String longString = new String(bigCharArray);
+            bigCharArray = null;
+
+            //Extract first char of long String and release long String
+            String shortString = longString.substring(0, 1);
+            longString = null;
+
+            //Perform GC and wait for further automatic GCs
+            System.gc();
+            try {
+                Thread.sleep(3000);
+                System.gc();
+            } catch (InterruptedException ignored) {
+            }
+
+            //Memory of longString is not released!!
+            System.out.println("Memory of long string is not released!");
+
+            //Release the shot String reference and perform GC
+            shortString = null;
+            System.gc();
+
+            //Memory of longString will be released!!
+            System.out.println("Memory of long string will be released!");
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ignored) {
+            }
+            System.out.println("Memory of long string should be released!");
+            System.exit(0);
+        }
+
+    }
+
+    @Test
+    public void testSubString() {
+        /**
+         * 测试在JDK6：subString造成内存泄露(无法模拟出)
+         */
+        SubStringMemoryLeak1 memoryLeak1 = new SubStringMemoryLeak1();
+        memoryLeak1.test();
+        SubStringMemoryLeak2 memoryLeak2 = new SubStringMemoryLeak2();
+        memoryLeak2.test();
+
+    }
+
+    /**
      * 测试hashCode
      */
     @Test
@@ -208,7 +334,7 @@ public class HelloStringTest {
     }
 
     /**
-     * 测试hashCode与eqauls
+     * 测试hashCode与equlas
      */
     @Getter
     @ToString

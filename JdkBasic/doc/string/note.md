@@ -98,6 +98,24 @@ System.out.println("指定匹配组的第几个：" + "budd-1,".replaceAll("[0-9
 - com.budd.java.jdkBasic.string.HelloStringTest.testLength
     - 为什么数组获取长度是length，字符串获取长度是length()
     
+#subString深度挖掘(需要与印象笔记合并)
+- com.budd.java.jdkBasic.string.HelloStringTest.testSubString
+    - 共享字符数组
+        - JDK7增加:保护类型的构造方法String(char[] value, boolean share) (private权限）
+        - JDK6有个方法：String(int offset, int count, char value[]),跟上面的方法一样的效果
+    - 共享字符数组的优缺点
+        - 我记作抠方法
+        - 好处：这些方法直接指向字符数组的引用,因此共享数组、节省内存
+        - 坏处：在JDK6,subString方法采用String(int offset, int count, char value[])来截取方法
+                ,会导致内存泄露:因为在这个方法是直接引用外部字符串的数组,并且只是截取一段数组来使用
+                ,外部字符串可以被回收,但因为他的内部数组不能被回收且其中有些字符没有被用到却留在内存中,会导致内存溢出/性能下降
+- 延伸
+    - 除了subString方法这种会使得内部数组的长度变短外
+      ,其他方法如replace是遍历内部数组的字符进行替换,所以replace后的string的内部数组长度和源String的内部数组长度一致,不会导致内部溢出,所以可以使用抠方法
+      ,concat是源string的内部数组和新string的内部数组拼接起来,所有字符都被用到,不会导致内存溢出,可以使用抠方法
+      new String(new char[]{},false);
+ 
+
 #hashCode
 - com.budd.java.jdkBasic.string.HelloStringTest.testHashCode
 1. 质数的概念：除1和它本身外,无法被其他自然数整除的数
