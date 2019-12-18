@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.trait;
+package com.budd.java.jdkBasic.trait.inherited;
 
 import org.junit.Test;
 
