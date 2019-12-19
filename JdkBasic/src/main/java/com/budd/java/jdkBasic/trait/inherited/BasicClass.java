@@ -11,9 +11,9 @@ package com.budd.java.jdkBasic.trait.inherited;
  *
  * @author HJP
  * @date 2018年11月4日22:08:02
- * @Description 父类
+ * @Description 基类类
  */
-public class ParentClass {
+public class BasicClass {
 
     /**
      * 静态变量
@@ -25,16 +25,16 @@ public class ParentClass {
     public int b = 2;
 
     static {
-        System.out.println(String.format("ParentClass-静态代码块,静态变量：%s", a));
+        System.out.println(String.format("基类-静态代码块,静态变量：%s", a));
     }
 
     {
-        System.out.println(String.format("ParentClass-非静态代码块,非静态变量：%s"
+        System.out.println(String.format("基类-非静态代码块,非静态变量：%s"
                 , b));
     }
 
-    public ParentClass() {
-        System.out.println("ParentClass-构造方法");
+    public BasicClass() {
+        System.out.println("基类-构造方法");
     }
 
 }

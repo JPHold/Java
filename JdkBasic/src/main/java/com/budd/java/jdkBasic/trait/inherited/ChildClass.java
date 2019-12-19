@@ -10,9 +10,9 @@ package com.budd.java.jdkBasic.trait.inherited;
  *
  * @author HJP
  * @date 2018年11月4日22:08:11
- * @Description 子类
+ * @Description 派生类
  */
-public class ChildClass extends ParentClass {
+public class ChildClass extends BasicClass {
 
     /**
      * 静态变量
@@ -24,16 +24,16 @@ public class ChildClass extends ParentClass {
     public int b = 4;
 
     static {
-        System.out.println(String.format("ChildClass-静态代码块,静态变量：%s", a));
+        System.out.println(String.format("派生类-静态代码块,静态变量：%s", a));
     }
 
     {
-        System.out.println(String.format("ChildClass-非静态代码块,非静态变量：%s"
+        System.out.println(String.format("派生类-非静态代码块,非静态变量：%s"
                 , b));
     }
 
     public ChildClass() {
-        System.out.println("ChildClass-构造方法");
+        System.out.println("派生类-构造方法");
     }
 
 }
