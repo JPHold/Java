@@ -10,4 +10,8 @@ public class FinalMethodChildClass extends FinalMethodBasicClass {
 		System.out.println("基类的不变同个方法");
 	}*/
 
+    public final void finalSameMethod(String name) {
+        System.out.println(String.format("基类的不变同个方法(可重写),name=%s", name));
+    }
+
 }

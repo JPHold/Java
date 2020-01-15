@@ -28,6 +28,11 @@ public class HelloInheritedTest {
     @Test
     public void testFinalMethod() {
         FinalMethodBasicClass finalMethodBasicClass = new FinalMethodChildClass();
-        //fmbc.finalSaeMethod();
+        //不可重载
+        //finalMethodBasicClass.finalSaeMethod();
+        //可重写
+        FinalMethodChildClass finalMethodChildClass = new FinalMethodChildClass();
+        finalMethodChildClass.finalSameMethod("budd");
+
     }
 }
