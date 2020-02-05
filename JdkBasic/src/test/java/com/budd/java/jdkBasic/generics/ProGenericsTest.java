@@ -49,7 +49,37 @@ public class ProGenericsTest {
         covariantDesignContainer.setValue(null);
         covariantDesignContainer.setValue2(new Orange());
         Apple orange = (Apple) covariantDesignContainer.getValue();
+    }
 
+    /**
+     * 类型捕获并自动转换
+     */
+    private <T> void typeInvoke(CovariantDesignContainer<T> covariantDesignContainer) {
+        T t = covariantDesignContainer.getValue();
+        System.out.println(String.format("值类型:%s", t.getClass().getSimpleName()));
+    }
+
+    private void unKnowTypeInvoke(CovariantDesignContainer<?> covariantDesignContainer) {
+        typeInvoke(covariantDesignContainer);
+    }
+
+    @Test
+    public void catchTypeTran() {
+
+        /**
+         * 类型捕获的意思：形参为?适配符的方法(记作f2)，可调用形参为确定泛型的方法(记作f1)，JVM在调用f2时提前获知形参的真实类型
+         * 自动转换的意思：在获知的真实类型基础上，f2调用f1时使用该真实类型
+         */
+        CovariantDesignContainer cdc = new CovariantDesignContainer(1);
+        typeInvoke(cdc);
+        unKnowTypeInvoke(cdc);//类型捕获并自动转换
+
+        CovariantDesignContainer cdc1 = new CovariantDesignContainer();
+        cdc1.setValue(new Object());
+        unKnowTypeInvoke(cdc1);//类型捕获并自动转换
+
+        CovariantDesignContainer<?> cdc2 = new CovariantDesignContainer<>(1.0);
+        unKnowTypeInvoke(cdc2);//类型捕获并自动转换
 
     }
 }

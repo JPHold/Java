@@ -10,6 +10,13 @@ public class CovariantDesignContainer<T> {
 
     private T value;
 
+    public CovariantDesignContainer() {
+    }
+
+    public CovariantDesignContainer(T value) {
+        this.value = value;
+    }
+
     public void setValue(T value) {
         this.value = value;
     }
