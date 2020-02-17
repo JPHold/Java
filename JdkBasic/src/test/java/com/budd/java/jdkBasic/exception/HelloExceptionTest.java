@@ -2,6 +2,8 @@ package com.budd.java.jdkBasic.exception;
 
 import org.junit.Test;
 
+import java.util.ResourceBundle;
+
 /**
  * 入门异常研究
  *
@@ -10,6 +12,9 @@ import org.junit.Test;
  **/
 public class HelloExceptionTest {
 
+    /**
+     * API测试
+     */
     /**
      * start:getStackTrace
      *
@@ -168,5 +173,40 @@ public class HelloExceptionTest {
         }
     }
     // end:initCause
+
+    /**
+     * start:getMessage和getLocalizedMessage
+     *
+     * @author HJP
+     * @return
+     * @date 2020年2月17日 21:55:28
+     * @Description 前者默认是调用后者，如果要实现国际化(将输出消息翻译成当前语言)，就需要重写前者：
+     */
+    class LocalizedMessageException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        ResourceBundle labels = ResourceBundle.getBundle("properties文件路径");
+
+        @Override
+        public String getMessage() {
+            return "错误简单描述：" + super.getMessage();
+        }
+
+        @Override
+        public String getLocalizedMessage() {
+            return labels.getString(getMessage());
+        }
+    }
+
+    @Test
+    public void getLocalizedMessage() {
+        try {
+            throw new LocalizedMessageException();
+        } catch (Exception e) {
+            String localizedMessage = e.getLocalizedMessage();
+            System.out.println(localizedMessage);
+        }
+    }
+    // end:getMessage和getLocalizedMessage
 
 }
