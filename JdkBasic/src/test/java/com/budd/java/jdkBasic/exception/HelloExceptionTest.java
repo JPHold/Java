@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 public class HelloExceptionTest {
 
     /**
-     * API测试
+     * start:API测试
      */
     /**
      * start:getStackTrace
@@ -208,5 +208,59 @@ public class HelloExceptionTest {
         }
     }
     // end:getMessage和getLocalizedMessage
+    /**
+     * end:API测试
+     */
+
+    /**
+     * 基础实操
+     */
+    /**
+     * ** ******* ******* * ******** * * * * ******** * /**
+     *
+     * @author HJP
+     * @date 2018年3月10日 上午11:36:42
+     * @Description 不是恢复模型(抛出异常, 立即退出)
+     */
+    @Test
+    public void unRecoverModel() {
+        int count = 5;
+        for (int i = count; i > 0; i--) {
+            try {
+                if (i == 1) {
+                    break;
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                break;
+            }
+        }
+    }
+
+    /**
+     * ** ******* ******* * ******** * * * * ******** * /**
+     *
+     * @author HJP
+     * @date 2018年3月10日 上午11:36:42
+     * @Description 恢复模型(即使抛出异常, 依然继续跑)
+     */
+    @Test
+    public void recoverModel() {
+
+        int count = 5;
+        while (true) {
+            try {
+                if (count-- < 0) {
+                    break;
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
