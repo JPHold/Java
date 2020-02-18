@@ -3,6 +3,9 @@ package com.budd.java.jdkBasic.exception;
 import org.junit.Test;
 
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 /**
  * 入门异常研究
@@ -260,6 +263,34 @@ public class HelloExceptionTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * ** ******* ******* * ******** * * * * ******** * /**
+     *
+     * @author HJP
+     * @date 2018年3月10日 下午12:14:36
+     * @Description 日志打印
+     */
+    class LogExceptionClass {
+        Logger lg = Logger.getLogger("LoggerException");
+
+        public void log(Exception e) {
+            LogRecord logRecord = new LogRecord(Level.INFO, e.getMessage());
+            logRecord.setThrown(e);
+            lg.log(logRecord);
+            lg.info(e.getMessage());
+        }
+    }
+
+    @Test
+    public void logException() {
+        LogExceptionClass logExceptionClass = new LogExceptionClass();
+        try {
+            throw new NullPointerException("空指针");
+        } catch (Exception e) {
+            logExceptionClass.log(e);
         }
     }
 
