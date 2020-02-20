@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.Scanner;
 
 /**
- * 进阶接口研究
+ * 接口进阶研究
  *
  * @author budd
  * @since 2020/2/6 21:48
