@@ -25,4 +25,37 @@ public class HelloInnerClassTest {
             }
         };*/
     }
+
+    /**
+     * @author HJP
+     * @date 2018年2月14日 12:36:28
+     * @Description 内部类继承
+     */
+    class ExtendOuther {
+        public class Inner {
+            protected void m1() {
+                System.out.println("内部类方法调用");
+            }
+        }
+    }
+
+    public class ExtendInnerClass extends ExtendOuther.Inner {
+        public ExtendInnerClass(ExtendOuther ot) {
+            ot.super();
+        }
+
+        @Override
+        protected void m1() {
+            super.m1();
+        }
+    }
+
+    @Test
+    public void testExtends() {
+        ExtendInnerClass extendInnerClass = new ExtendInnerClass(new ExtendOuther());
+        extendInnerClass.m1();
+    }
+
+
+
 }
