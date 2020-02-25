@@ -38,6 +38,12 @@ public class HelloListTest {
         }
     }
 
+    private List<Pet> randomCreatPet(int size) {
+        //记录Pet的继承类class，并随机生成对象
+        List<Pet> pets = Pets.arrayList(size);
+        return pets;
+    }
+
     /**
      * 测试lsit.add是否替换存在的元素(是否有调用hashCode)
      * 指定位置插入元素
@@ -45,33 +51,71 @@ public class HelloListTest {
      */
     @Test
     public void testAdd() {
+        List<Pet> pets = randomCreatPet(7);
+        print("1: " + pets);
+        Pug h = new Pug();
+        pets.add(h); // 自动调整大小
+        print("2: " + pets);
 
+        pets.add(3, new Mouse());
+        print("3: " + pets);
+
+        List<Pet> sub = Arrays.asList(pets.get(1), pets.get(2));
+        pets.addAll(2, sub);
+        print("4: " + pets);
     }
 
     /**
      * 测试比较的原理，是根据equals方法
+     * containsAll()，无关顺序进行对比
      */
     @Test
     public void testContains() {
+        List<Pet> pets = randomCreatPet(7);
+        print("1：" + pets);
 
+        Pug pug = new Pug();
+        pets.add(pug);
+        print("2: " + pets.contains(pug));//true
+
+        List<Pet> sub = Arrays.asList(pets.get(4), pets.get(1));
+        print("3：" + sub);
+        print("4: " + pets.containsAll(sub));//true
     }
 
     /**
      * 查找元素所在位置，indexOf
-     * 测试查找不存在元素(返回-1)。remove返回值是true/false(true为找到并删除，false为找不到)
+     * 不存在元素(返回-1)
+     * 存在元素(返回所在位置)
      */
     @Test
     public void testIndexOf() {
+        List<Pet> pets = randomCreatPet(7);
+        Pet p = pets.get(2);
+        print("1: " + p + " " + pets.indexOf(p));
 
+        Pet cymric = new Cymric();
+        print("2: " + pets.indexOf(cymric));
     }
 
     /**
      * 测试删除已存在元素
+     * remove返回值是true/false(true为找到并删除，false为找不到)
      * 移除某个元素集合(被移除集合有多个相同元素，只会按顺序移除，而不是全部移除)
      */
     @Test
     public void testRemove() {
+        List<Pet> pets = randomCreatPet(7);
+        print(String.format("集合：%s", pets));
 
+        Pug pug = new Pug();
+        print(String.format("%s：%s,移除后的集合：%s", "移除某个元素", pets.remove(pug), pets));
+
+        print(String.format("%s：%s,移除后的集合：%s", "移除指定位置", pets.remove(2), pets));
+
+        List<Pet> sub = Arrays.asList(pets.get(1), pets.get(4), new Pug());
+        print("待移除集合：" + sub);
+        print(String.format("%s：%s,集合：%s", "移除集合", pets.removeAll(sub), pets));
     }
 
     /**
@@ -79,7 +123,10 @@ public class HelloListTest {
      */
     @Test
     public void testSub() {
-
+        List<Pet> pets = randomCreatPet(7);
+        print("1: " + pets);
+        List<Pet> sub = pets.subList(1, 4);
+        print("subList: " + sub);
     }
 
     /**
@@ -88,7 +135,19 @@ public class HelloListTest {
      */
     @Test
     public void testContainsAll() {
+        List<Pet> pets = randomCreatPet(7);
+        List<Pet> sub = pets.subList(1, 4);
+        print("subList: " + sub);
+        print("1: " + pets.containsAll(sub));//true
 
+        Collections.sort(sub);
+        print("sorted subList: " + sub);
+        print("排序对containsAll是否没影响：" + pets.containsAll(sub));//true
+
+        Random rand = new Random(47);
+        Collections.shuffle(sub, rand);
+        print("shuffled subList: " + sub);
+        print("随机排序对containsAll是否没影响：" + pets.containsAll(sub));//true
     }
 
     /**
@@ -96,7 +155,11 @@ public class HelloListTest {
      */
     @Test
     public void testRetain() {
-
+        List<Pet> pets = randomCreatPet(7);
+        List<Pet> sub = Arrays.asList(pets.get(1), pets.get(4));
+        print("sub: " + sub);
+        pets.retainAll(sub);
+        print("交集集合: " + pets);
     }
 
     /**
@@ -104,7 +167,19 @@ public class HelloListTest {
      */
     @Test
     public void testSet() {
+        List<Pet> pets = randomCreatPet(7);
+        print("1：" + pets);
+        pets.set(1, new Mouse());
+        print("set后的集合：" + pets);
+    }
 
+    @Test
+    public void testReplace() {
+        List<Pet> pets = randomCreatPet(7);
+        print("1：" + pets);
+
+        Collections.replaceAll(pets, pets.get(1), new Pug("pug1"));
+        print("2：" + pets);
     }
 
     /**
@@ -112,105 +187,32 @@ public class HelloListTest {
      */
     @Test
     public void testClear() {
-
+        List<Pet> pets = randomCreatPet(7);
+        print("1: " + pets.isEmpty());//false
+        pets.clear(); // Remove all elements
+        print("2: " + pets);//[],为空
+        print("3: " + pets.isEmpty());//true
     }
 
     /**
-     * 集合转数组，toArray()和toArray(T[])，前者是返回object，后者是返回具体类型
+     * 集合转数组：
+     * toArray()
+     * 返回object类型
+     * toArray(T[] a)
+     * 返回具体类型
+     * 如果a的长度小于集合size，则直接复制size个元素到a
+     * 如果a的长度大于集合size，则从0复制size个元素到a,并将第size个元素置为null
      */
     @Test
     public void testToArray() {
-
-    }
-
-
-    @Test
-    public void main() {
-        Random rand = new Random(47);
-        //记录Pet的继承类class，并随机生成对象
-        List<Pet> pets = Pets.arrayList(7);
+        List<Pet> pets = randomCreatPet(7);
         print("1: " + pets);
 
-        //测试lsit.add是否替换存在的元素(是否有调用hashCode)
-        Pug h = new Pug();
-        pets.add(h); // Automatically resizes
-        print("2: " + pets);
-
-        //测试比较的原理，是根据equals方法
-        print("3: " + pets.contains(h));//true
-        pets.remove(h); // Remove by object
-
-        //查找元素所在位置，indexOf
-        Pet p = pets.get(2);
-        print("4: " + p + " " + pets.indexOf(p));
-
-        //测试查找不存在元素(返回-1)。remove返回值是true/false(true为找到并删除，false为找不到)
-        Pet cymric = new Cymric();
-        print("5: " + pets.indexOf(cymric));
-        print("6: " + pets.remove(cymric));
-
-        //测试删除已存在元素
-        // Must be the exact object:
-        print("7: " + pets.remove(p));
-        print("8: " + pets);
-
-        //指定位置插入元素
-        pets.add(3, new Mouse()); // Insert at an index
-        print("9: " + pets);
-
-        //截取某两个位置内的元素(左闭右开)
-        List<Pet> sub = pets.subList(1, 4);
-        print("subList: " + sub);
-
-        //比对list
-        print("10: " + pets.containsAll(sub));
-        Collections.sort(sub); // In-place sort
-        print("sorted subList: " + sub);//true
-
-        //测试排序后，对containsAll是否有影响(没有影响)
-        // Order is not important in containsAll():
-        print("11: " + pets.containsAll(sub));
-
-        //对元素洗牌打乱，并测试对containsAll是否有影响(没有影响)
-        Collections.shuffle(sub, rand); // Mix it up
-        print("shuffled subList: " + sub);
-        print("12: " + pets.containsAll(sub));
-
-        //取交集
-        List<Pet> copy = new ArrayList<Pet>(pets);
-        sub = Arrays.asList(pets.get(1), pets.get(4));
-        print("sub: " + sub);
-        copy.retainAll(sub);
-        print("13: " + copy);
-
-        //移除某个位置
-        //移除某个元素集合(被移除集合有多个相同元素，只会按顺序移除，而不是全部移除)
-        copy = new ArrayList<Pet>(pets); // Get a fresh copy
-        copy.remove(2); // Remove by index
-        print("14: " + copy);
-        copy.removeAll(sub); // Only removes exact objects
-        print("15: " + copy);
-
-        //替换指定位置
-        copy.set(1, new Mouse()); // Replace an element
-        print("16: " + copy);
-
-        //在指定位置之前插入集合
-        copy.addAll(2, sub); // Insert a list in the middle
-        print("17: " + copy);
-
-        //清空集合
-        print("18: " + pets.isEmpty());//false
-        pets.clear(); // Remove all elements
-        print("19: " + pets);
-        print("20: " + pets.isEmpty());//true
-
-        //集合转数组，toArray()和toArray(T[])，前者是返回object，后者是返回具体类型
-        pets.addAll(Pets.arrayList(4));
-        print("21: " + pets);
         Object[] o = pets.toArray();
-        print("22: " + o[3]);
+        print("1: " + o[3]);
+
         Pet[] pa = pets.toArray(new Pet[0]);
-        print("23: " + pa[3]);
+        print("2: " + pa[3]);
     }
+
 }
