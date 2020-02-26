@@ -38,7 +38,7 @@ public class HelloListTest {
         }
     }
 
-    private List<Pet> randomCreatPet(int size) {
+    private List<Pet> randomCreatePet(int size) {
         //记录Pet的继承类class，并随机生成对象
         List<Pet> pets = Pets.arrayList(size);
         return pets;
@@ -51,7 +51,7 @@ public class HelloListTest {
      */
     @Test
     public void testAdd() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1: " + pets);
         Pug h = new Pug();
         pets.add(h); // 自动调整大小
@@ -71,7 +71,7 @@ public class HelloListTest {
      */
     @Test
     public void testContains() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1：" + pets);
 
         Pug pug = new Pug();
@@ -90,7 +90,7 @@ public class HelloListTest {
      */
     @Test
     public void testIndexOf() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         Pet p = pets.get(2);
         print("1: " + p + " " + pets.indexOf(p));
 
@@ -105,7 +105,7 @@ public class HelloListTest {
      */
     @Test
     public void testRemove() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print(String.format("集合：%s", pets));
 
         Pug pug = new Pug();
@@ -123,7 +123,7 @@ public class HelloListTest {
      */
     @Test
     public void testSub() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1: " + pets);
         List<Pet> sub = pets.subList(1, 4);
         print("subList: " + sub);
@@ -135,7 +135,7 @@ public class HelloListTest {
      */
     @Test
     public void testContainsAll() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         List<Pet> sub = pets.subList(1, 4);
         print("subList: " + sub);
         print("1: " + pets.containsAll(sub));//true
@@ -155,7 +155,7 @@ public class HelloListTest {
      */
     @Test
     public void testRetain() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         List<Pet> sub = Arrays.asList(pets.get(1), pets.get(4));
         print("sub: " + sub);
         pets.retainAll(sub);
@@ -167,7 +167,7 @@ public class HelloListTest {
      */
     @Test
     public void testSet() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1：" + pets);
         pets.set(1, new Mouse());
         print("set后的集合：" + pets);
@@ -175,7 +175,7 @@ public class HelloListTest {
 
     @Test
     public void testReplace() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1：" + pets);
 
         Collections.replaceAll(pets, pets.get(1), new Pug("pug1"));
@@ -187,7 +187,7 @@ public class HelloListTest {
      */
     @Test
     public void testClear() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1: " + pets.isEmpty());//false
         pets.clear(); // Remove all elements
         print("2: " + pets);//[],为空
@@ -205,7 +205,7 @@ public class HelloListTest {
      */
     @Test
     public void testToArray() {
-        List<Pet> pets = randomCreatPet(7);
+        List<Pet> pets = randomCreatePet(7);
         print("1: " + pets);
 
         Object[] o = pets.toArray();
