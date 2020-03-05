@@ -1,17 +1,18 @@
-package com.budd.java.jdkBasic.io.bio;
-
-import static com.budd.java.util.Print.*;
+package com.budd.java.jdkBasic.io.bio.FilterStream;
 
 import org.junit.Test;
 
 import java.io.*;
 
+import static com.budd.java.util.Print.print;
+import static com.budd.java.util.Print.printf;
+
 /**
  * @author budd
- * @desc 输入流入门研究
+ * @desc 过滤输入流入门研究
  * @since 2020/3/1 15:02
  **/
-public class HelloInputStreamTest {
+public class HelloFilterInputStreamTest {
 
     /**
      * @author HJP
@@ -174,7 +175,6 @@ public class HelloInputStreamTest {
      * 所以开始读取的位置为5，读取两个字节为53、54
      * <p>
      * 结论：当前这批的缓冲区満了之后，调用fill()填充新缓冲区，因有mark，而在已满的缓冲区复制替换一部分字节。并没有影响读取、
-     *
      */
     @Test
     public void testMarkSkip() throws IOException {
