@@ -20,5 +20,6 @@
         <module>Util</module>
         <module>JdkBasic</module>
         <module>Jdk7Platform</module>
+        <module>Jdk8platform</module>
     </modules>
 </project>
