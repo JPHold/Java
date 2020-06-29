@@ -3,6 +3,11 @@ package com.budd.java.jdkBasic.dataType;
 import static com.budd.java.util.Print.*;
 import org.junit.Test;
 
+/**
+ * @author budd
+ * @desc 运算符入门研究
+ * @since 2020/4/13 22:47
+ **/
 public class HelloOperationTest {
 	
 	/**
@@ -67,6 +72,19 @@ public class HelloOperationTest {
 		 * 因此在该范围内，即使使用==、!= 比较Integer引用，依然能得出正确结果(本来应该是比较对象地址，结果应为不相等)
 		 * 最好使用equals进行比较
 		 */
+		/*运行结果：
+		* [-128, 127] 的数比较结果
+			true
+			false
+
+		  <>=127 的数比较结果
+			false
+			true
+
+	      <=-128的数比较结果
+			false
+			true
+		* */
 
 		printf("[-128, 127] 的数比较结果\n");
 		Integer n1 = 47;
