@@ -26,8 +26,8 @@ public class Print {
     }
 
     // The new Java SE5 printf() (from C):
-    public static PrintStream
+    public static void
     printf(String format, Object... args) {
-        return System.out.printf(format, args);
+        System.out.printf(format, args).println();
     }
 } ///:~
