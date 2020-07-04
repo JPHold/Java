@@ -104,4 +104,52 @@ public class HelloOperationTest {
 		printf("%s\n",n5 == n6);
 		printf("%s\n",n5 != n6);
 	}
+
+	/**
+	 * 各类字面量
+	 * 各类进制换算(二进制、八进制、十六进制)
+	 * 各类辅助字面量
+	 * 2020年7月4日 16:09:27
+	 */
+	@Test
+	public void testVariousLiteral(){
+		printf("16进制转二进制：");
+		int hexUpperCase = 0x2f; // 16进制 (小写)
+		printf("16进制 (小写)：%s",Integer.toBinaryString(hexUpperCase));
+		int hexLowerCase = 0X2F; // 16进制 (大写)
+		printf("16进制 (小写)：%s",Integer.toBinaryString(hexLowerCase));
+
+		printf("--------------------------");
+
+		printf("8进制转二进制(前面加0)：");
+		int decZero = 0177;
+		printf("8进制 (前导0)：%s",Integer.toBinaryString(decZero));
+
+		printf("--------------------------");
+
+		printf("字符的进制：");
+		char maxCharHex = 0xffff;
+		printf("最大 char 型16进制值：%s",Integer.toBinaryString(maxCharHex));
+
+		byte maxByteHex = 0x7f;
+		printf("最大 byte 型16进制值：%s",Integer.toBinaryString(maxByteHex));
+
+		short maxShortHex = 0x7fff; // 最大 short 型16进制值
+		printf("最大 short型16进制值：%s",Integer.toBinaryString(maxShortHex));
+
+		printf("--------------------------");
+
+		printf("基本类型的辅助字面量：");
+        long n1 = 200L; // long 型后缀
+        long n2 = 200l; // long 型后缀 (容易与数值1混淆)
+        long n3 = 200;
+
+        float f1 = 1;
+        float f2 = 1F; // float 型后缀
+        float f3 = 1f; // float 型后缀
+
+        double d1 = 1d; // double 型后缀
+        double d2 = 1D; // double 型后缀
+	}
+
 }
