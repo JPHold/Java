@@ -1,14 +1,19 @@
 package com.budd.java.jdk8.lambda;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
-import static com.budd.java.util.Print.*;
-
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.budd.java.util.Print.print;
+import static com.budd.java.util.Print.printf;
 
 /**
  * @author budd
@@ -20,6 +25,106 @@ public class HelloBasicLambdaTest {
     /**
      * start:{函数式接口}
      */
+    /**
+     * @author HJP
+     * @date 2020年4月19日 19:51:49
+     * @Description Lambda规定只有一个抽象方法的接口，都是函数式接口
+     * 不指定@FunctionalInterface注解，接口默认实现方法，没有抽象方法，测试是否报错
+     * 会报错：No target method found
+     */
+    public void testNoAppointFunctionInterfaceAnnotation() {
+        //No target method found
+        /*NoAppointFunctionInterfaceAnnotation noAppointFunctionInterfaceAnnotation =
+                ()-> System.out.println("Lambda规定只有一个抽象方法的接口，都是函数式接口");
+        noAppointFunctionInterfaceAnnotation.test();*/
+    }
+
+    /**
+     * @author HJP
+     * @date 2020年4月19日 19:51:49
+     * @Description 1、函数式接口必须只有一个抽象方法
+     * 如果出现多个，则会报错；
+     * Multiple non-overriding abstract methods found in interface com.budd.java.jdk8.lambda.NoAbstractMethodInterface
+     * <p>
+     * 2、接口可以从Object覆盖实现equals、toString、clone、hashCode、finalize，并且不会视为抽象方法
+     * (但现在看到的是：clone和finalize会被视为抽象方法，导致报错)
+     */
+    @Test
+    public void testMustOneAbstractMethod() {
+        NoAbstractMethodInterface noAbstractMethodInterface = () -> System.out.println("函数式接口必须只有一个抽象方法");
+        noAbstractMethodInterface.correctExample();
+    }
+
+    /**
+     * @author HJP
+     * @date 2020年4月19日 19:51:49
+     * @Description 继承体系中如何使用lambda表达式
+     * 旧的方式：super.hello、ChildClass.super.hello、ChildClass.this.invokeThisMethod
+     * lambda的方式只是在旧方式的基础上，增加返回指定：如Consumer<String>。有利于多次多次调用，如果只使用一次，自己觉得倒也不必使用这个方式
+     */
+    @Test
+    public void testOverload() throws InterruptedException {
+        ChildClass childClass = new ChildClass();
+
+        print("旧方式调用");
+        childClass.oldInvokeSuperMethod();
+
+        print("lambda方式调用");
+        childClass.lambdaInvokeSuperMethod();
+    }
+
+    /**
+     * @author HJP
+     * @date 2020年4月19日 19:51:49
+     * @Description 测试Lambda表达式中，是否可以使用外部变量(自由变量)，是否可以修改
+     * 1、用自由变量，该变量需要指定final(这一点跟内部类使用自由变量不同，在java8中，是会自动加上final)
+     * 2、只能引用其值，不能修改
+     */
+    @Test
+    public void testReferFreeVariable() {
+        String text = "testReferFreeVariable";
+        int count = 100;
+        Runnable r = () -> {
+            /*while (count > 0) {
+                count--; // Variable used in lambda expression should be final or effectively final
+                System.out.println(text);
+                Thread.yield();
+            }*/
+        };
+        new Thread(r).start();
+    }
+
+    /**
+     * @author HJP
+     * @date 2020年4月19日 23:00:02
+     * @Description 测试Lambda表达式中，是否可以定义与自由变量同名的局部变量、参数
+     * 不能，会报错：
+     * Variable 'count' is already defined in the scope
+     */
+    @Test
+    public void testDefineVariableName() {
+        String text = "testDefineVariableName";
+        int count = 100;
+        Runnable r = () -> {
+//            int count = 100;//Variable 'count' is already defined in the scope
+        };
+
+        new Thread(r).start();
+
+//        Consumer<String> consumer = (count) -> print();//Variable 'count' is already defined in the scope
+    }
+
+    /**
+     * @author HJP
+     * @date 2020年4月19日 23:00:11
+     * @Description 测试this调用的是当前类，还是Lambda返回的类
+     */
+    @Test
+    public void testWhoThis() {
+        WhoThisClass whoThisClass = new WhoThisClass();
+        whoThisClass.doWork();
+    }
+
     //消费型接口
     @Test
     public void consumerTest() {
@@ -82,6 +187,15 @@ public class HelloBasicLambdaTest {
      */
     @Test
     public void constructorRef() {
+
+        List<String> labels = Lists.newArrayList();
+        Stream<Button> stream = labels.stream().map(Button::new);
+        List<Button> buttons = stream.collect(Collectors.toList());
+
+        print("通过List<String> labels指定类型，确定新建构造器是调用带String的构造器");
+
+        print("---------------分割线--------------");
+
         Supplier<Employee> sp1 = () -> new Employee();
         printf("未使用构造器引用-无参:%s\n", sp1.get());
         Supplier<Employee> sp2 = Employee::new;
