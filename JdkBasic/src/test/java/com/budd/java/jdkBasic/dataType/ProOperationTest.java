@@ -65,4 +65,61 @@ public class ProOperationTest {
 
     }
 
+    /**
+     * 移位运算
+     */
+    @Test
+    public void moveBitOperation() {
+
+        //负数的二进制是其正数的补码
+        //Int站4字节，32位
+        printf("Int移位");
+        int i = -1;
+        int i1 = i >>> 10;
+        printf("无符号右移前：%s%n无符号右移后：%s%n", Integer.toBinaryString(i), Integer.toBinaryString(i1));
+
+        /*-------------------*/
+
+        //Int站8字节，64位
+        printf("Long移位");
+        long l = -1;
+        long l1 = l >>> 10;
+        printf("无符号右移前：%s%n无符号右移后：%s%n", Long.toBinaryString(l), Long.toBinaryString(l1));
+
+        /*-------------------*/
+
+        /**
+         * 对于char、byte、short的移位，先转为int，再移位
+         *
+         * 其中byte和short的移位
+         * 这有两种情况：
+         * 1、>>> =
+         *   运算结果重新赋值给原变量，会被截断，导致最终结果为-1
+         *
+         * 2、= >>>
+         *   运算结果不是赋值给原变量，而是赋值给int，这不会被截断，结果正确
+         */
+        printf("Short移位");
+        short s = -1;
+        printf("(使用源类型(byte)接收)无符号右移前：%s", Integer.toBinaryString(s));
+        s >>>= 10;
+        printf("(使用源类型(byte)接收)无符号右移后：%s", Integer.toBinaryString(s));
+
+        s = -1;
+        int s1 = s >>> 10;
+        printf("(使用int接收)无符号右移后：%s", Integer.toBinaryString(s1));
+
+        /*-------------------*/
+
+        printf("%nByte移位");
+        byte b = -1;
+        printf("(使用源类型(byte)接收)无符号右移前：%s", Integer.toBinaryString(b));
+        b >>>= 10;
+        printf("(使用源类型(byte)接收)无符号右移后：%s", Integer.toBinaryString(b));
+
+        b = -1;
+        int b1 = b >>> 10;
+        printf("(使用int接收)无符号右移后：%s%n", Integer.toBinaryString(b1));
+    }
+
 }
