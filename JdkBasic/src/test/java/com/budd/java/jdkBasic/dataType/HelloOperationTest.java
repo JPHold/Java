@@ -41,7 +41,7 @@ public class HelloOperationTest {
         float f = 10.1f;
         double d = 10.1111222222222222222222222222222222222D;
 
-        //转化
+        //类型转换
         byte b1 = (byte) i;
         float c2 = (float) d;
 
