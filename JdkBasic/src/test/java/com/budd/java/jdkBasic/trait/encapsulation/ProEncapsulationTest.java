@@ -1,5 +1,7 @@
 package com.budd.java.jdkBasic.trait.encapsulation;
 
+import static com.budd.java.util.Print.printf;
+
 /**
  * @author budd
  * @desc 封装-进阶研究
@@ -14,7 +16,7 @@ public class ProEncapsulationTest {
 
     public void conditionCompile() {
         if (SWITCH_SIGN) {
-            System.out.println("条件编译分支%n");
+            printf("条件编译分支");
         }
     }
 
@@ -22,7 +24,7 @@ public class ProEncapsulationTest {
 
     public void unConditionCompile() {
         if (switchSign) {
-            System.out.println("条件编译分支%n");
+            printf("条件编译分支");
         }
     }
 }
