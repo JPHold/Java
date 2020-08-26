@@ -1,7 +1,12 @@
 package com.budd.java.jdkBasic.trait.polymorphic;
 
+import static com.budd.java.util.Print.*;
+
 import com.budd.java.jdkBasic.trait.inherited.*;
 import com.budd.java.jdkBasic.trait.polymorphic.constructor.RoundGlyph;
+import com.budd.java.jdkBasic.trait.polymorphic.covariant.Grain;
+import com.budd.java.jdkBasic.trait.polymorphic.covariant.Mill;
+import com.budd.java.jdkBasic.trait.polymorphic.covariant.WheatMill;
 import org.junit.Test;
 
 import java.util.Random;
@@ -96,6 +101,24 @@ public class HelloPolymorphicTest {
     @Test
     public void testConstructorInvokeDynamicMethod() {
         new RoundGlyph(5);
+    }
+
+    /**
+     * @return void
+     * @Author budd
+     * @Description JAVA5新增的协变返回类型
+     * @Date 2020/8/26 17:23
+     * @Param []
+     **/
+    @Test
+    public void testCovariant() {
+        Mill mill = new Mill();
+        Grain grain = mill.process();
+        printf("无协变：%s", grain);
+
+        mill = new WheatMill();
+        grain = mill.process();
+        printf("协变：%s", grain);
     }
 
 
