@@ -1,6 +1,7 @@
 package com.budd.java.jdkBasic.trait.polymorphic;
 
 import com.budd.java.jdkBasic.trait.inherited.*;
+import com.budd.java.jdkBasic.trait.polymorphic.constructor.RoundGlyph;
 import org.junit.Test;
 
 import java.util.Random;
@@ -13,6 +14,9 @@ import java.util.Random;
  **/
 public class HelloPolymorphicTest {
 
+    /**
+     * 测试方法多态
+     */
     class ShapeGenerator {
         private Random rd = new Random(47);
 
@@ -28,9 +32,6 @@ public class HelloPolymorphicTest {
         }
     }
 
-    /**
-     * 测试方法多态
-     */
     @Test
     public void testMethodDynamic() {
         ShapeGenerator shapeGenerator = new ShapeGenerator();
@@ -84,5 +85,18 @@ public class HelloPolymorphicTest {
         RelationMethodBasicClass relationMethodBasicClass = new RelationMethodChildClass();
         relationMethodBasicClass.method1();
     }
+
+    /**
+     * @return void
+     * @Author budd
+     * @Description 基类构造器调用多态方法
+     * @Date 2020/8/26 16:00
+     * @Param []
+     **/
+    @Test
+    public void testConstructorInvokeDynamicMethod() {
+        new RoundGlyph(5);
+    }
+
 
 }
