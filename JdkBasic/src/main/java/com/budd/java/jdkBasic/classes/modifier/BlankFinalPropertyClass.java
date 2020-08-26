@@ -22,7 +22,7 @@ public class BlankFinalPropertyClass {
     }
 
     {
-        t= "str";
+        t = "str";
     }
 
 }
