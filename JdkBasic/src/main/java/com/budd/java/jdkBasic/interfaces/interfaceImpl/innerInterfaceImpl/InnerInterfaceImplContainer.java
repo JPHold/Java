@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces.innerInterfaceImpl;
+package com.budd.java.jdkBasic.interfaces.interfaceImpl.innerInterfaceImpl;
 
 public class InnerInterfaceImplContainer {
 

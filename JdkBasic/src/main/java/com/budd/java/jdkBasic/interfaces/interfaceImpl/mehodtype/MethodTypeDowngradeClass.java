@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces.mehodtype;
+package com.budd.java.jdkBasic.interfaces.interfaceImpl.mehodtype;
 
 /**
  * 					 **

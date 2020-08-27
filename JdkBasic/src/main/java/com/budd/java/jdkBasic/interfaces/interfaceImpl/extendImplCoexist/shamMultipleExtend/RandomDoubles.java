@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces.extendImplCoexist.shamMultipleExtend;
+package com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.shamMultipleExtend;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces.extendImplCoexist.sameMethodType;
+package com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.sameMethodType;
 
 public class EaiBasicClass {
 

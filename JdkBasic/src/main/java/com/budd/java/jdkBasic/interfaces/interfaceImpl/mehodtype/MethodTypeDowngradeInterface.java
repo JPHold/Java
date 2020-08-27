@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces.mehodtype;
+package com.budd.java.jdkBasic.interfaces.interfaceImpl.mehodtype;
 
 /**
  * 方法返回类型，支不支持向下转型
