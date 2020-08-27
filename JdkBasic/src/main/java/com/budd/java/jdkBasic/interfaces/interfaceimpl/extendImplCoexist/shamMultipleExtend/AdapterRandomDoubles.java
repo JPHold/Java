@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.shamMultipleExtend;
+package com.budd.java.jdkBasic.interfaces.interfaceimpl.extendImplCoexist.shamMultipleExtend;
 
 import java.io.IOException;
 import java.nio.CharBuffer;

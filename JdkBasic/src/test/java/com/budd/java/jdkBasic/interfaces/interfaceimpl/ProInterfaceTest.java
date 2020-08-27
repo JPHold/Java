@@ -1,11 +1,11 @@
-package com.budd.java.jdkBasic.interfaces.interfaceImpl;
+package com.budd.java.jdkBasic.interfaces.interfaceimpl;
 
-import com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.sameMethodType.EaiBasicClass;
-import com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.sameMethodType.EaiClass;
-import com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.sameMethodType.EaiInterface;
-import com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.shamMultipleExtend.AdapterRandomDoubles;
-import com.budd.java.jdkBasic.interfaces.interfaceImpl.innerInterfaceImpl.InnerInterfaceImplContainer;
-import com.budd.java.jdkBasic.interfaces.interfaceImpl.mehodtype.MethodTypeDowngradeClass;
+import com.budd.java.jdkBasic.interfaces.interfaceimpl.extendImplCoexist.sameMethodType.EaiBasicClass;
+import com.budd.java.jdkBasic.interfaces.interfaceimpl.extendImplCoexist.sameMethodType.EaiClass;
+import com.budd.java.jdkBasic.interfaces.interfaceimpl.extendImplCoexist.sameMethodType.EaiInterface;
+import com.budd.java.jdkBasic.interfaces.interfaceimpl.extendImplCoexist.shamMultipleExtend.AdapterRandomDoubles;
+import com.budd.java.jdkBasic.interfaces.interfaceimpl.innerInterfaceImpl.InnerInterfaceImplContainer;
+import com.budd.java.jdkBasic.interfaces.interfaceimpl.mehodtype.MethodTypeDowngradeClass;
 import org.junit.Test;
 
 import java.util.Scanner;
