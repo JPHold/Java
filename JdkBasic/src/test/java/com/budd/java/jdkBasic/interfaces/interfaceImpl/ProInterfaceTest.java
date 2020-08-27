@@ -1,4 +1,4 @@
-package com.budd.java.jdkBasic.interfaces;
+package com.budd.java.jdkBasic.interfaces.interfaceImpl;
 
 import com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.sameMethodType.EaiBasicClass;
 import com.budd.java.jdkBasic.interfaces.interfaceImpl.extendImplCoexist.sameMethodType.EaiClass;
