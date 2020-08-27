@@ -1,5 +1,6 @@
-package com.budd.java.jdk8.interfaces;
+package com.budd.java.jdk8.interfaces.interfaceimpl;
 
+import com.budd.java.jdk8.interfaces.interfaceimpl.StaticMethodInterface;
 import org.junit.Test;
 
 /**
