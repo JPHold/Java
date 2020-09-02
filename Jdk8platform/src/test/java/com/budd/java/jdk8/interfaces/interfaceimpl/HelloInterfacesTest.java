@@ -2,6 +2,7 @@ package com.budd.java.jdk8.interfaces.interfaceimpl;
 
 import com.budd.java.jdk8.interfaces.interfaceimpl.defaultMethod.ExtendMoreImlBob;
 import com.budd.java.jdk8.interfaces.interfaceimpl.defaultMethod.SimpleDefaultBob;
+import com.budd.java.jdk8.interfaces.interfaceimpl.staticMethod.StaticMethodInterface;
 import org.junit.Test;
 
 /**

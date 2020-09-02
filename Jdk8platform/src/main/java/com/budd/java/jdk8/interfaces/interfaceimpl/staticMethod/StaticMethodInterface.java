@@ -1,4 +1,4 @@
-package com.budd.java.jdk8.interfaces.interfaceimpl;
+package com.budd.java.jdk8.interfaces.interfaceimpl.staticMethod;
 import static com.budd.java.util.Print.*;
 /**
  * @author budd
