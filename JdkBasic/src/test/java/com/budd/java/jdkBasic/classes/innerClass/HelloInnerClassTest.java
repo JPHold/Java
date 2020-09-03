@@ -23,9 +23,51 @@ public class HelloInnerClassTest {
         /*int i = 0;
         Runnable rn = new Runnable() {
             public void run() {
-                printf(i);
+                print(i);
             }
         };*/
+    }
+
+    interface Counter {
+        int next();
+    }
+
+    public class LocalInnerClass {
+        private int count = 0;
+
+        Counter getCounter(final String name) {
+            // A local inner class:
+            class LocalCounter implements Counter {
+                public LocalCounter() {
+                }
+
+                public int next() {
+                    return count++;
+                }
+            }
+            return new LocalCounter();
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
+
+    /**
+     * @Author budd
+     * @Description 普通内部类
+     * @Date 2020/9/3 17:21
+     * @Param []
+     * @return void
+     **/
+    @Test
+    public void testSimpleInnerClass() {
+        LocalInnerClass lic = new LocalInnerClass();
+        Counter c1 = lic.getCounter("Local inner ");
+        for (int i = 0; i < 5; i++) {
+            c1.next();
+        }
+        printf("普通内部类，循环次数: %s", lic.count);
     }
 
     /**

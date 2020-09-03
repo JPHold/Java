@@ -1,12 +1,14 @@
 package com.budd.java.jdkBasic.classes.innerClass;
 
+import static com.budd.java.util.Print.*;
+
 public class InvokeAnonymousClass {
     // 一参构造-继承类，无重写构造器
     public AnonymousClass f0(final String str) {
         return new AnonymousClass(str) {
             @Override
             public void f0() {
-                System.out.println("一参子类构造器-方法调用");
+                printf("一参子类构造器-方法调用");
             }
         };
     }
@@ -15,12 +17,12 @@ public class InvokeAnonymousClass {
     public AnonymousClass f1(final String str) {
         return new AnonymousClass(str) {
             {
-                System.out.println("一参子类构造器" + str);
+                printf("一参子类构造器:%s", str);
             }
 
             @Override
             public void f0() {
-                System.out.println("方法调用");
+                printf("方法调用");
             }
         };
     }
@@ -30,7 +32,7 @@ public class InvokeAnonymousClass {
         return new AnonymousClass(str1) {
             @Override
             public void f0() {
-                System.out.println("一参子类构造器-方法调用" + str2);
+                printf("一参子类构造器-方法调用:%s", str2);
             }
         };
     }
@@ -43,7 +45,7 @@ public class InvokeAnonymousClass {
 
             @Override
             public void f0() {
-                System.out.println("一参子类构造器-方法调用" + str2);
+                printf("一参子类构造器-方法调用:%s", str2);
             }
         };
     }

@@ -1,5 +1,6 @@
 package com.budd.java.jdk8.classes.innerClass;
 
+import static com.budd.java.util.Print.*;
 import org.junit.Test;
 
 /**
@@ -20,7 +21,7 @@ public class HelloInnerClassTest {
         int i = 0;
         Runnable rn = new Runnable() {
             public void run() {
-                System.out.println(i);
+                print(i);
             }
         };
     }
