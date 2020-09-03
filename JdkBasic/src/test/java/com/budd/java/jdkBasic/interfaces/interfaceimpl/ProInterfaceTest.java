@@ -66,16 +66,17 @@ public class ProInterfaceTest {
 
     /**
      * 类嵌套接口的设计
+     * 看似很绕，为何要这么做
+     * 因为接口a是在类内部定义，对于在类外，是无法得知实现类实现了接口a，所以应该交类内部去解决
+     * 解决的方式：提供方法，协助外部调用
      */
     @Test
     public void innerInterfaceImplInvoke() {
         InnerInterfaceImplContainer container = new InnerInterfaceImplContainer();
-        InnerInterfaceImplContainer.PrivateInterfaceImpl2 privateInterfaceImpl2
-                = (InnerInterfaceImplContainer.PrivateInterfaceImpl2) container.getPrivateInterface();//无法得知DImpl2实现了D接口
-        container.receiveD(container.getPrivateInterface());//访问f方法由InnerInterfaceImplContainer协助调用
 
-        //看似很绕，为何要这么做
-        //因为接口a是在类内部定义，对于在类外，是无法得知实现类实现了接口a，所以应该交类内部去解决
-        //解决的方式：提供方法，协助外部调用
+        //因PrivateInterface的权限是private，因此外部无法得知PrivateInterfaceImpl2实现了PrivateInterface
+        InnerInterfaceImplContainer.PrivateInterfaceImpl2 privateInterfaceImpl2
+                = (InnerInterfaceImplContainer.PrivateInterfaceImpl2) container.getPrivateInterface();
+        container.receiveD(container.getPrivateInterface());//访问f方法，需由InnerInterfaceImplContainer协助调用
     }
 }
