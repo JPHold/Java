@@ -1,5 +1,7 @@
 package com.budd.java.jdkBasic.classes.innerClass;
 
+import static com.budd.java.util.Print.*;
+
 import org.junit.Test;
 
 /**
@@ -21,7 +23,7 @@ public class HelloInnerClassTest {
         /*int i = 0;
         Runnable rn = new Runnable() {
             public void run() {
-                System.out.println(i);
+                printf(i);
             }
         };*/
     }
@@ -31,16 +33,24 @@ public class HelloInnerClassTest {
      * @date 2018年2月14日 12:36:28
      * @Description 内部类继承
      */
-    class ExtendOuther {
+    class ExtendOuter {
         public class Inner {
             protected void m1() {
-                System.out.println("内部类方法调用");
+                printf("内部类方法调用");
             }
+
+            protected ExtendOuter outer() {
+                return ExtendOuter.this;
+            }
+        }
+
+        public void f() {
+            printf("外部类方法调用");
         }
     }
 
-    public class ExtendInnerClass extends ExtendOuther.Inner {
-        public ExtendInnerClass(ExtendOuther ot) {
+    public class ExtendInnerClass extends ExtendOuter.Inner {
+        public ExtendInnerClass(ExtendOuter ot) {
             ot.super();
         }
 
@@ -50,12 +60,44 @@ public class HelloInnerClassTest {
         }
     }
 
+    /**
+     * @return void
+     * @Author budd
+     * @Description 简单创建内部类的对象
+     * @Date 2020/9/3 15:40
+     * @Param []
+     **/
     @Test
-    public void testExtends() {
-        ExtendInnerClass extendInnerClass = new ExtendInnerClass(new ExtendOuther());
+    public void singleCreate() {
+        ExtendOuter extendOuter = new ExtendOuter();
+        ExtendOuter.Inner inner = extendOuter.new Inner();
+    }
+
+    /**
+     * @return void
+     * @Author budd
+     * @Description 封装创建内部类的对象：隐式创建外部类的对象
+     * @Date 2020/9/3 15:41
+     * @Param []
+     **/
+    @Test
+    public void testExtendsCreate() {
+        ExtendInnerClass extendInnerClass = new ExtendInnerClass(new ExtendOuter());
         extendInnerClass.m1();
     }
 
-
+    /**
+     * @return void
+     * @Author budd
+     * @Description 内部类获得外部类的对象引用，调用外部类的方法
+     * @Date 2020/9/3 15:47
+     * @Param []
+     **/
+    @Test
+    public void testOuterMethodInvoke() {
+        ExtendOuter extendOuter = new ExtendOuter();
+        ExtendOuter.Inner inner = extendOuter.new Inner();
+        inner.outer().f();
+    }
 
 }
