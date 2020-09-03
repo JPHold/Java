@@ -1,4 +1,5 @@
 package com.budd.java.jdkBasic.interfaces.interfaceimpl.innerInterfaceImpl;
+import static com.budd.java.util.Print.*;
 
 public class InnerInterfaceImplContainer {
 
@@ -35,14 +36,16 @@ public class InnerInterfaceImplContainer {
     }
 
     private class PrivateInterfaceImpl implements PrivateInterface {
+        @Override
         public void f() {
-            System.out.println("PrivateInterfaceImpl");
+            printf("PrivateInterfaceImpl");
         }
     }
 
     public class PrivateInterfaceImpl2 implements PrivateInterface {
+        @Override
         public void f() {
-            System.out.println("PrivateInterfaceImpl2");
+            printf("PrivateInterfaceImpl2");
         }
     }
 
