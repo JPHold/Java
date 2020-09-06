@@ -2,6 +2,7 @@ package com.budd.java.jdkBasic.classes.innerClass;
 
 import static com.budd.java.util.Print.*;
 
+import com.budd.java.jdkBasic.classes.innerClass.classtype.substaticclass.TestBed;
 import org.junit.Test;
 
 /**
@@ -54,11 +55,11 @@ public class HelloInnerClassTest {
     }
 
     /**
+     * @return void
      * @Author budd
      * @Description 普通内部类
      * @Date 2020/9/3 17:21
      * @Param []
-     * @return void
      **/
     @Test
     public void testSimpleInnerClass() {
@@ -140,6 +141,28 @@ public class HelloInnerClassTest {
         ExtendOuter extendOuter = new ExtendOuter();
         ExtendOuter.Inner inner = extendOuter.new Inner();
         inner.outer().f();
+    }
+
+
+    /**
+     * 研究嵌套静态类
+     */
+    /**
+     * @return void
+     * @Author budd
+     * @Description On Java 8作者推荐每个类都写main方法，来达到测试。
+     * 但编译出来的class文件，这些测试代码就会跟着一起发布，打出的包会过大，增加部署时间，而这些应该只停留到测试阶段
+     * 要想停留在测试阶段，
+     * 有个特性可利用：嵌套静态类，通过java -cp .;xxxPath\classes\; com.budd.java.jdkBasic.classes.innerClass.classtype.substaticclass.TestBed$Tester
+     * 测试完毕后，将这个class删除。
+     *
+     * 通过上述描述，会发现很繁琐，所以就有了maven项目管理+test注解+test目录。跟真实逻辑代码区分开来。因此就不采用这种方式了
+     * @Date 2020年9月6日 18:11:22
+     * @Param []
+     **/
+    @Test
+    public void testSubStaticClass() {
+        TestBed.Tester testBed = new TestBed.Tester();
     }
 
 }
