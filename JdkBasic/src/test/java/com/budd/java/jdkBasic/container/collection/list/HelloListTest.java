@@ -4,12 +4,15 @@ import com.budd.java.jdkBasic.container.collection.list.pets.Pets;
 import com.budd.java.jdkBasic.container.collection.list.pets.entity.pet.Manx.Cymric;
 import com.budd.java.jdkBasic.container.collection.list.pets.entity.pet.Pet;
 import com.budd.java.jdkBasic.container.collection.list.pets.entity.pet.dog.Pug;
+import com.budd.java.jdkBasic.container.collection.list.pets.entity.pet.rodent.Hamster;
 import com.budd.java.jdkBasic.container.collection.list.pets.entity.pet.rodent.Mouse;
+import com.budd.java.jdkBasic.container.collection.list.pets.entity.pet.rodent.Rat;
 import org.junit.Test;
 
 import java.util.*;
 
 import static com.budd.java.util.Print.print;
+import static com.budd.java.util.Print.printf;
 
 /**
  * List入门研究
@@ -31,10 +34,10 @@ public class HelloListTest {
         list.add(3);
         list.add(4);
 
-        System.out.println("\n测试shuffle随机洗牌");
+        printf("\n测试shuffle随机洗牌");
         for (int i = 1; i <= 10; i++) {
             Collections.shuffle(list);
-            System.out.println(String.format("第%s洗牌,结果:%s", i, list));
+            printf(String.format("第%s洗牌,结果:%s", i, list));
         }
     }
 
@@ -213,6 +216,42 @@ public class HelloListTest {
 
         Pet[] pa = pets.toArray(new Pet[0]);
         print("2: " + pa[3]);
+    }
+
+    /**
+     * 测试LinkedList
+     */
+    @Test
+    public void testLinkedList() {
+        LinkedList<Pet> pets = new LinkedList<>(randomCreatePet(5));
+        printf("%n集合：%s", pets);
+
+        printf("%n获取第一个元素");
+        // 列表为空，会报错
+        printf("pets.getFirst(): " + pets.getFirst());
+        printf("pets.element(): " + pets.element());
+        // 列表为空，不会报错，返回null
+        printf("pets.peek(): " + pets.peek());
+        printf("弹出元素，pets.poll(): " + pets.poll());//弹出元素
+
+        printf("%n集合：%s", pets);
+
+        printf("%n移除元素，并返回该元素");
+        // Identical; remove and return the first element:
+        printf("pets.remove(): " + pets.remove());
+        printf("pets.removeFirst()：%s", pets.removeFirst());
+        printf("pets.removeLast(): %s", pets.removeLast());
+
+        printf("%n集合：%s", pets);
+
+        pets.addFirst(new Rat());
+        printf("添加元素后的集合 addFirst()：%s", pets);//在开头插入元素
+        pets.offer(Pets.randomPet());
+        printf("添加元素后的集合 offer(): %s", pets);//Queue的追加元素
+        pets.add(Pets.randomPet());
+        printf("添加元素后的集合 add(): %s", pets);//Collection的追加元素
+        pets.addLast(new Hamster());
+        printf("添加元素后的集合 addLast(): %s", pets);//在末尾插入元素
     }
 
 }
