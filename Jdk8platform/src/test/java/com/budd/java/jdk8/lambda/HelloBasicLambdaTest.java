@@ -300,4 +300,54 @@ public class HelloBasicLambdaTest {
         printf("使用方法引用-Employee::isEquals(自己扩展)：%s\n", p1.test(new Employee(), new Employee()));
     }
 
+    /**
+     * @Author budd
+     * @Description 单个递归，当前位置，逐级递减，相乘
+     * @Date 2020/9/30 11:15
+     * @Param []
+     * @return void
+     **/
+    interface IntCall {
+        int call(int arg);
+    }
+
+    static IntCall fact;
+
+    @Test
+    public void recursionSingle() {
+        print("单个递归");
+        fact = n -> n == 0 ? 1 : n * fact.call(n - 1);
+        for (int i = 0; i <= 10; i++)
+            print(fact.call(i));
+    }
+
+    /**
+     * @Author budd
+     * @Description 多个递归，最近两个位置相加
+     * @Date 2020/9/30 11:36
+     * @Param
+     * @return
+     **/
+    public class RecursiveFibonacci {
+        IntCall fib;
+
+        RecursiveFibonacci() {
+            fib = n -> n == 0 ? 0 :
+                    n == 1 ? 1 :
+                            fib.call(n - 1) + fib.call(n - 2);
+        }
+
+        int fibonacci(int n) {
+            return fib.call(n);
+        }
+    }
+
+    @Test
+    public void recursionMore() {
+        print("多个递归");
+        RecursiveFibonacci rf = new RecursiveFibonacci();
+        for (int i = 0; i <= 10; i++)
+            print(rf.fibonacci(i));
+    }
+
 }
