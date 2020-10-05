@@ -1,5 +1,8 @@
 package com.budd.java.jdk8.lambda;
 
+import com.budd.java.jdk8.lambda.methodreference.Callable;
+import com.budd.java.jdk8.lambda.methodreference.Describe;
+import com.budd.java.jdk8.lambda.methodreference.MethodReferences;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -197,23 +200,23 @@ public class HelloBasicLambdaTest {
         print("---------------分割线--------------");
 
         Supplier<Employee> sp1 = () -> new Employee();
-        printf("未使用构造器引用-无参:%s\n", sp1.get());
+        printf("未使用构造器引用-无参:%s", sp1.get());
         Supplier<Employee> sp2 = Employee::new;
         printf("使用构造器引用-无参数:%s\n", sp2.get());
 
         print("---------------分割线--------------");
 
         Function<String, Employee> f1 = (x) -> new Employee(x);
-        printf("未使用构造器引用-一个参数:%s\n", f1.apply("张三"));
+        printf("未使用构造器引用-一个参数:%s", f1.apply("张三"));
         Function<String, Employee> f2 = Employee::new;
-        printf("使用构造器引用-一个参数：%s\n", f2.apply("张三"));
+        printf("使用构造器引用-一个参数：%s", f2.apply("张三"));
 
         print("---------------分割线--------------");
 
         BiFunction<String, Integer, Employee> bf1 = (x, y) -> new Employee(x, y);
-        printf("未使用构造器引用-两个参数:%s\n", bf1.apply("张三", 30));
+        printf("未使用构造器引用-两个参数:%s", bf1.apply("张三", 30));
         BiFunction<String, Integer, Employee> bf2 = Employee::new;
-        printf("使用构造器引用-两个参数:%s\n", bf2.apply("张三", 30));
+        printf("使用构造器引用-两个参数:%s", bf2.apply("张三", 30));
     }
 
     /**
@@ -224,12 +227,12 @@ public class HelloBasicLambdaTest {
     @Test
     public void arrayTypeRef() {
         Function<Integer, String[]> f1 = (x) -> new String[x];
-        printf("未使用数组创建引用:%s\n", f1.apply(10).length);
+        printf("未使用数组创建引用:%s", f1.apply(10).length);
 
         print("---------------分割线--------------");
 
         Function<Integer, String[]> f2 = String[]::new;
-        printf("使用数组创建引用:%s\n", f2.apply(10).length);
+        printf("使用数组创建引用:%s", f2.apply(10).length);
     }
     //end:{创建对象}
 
@@ -256,9 +259,9 @@ public class HelloBasicLambdaTest {
 
         Employee e1 = new Employee("张三", 15000, 29);
         Supplier<String> s1 = () -> e1.getName();
-        printf("未使用方法引用-() -> e1.getName() : %s\n", s1.get());
+        printf("未使用方法引用-() -> e1.getName() : %s", s1.get());
         Supplier<String> s2 = e1::getName;
-        printf("使用方法引用-e1::getName : %s\n", s2.get());
+        printf("使用方法引用-e1::getName : %s", s2.get());
     }
 
     /**
@@ -271,12 +274,12 @@ public class HelloBasicLambdaTest {
         print("------------类调用静态方法--------------");
 
         Comparator<Integer> c1 = (x, y) -> Integer.compare(x, y);
-        printf("未使用方法引用-(x, y) -> Integer.compare(x, y): %s\n", c1.compare(1, 2));
+        printf("未使用方法引用-(x, y) -> Integer.compare(x, y): %s", c1.compare(1, 2));
 
         print("------------分割线--------------");
 
         Comparator<Integer> c2 = Integer::compare;
-        printf("使用方法引用-Integer::compare: %s\n", c2.compare(1, 1));
+        printf("使用方法引用-Integer::compare: %s", c2.compare(1, 1));
     }
 
     /**
@@ -289,15 +292,15 @@ public class HelloBasicLambdaTest {
         print("------------类调用实例方法--------------");
 
         BiPredicate<String, String> bp1 = (x, y) -> x.equals(y);
-        printf("未使用方法引用-(x, y) -> x.equals(y)：%s\n", bp1.test("1", "2"));
+        printf("未使用方法引用-(x, y) -> x.equals(y)：%s", bp1.test("1", "2"));
 
         print("------------分割线--------------");
 
         BiPredicate<String, String> bp2 = String::equals;
-        printf("使用方法引用-String::equals：%s\n", bp2.test("1", "2"));
+        printf("使用方法引用-String::equals：%s", bp2.test("1", "2"));
 
         BiPredicate<Employee, Employee> p1 = Employee::isEquals;
-        printf("使用方法引用-Employee::isEquals(自己扩展)：%s\n", p1.test(new Employee(), new Employee()));
+        printf("使用方法引用-Employee::isEquals(自己扩展)：%s", p1.test(new Employee(), new Employee()));
     }
 
     /**
@@ -348,6 +351,30 @@ public class HelloBasicLambdaTest {
         RecursiveFibonacci rf = new RecursiveFibonacci();
         for (int i = 0; i <= 10; i++)
             print(rf.fibonacci(i));
+    }
+
+    /**
+     * 测试方法引用
+     * 相同方法签名的方法，可作为函数式接口方法的实现
+     * @Date 2020/9/30 11:36
+     */
+    @Test
+    public void testMethodReference(){
+
+        //实例方法
+        Describe d = new Describe();
+        Callable c = d::show;
+        c.call("call()");
+
+        c = new MethodReferences.Description("valuable")::help;
+        c.call("information");
+
+        //静态方法
+        c = MethodReferences::hello;
+        c.call("Bob");
+
+        c = MethodReferences.Helper::assist;
+        c.call("Help!");
     }
 
 }
