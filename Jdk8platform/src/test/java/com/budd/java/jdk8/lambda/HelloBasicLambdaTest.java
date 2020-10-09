@@ -3,6 +3,8 @@ package com.budd.java.jdk8.lambda;
 import com.budd.java.jdk8.lambda.methodreference.Callable;
 import com.budd.java.jdk8.lambda.methodreference.Describe;
 import com.budd.java.jdk8.lambda.methodreference.MethodReferences;
+import com.budd.java.jdk8.lambda.methodreference.unbound.TransformX;
+import com.budd.java.jdk8.lambda.methodreference.unbound.X;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -356,10 +358,11 @@ public class HelloBasicLambdaTest {
     /**
      * 测试方法引用
      * 相同方法签名的方法，可作为函数式接口方法的实现
+     *
      * @Date 2020/9/30 11:36
      */
     @Test
-    public void testMethodReference(){
+    public void testMethodReference() {
 
         //实例方法
         Describe d = new Describe();
@@ -375,6 +378,24 @@ public class HelloBasicLambdaTest {
 
         c = MethodReferences.Helper::assist;
         c.call("Help!");
+    }
+
+    /**
+     * 像静态方法一样引用方法：类::方法，但接口方法需增加该类的形参
+     *
+     * @Date 2020/9/30 11:36
+     */
+    @Test
+    public void unboundMethodReference() {
+        //即使make()和f()有相同的方法签名，但f()方法是未绑定的方法引用，需要绑定到对象上或者将f()方法改为静态方法。
+        //不然报错：Non-static method cannot be referenced from a static context
+//         MakeString ms = X::f;
+
+        //感觉像X继承TransformX。但因为f()方法是实例方法，需要对象引用，因此需要在函数式接口方法增加X形参。交由编译器或执行器帮我们完成x对象引用对f()的调用
+        TransformX sp = X::f;
+        X x = new X();
+        print(sp.transform(x));
+        print(x.f()); //与上面同等效果
     }
 
 }
