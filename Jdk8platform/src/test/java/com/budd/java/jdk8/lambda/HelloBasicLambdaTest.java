@@ -5,6 +5,8 @@ import com.budd.java.jdk8.lambda.methodreference.Describe;
 import com.budd.java.jdk8.lambda.methodreference.MethodReferences;
 import com.budd.java.jdk8.lambda.methodreference.unbound.TransformX;
 import com.budd.java.jdk8.lambda.methodreference.unbound.X;
+import com.budd.java.jdk8.lambda.recursion.more.RecursiveFibonacci;
+import com.budd.java.jdk8.lambda.recursion.single.IntCall;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -312,10 +314,6 @@ public class HelloBasicLambdaTest {
      * @Param []
      * @return void
      **/
-    interface IntCall {
-        int call(int arg);
-    }
-
     static IntCall fact;
 
     @Test
@@ -327,26 +325,12 @@ public class HelloBasicLambdaTest {
     }
 
     /**
+     * @return void
      * @Author budd
      * @Description 多个递归，最近两个位置相加
      * @Date 2020/9/30 11:36
-     * @Param
-     * @return
+     * @Param []
      **/
-    public class RecursiveFibonacci {
-        IntCall fib;
-
-        RecursiveFibonacci() {
-            fib = n -> n == 0 ? 0 :
-                    n == 1 ? 1 :
-                            fib.call(n - 1) + fib.call(n - 2);
-        }
-
-        int fibonacci(int n) {
-            return fib.call(n);
-        }
-    }
-
     @Test
     public void recursionMore() {
         print("多个递归");
