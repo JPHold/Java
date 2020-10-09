@@ -72,4 +72,19 @@ public class HelloProLambdaTest {
                 .filter(predicate)
                 .forEach(Print::print);
     }
+
+    /**
+     * @Author budd
+     * @Description 柯里化，拆解函数:将多参数函数拆解成单参数函数
+     * @Date 2020/10/9 23:06
+     **/
+    Function<String,Function<String, String>>
+            curryFunction = a -> b-> a+b;
+    @Test
+    public void towCurryFunction(){
+        Function<String, String> f1Curry = curryFunction.apply("Hello ");
+        String result = f1Curry.apply("Haskell Curry");
+        print(result);
+    }
+
 }
