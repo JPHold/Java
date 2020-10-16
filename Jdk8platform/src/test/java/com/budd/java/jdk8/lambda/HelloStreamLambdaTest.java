@@ -4,8 +4,12 @@ import com.budd.java.util.Print;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static com.budd.java.util.Print.print;
@@ -197,6 +201,221 @@ public class HelloStreamLambdaTest {
         Pattern.compile("[ .,?]+")
                 .splitAsStream(lineStr)
                 .forEach(Print::print);
+    }
+
+    /**
+     * 创建流
+     * end
+     */
+
+    /*------------------------------------------------------------*/
+
+    /**
+     * 中间操作
+     * @Date 2020年10月12日 22:45:41
+     */
+
+    /**
+     * 跟踪调试
+     * 跟调试一样，可以反复拿着某个数据进行测试
+     * 其实跟Deque队列的peek一个意思：拿到数据但可以不弹出，可以多次使用
+     *
+     * @Date 2020年10月12日 22:46:07
+     */
+    @Test
+    public void testPeek() {
+        Stream.of("one", "two", "three", "four")
+                .map(String::toLowerCase)
+                .peek(Print::print)
+                .map(String::toUpperCase)
+                .peek(Print::print)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 排序指定比较器
+     * 默认是自然排序(从小到大)。Comparator.reverseOrder()是倒序排序
+     *
+     * @Date 2020年10月12日 23:01:51
+     */
+    @Test
+    public void testComparator() {
+        Stream.of("2", "3", "1")
+                .sorted(Comparator.reverseOrder())
+                .forEach(Print::print);
+    }
+
+    /**
+     * 从2开始到(long) Math.sqrt(n)的范围内,记作i。n取余i都不等于0，则为质数
+     * <p>
+     * 可以看到校验质数，除数并不用到校验的数值，只需到(long) Math.sqrt(n)，这个颠覆我的认知，印象中老师没教过(或者是我没听课,嘻嘻嘻)
+     * <p>
+     * 只要noneMatch存在true，则会退出rangeClosed
+     *
+     * @Date 2020年10月13日 21:06:13
+     */
+    public Boolean isPrime(long n) {
+        printf("%n当前设置的校验数和上限：%s, %s", n, (long) Math.sqrt(n));
+        return LongStream.rangeClosed(2, (long) Math.sqrt(n))
+                .noneMatch(i -> {
+                    print("当前除数：" + i);
+                    return n % i == 0;
+                });
+    }
+
+    public LongStream filterNumbers() {
+        return LongStream.iterate(2, i -> i + 1)
+                .filter(this::isPrime);
+    }
+
+    @Test
+    public void testFilter() {
+        filterNumbers().limit(10)
+                .forEach(x -> printf("质数：" + x));
+
+    }
+
+    /**
+     * 测试map()，修改数据，甚至修改数据类型、转变流
+     *
+     * @Date
+     */
+
+    class MapTran {
+        private String x;
+
+        public MapTran(String x) {
+            this.x = x;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("MapTran:%s", x);
+        }
+    }
+
+    @Test
+    public void testMap() {
+
+        printf("修改数据");
+        Stream.of("1", "2", "3")
+                .map(x -> Integer.parseInt(x) - 1)
+                .forEach(Print::print);
+
+        printf("%n基本类型转成类");
+        Stream.of("1", "2", "3")
+                .map(MapTran::new)
+                .forEach(Print::print);
+
+        printf("%n转变流");
+        Stream.of("1", "2", "3")
+                .mapToDouble(Double::parseDouble)
+                .forEach(Print::print);
+    }
+
+    /**
+     * flatMap() 与map()一样功能，只是转变出来的流，会扁平化，输出流中元素，而不是流
+     *
+     * @Date 2020年10月14日 21:00:19
+     */
+    @Test
+    public void testFlatMap() {
+        print("使用map");
+        Stream.of("1", "2", "3")
+                .map(i -> Stream.of("map1", "map2", "map3"))
+                .forEach(Print::print);
+
+        printf("%n使用flatMap");
+        Stream.of("1", "2", "3")
+                .flatMap(i -> Stream.of("map1", "map2", "map3"))
+                .forEach(Print::print);
+
+        printf("%n使用flatMapToInt");
+        Function<Integer, Random> randomFunction = Random::new;
+        Random random = randomFunction.apply(47);
+        Stream.of(1, 2, 3)
+                .flatMapToInt(i -> IntStream.concat(random.ints(0, 100).limit(i), IntStream.of(-1)))
+                .forEach(Print::print);
+
+    }
+
+    /**
+     * Optional:解决空指针问题，不会报错，封装友好提示
+     *
+     * @Date 2020年10月14日 21:21:34
+     */
+    /**
+     * 基本例子
+     *
+     * @Date 2020年10月14日 21:23:08
+     */
+    @Test
+    public void testSingleOptional() {
+        //模拟空流
+        Optional<Object> anyOptional = Stream.empty()
+                .findAny();
+        if (anyOptional.isPresent()) {
+            Object o = anyOptional.get();
+        } else {
+            print("findAny为null");
+        }
+    }
+
+    /**
+     * Optional的函数
+     *
+     * @Date 2020年10月14日 21:55:38
+     */
+    void executeOptionalMethod(String testName, Consumer<Optional<String>> cos) {
+        printf("%n当前进行%s", testName);
+        cos.accept(Stream.of("元素值").findFirst());
+        cos.accept(Stream.<String>empty().findFirst());
+    }
+
+    @Test
+    public void testOptionalMethod() {
+        //如果存在则输出元素
+        executeOptionalMethod("ifPresent(Consumer)", (x) -> x.ifPresent(Print::print));
+        //如果不存在则直接返回值
+        executeOptionalMethod("orElse(otherObject)", (x) -> print(x.orElse("orElse")));
+        //如果不存在则通过函数，制作出一个返回值
+        executeOptionalMethod("orElseGet(Supplier)", (x) -> print(x.orElseGet(() -> {
+            String result = "orElseGet";
+            result = result.toUpperCase();
+            return result;
+        })));
+
+        executeOptionalMethod("orElseThrow(Supplier)", (x) -> x.orElseThrow(NullPointerException::new));
+    }
+
+    /**
+     * 创建Optional
+     *
+     * @Date 2020年10月14日 22:17:48
+     */
+    @Test
+    public void testCreateOptional() {
+
+        Consumer<Optional> nullConsumer = (x) -> print(x.orElse("元素为空"));
+
+        print("Optional.empty()");
+        Optional<Object> emptyOptional = Optional.empty();
+        nullConsumer.accept(emptyOptional);
+
+        printf("%nOptional.empty()");
+        Optional<String> ofOptional = Optional.of("我有值");
+//        Optional<String> ofOptional = Optional.of(null);//执行报错：java.lang.NullPointerException
+
+        nullConsumer.accept(ofOptional);
+
+        printf("%nOptional.ofNullable()");
+        String ofNullableStr = "我有值";
+        Optional<String> ofNoNullableOptional = Optional.ofNullable(ofNullableStr);
+        nullConsumer.accept(ofNoNullableOptional);
+
+        ofNullableStr = null;
+        Optional<String> ofNullableOptional = Optional.ofNullable(ofNullableStr);
+        nullConsumer.accept(ofNullableOptional);
     }
 
 }
