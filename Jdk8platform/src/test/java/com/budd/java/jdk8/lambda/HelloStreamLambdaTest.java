@@ -1,11 +1,13 @@
 package com.budd.java.jdk8.lambda;
 
 import com.budd.java.util.Print;
+import com.google.common.collect.Sets;
 import org.junit.Test;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -362,7 +364,7 @@ public class HelloStreamLambdaTest {
     }
 
     /**
-     * Optional的函数
+     * Optional的空判断函数
      *
      * @Date 2020年10月14日 21:55:38
      */
@@ -418,4 +420,130 @@ public class HelloStreamLambdaTest {
         nullConsumer.accept(ofNullableOptional);
     }
 
+    /**
+     * Optional的操作函数
+     *
+     * @Date 2020/10/16 11:07
+     **/
+    public void filterOptional(String operationName, Predicate<String> predicate) {
+        printf("当前Optional的操作函数：%s, 结果：%s", operationName, Stream.of("1", "2", "3")
+                .findAny()
+                .filter(predicate));
+    }
+
+    public void mapOptional(String operationName, Function<String, String> function) {
+        printf("当前Optional的操作函数：%s, 结果：%s", operationName, Stream.of("hello", "optional", "map")
+                .findAny()
+                .map(function));
+    }
+
+    public void flatMapOptional(String operationName, Function<String, Optional<String>> function) {
+        printf("当前Optional的操作函数：%s, 结果：%s", operationName, Stream.of("hello", "optional", "map")
+                .findAny()
+                .flatMap(function));
+    }
+
+    @Test
+    public void testOptionalOperation() {
+        //filter：
+        // 数据为空则直接返回Optional.empty
+        // 数据不为空则应用Predicate，如果验证结果为false则返回Optional.empty
+        print("filter");
+        filterOptional("filter(始终true)", (x) -> true);
+        filterOptional("filter(始终false)", (x) -> false);
+
+        //map:
+        // 数据为空则直接返回Optional.empty
+        // 数据不为空则应用Function，转变数据，自动使用Optional封装结果
+        printf("%nmap");
+        mapOptional("map", String::toUpperCase);
+
+        //flatMap:
+        // 数据为空则直接返回Optional.empty
+        // 数据不为空则应用Function，转变数据，跟map有一旦不同：需要对结果进行Optional封装，Optional不会自动帮我们封装
+        printf("%nflatMap");
+        flatMapOptional("flatMap", (x) -> Optional.ofNullable(x.toUpperCase()));
+    }
+
+    /**
+     * end
+     * Optional:解决空指针问题，不会报错，封装友好提示
+     *
+     * @Date 2020/10/16 12:00
+     *
+     */
+
+    /**
+     * 输出流
+     *
+     * @Date 2020/10/16 15:00
+     **/
+    /**
+     * @return void
+     * @Author budd
+     * @Description 测试toArray()
+     * @Date 2020/10/16 15:11
+     * @Param []
+     **/
+    @Test
+    public void outputToArray() {
+        int[] repeatedValues = new Random(47).ints(0, 100).limit(3).toArray();
+
+        Arrays.stream(repeatedValues)
+                .forEach(Print::print);
+    }
+
+    /**
+     * @return void
+     * @Author budd
+     * @Description 测试循环
+     * @Date 2020/10/16 15:20
+     * @Param []
+     **/
+    @Test
+    public void outputForEach() {
+        int[] repeatedValues = new Random(47).ints(0, 100).limit(100).toArray();
+
+        int resultSize = 14;
+        print("forEach");
+        Arrays.stream(repeatedValues)
+                .limit(resultSize)
+                .forEach(x -> System.out.printf(" %s", x));
+
+        printf("%n%nforEachOrdered");
+        Arrays.stream(repeatedValues)
+                .limit(resultSize)
+                .forEachOrdered(x -> System.out.printf(" %s", x));
+
+        printf("%n%nparallel+ forEach");
+        Arrays.stream(repeatedValues)
+                .limit(resultSize)
+                .parallel()
+                .forEach(x -> System.out.printf(" %s", x));
+        print();
+        final Set<String> threadRecords = Sets.newHashSet();
+        Arrays.stream(repeatedValues)
+                .limit(resultSize)
+                .parallel()
+                .forEach(x -> {
+                            System.out.printf(" %s[%s]", x, Thread.currentThread().getName());
+                            threadRecords.add(Thread.currentThread().getName());
+                        }
+                );
+        //并行的线程数：8--[ForkJoinPool.commonPool-worker-7, ForkJoinPool.commonPool-worker-1
+        // , ForkJoinPool.commonPool-worker-2, main, ForkJoinPool.commonPool-worker-5
+        // , ForkJoinPool.commonPool-worker-6, ForkJoinPool.commonPool-worker-3, ForkJoinPool.commonPool-worker-4]
+        //公司电脑是4核，8线程
+        printf("%n并行的线程数：%s--%s", threadRecords.size(), threadRecords);
+
+        //观察到结果：
+        // peek打印发现，并发执行
+        // forEachOrdered打印发现，单线程执行
+        printf("%nparallel+ forEachOrdered");
+        Arrays.stream(repeatedValues)
+                .limit(resultSize)
+                .peek((x) -> System.out.printf("  %s[%s]", x, Thread.currentThread().getName()))
+                .parallel()
+                .forEachOrdered(x -> System.out.printf(" %n%s[%s]", x, Thread.currentThread().getName()));
+    }
 }
