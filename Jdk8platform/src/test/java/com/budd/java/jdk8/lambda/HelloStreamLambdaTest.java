@@ -1,21 +1,19 @@
 package com.budd.java.jdk8.lambda;
 
 import com.budd.java.util.Print;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-import static com.budd.java.util.Print.print;
-import static com.budd.java.util.Print.printf;
+import static com.budd.java.util.Print.*;
 
 /**
  * @author budd
@@ -486,7 +484,7 @@ public class HelloStreamLambdaTest {
      * @Param []
      **/
     @Test
-    public void outputToArray() {
+    public void testOutputToArray() {
         int[] repeatedValues = new Random(47).ints(0, 100).limit(3).toArray();
 
         Arrays.stream(repeatedValues)
@@ -501,7 +499,7 @@ public class HelloStreamLambdaTest {
      * @Param []
      **/
     @Test
-    public void outputForEach() {
+    public void testOutputForEach() {
         int[] repeatedValues = new Random(47).ints(0, 100).limit(100).toArray();
 
         int resultSize = 14;
@@ -546,4 +544,202 @@ public class HelloStreamLambdaTest {
                 .parallel()
                 .forEachOrdered(x -> System.out.printf(" %n%s[%s]", x, Thread.currentThread().getName()));
     }
+
+    /**
+     * @return void
+     * @Author budd
+     * @Description 测试收集
+     * @Date 2020/10/19 9:49
+     * @Param []
+     **/
+    @Test
+    public void testOutputCollect() {
+        //Collectors.toCollection(简单)：转成TreeSet结构
+        TreeSet<String> treeSet = Stream.of("Hello", "Output", "Collect")
+                .collect(Collectors.toCollection(TreeSet::new));
+        printf("Collectors.toCollection(简单)：%s%n", treeSet);
+
+        //Collectors.toMap：转成Map结构
+        Map<Integer, Character> map = Stream.of(65, 66, 67)
+                .collect(Collectors.toMap(x -> x, x -> (char) x.intValue()));
+        printf("Collectors.toMap：%s%n", map);
+
+        //Collectors.toCollection(复杂)：三个函数接口操作数据并形成结果
+        //第一个参数创建新的集合结构，第二个参数是将流中数据保存到第一个新建的集合结构中，第三个参数是将前两个集合结构合并
+        //需要parallel()多线流才能触发第三个参数的执行，以list1为归总结果
+        ArrayList<Object> arrayList = Stream.of("Hello", "Output", "Collect")
+                .parallel()
+                .collect(() -> {
+                            ArrayList<Object> list = Lists.newArrayList();
+                            list.add("!");
+                            return list;
+                        }
+                        , ArrayList::add
+                        , (list1, list2) -> {
+                            printf("第一个数据：%s，第二个数据：%s", list1, list2);
+                            list1.addAll(list2);
+                        });
+
+        printf("Collectors.toCollection(复杂)：%s", arrayList);
+
+    }
+
+    /**
+     * @return
+     * @Author budd
+     * @Description reduce组合：操作上个结果和当前数据，得出结果作为第一个参数的值(跟map有点相似，但map只知道当前数据，而reduce还能得知上个结果)
+     * @Date 2020/10/19 15:00
+     * @Param
+     **/
+    @Test
+    public void testOutputReduce() {
+        //累加
+        IntBinaryOperator binaryOperator = (x1, x2) -> {
+            printf("    上个结果：%s，当前结果：%s，累加：%s", x1, x2, x1 + x2);
+            return x1 + x2;
+        };
+
+        printf("%n一个参数");
+        //[1]单线程
+        printf("---单线程");
+        IntStream.of(1, 2, 3, 4, 5, 6)
+                .reduce(binaryOperator)
+                .ifPresent(result -> printf("   合计：%s", result));
+
+        //[1]多线程
+        printf("---多线程");
+        IntStream.of(1, 2, 3, 4, 5, 6)
+                .reduce(binaryOperator)
+                .ifPresent(result -> printf("   合计：%s", result));
+
+        printf("%n两个参数(非空流)");
+        //[2]单线程
+        printf("---单线程");
+        Integer identityReduce1 = IntStream.of(1, 2, 3, 4, 5, 6)
+                .reduce(7, binaryOperator);
+        printf("   合计：%s", identityReduce1);
+
+        //[2]多线程
+        printf("---多线程");
+        Integer identityReduce2 = IntStream.of(1, 2, 3, 4, 5, 6)
+                .parallel()
+                .reduce(7, binaryOperator);
+        printf("   合计：%s", identityReduce2);
+
+        //空流时，identity作为默认结果
+        printf("---空流");
+        Integer identityEmptyReduce = IntStream.empty()
+                .reduce(7, binaryOperator);
+        printf("   合计：%s", identityEmptyReduce);
+
+        printf("%n三个参数");
+        Integer reduce = Stream.of(1, 2, 3, 4, 5, 6)
+                .parallel()
+                .reduce(7, (x1, x2) -> {
+                    printf("    一轮计算，上个结果：%s，当前结果：%s，累加：%s", x1, x2, x1 + x2);
+                    return x1 + x2;
+                }, (x1, x2) -> {
+                    printf("    二轮计算，上个结果：%s，当前结果3：%s，累乘：%s", x1, x2, x1 * x2);
+                    return x1 * x2;
+                });
+        printf("   合计：%s", reduce);
+    }
+
+    /**
+     * 测试match
+     *
+     * @Date 2020年10月19日 20:43:50
+     */
+    private void predicateMatch(BiPredicate<Stream<Integer>, Predicate<Integer>> matcher, int size) {
+        print(matcher.test(IntStream.rangeClosed(1, 9)
+                        .boxed()
+                        .peek(i -> printnb(i + " "))
+                , i -> i < size));
+    }
+
+    @Test
+    public void testOutputMatcher() {
+        predicateMatch(Stream::allMatch, 10);
+        predicateMatch(Stream::allMatch, 4);
+        predicateMatch(Stream::anyMatch, 2);
+        predicateMatch(Stream::anyMatch, 0);
+        predicateMatch(Stream::noneMatch, 5);
+        predicateMatch(Stream::noneMatch, 0);
+    }
+
+    /**
+     * 测试findFirst和findAny
+     *
+     * @Date 2020年10月19日 21:26:00
+     */
+    @Test
+    public void testOutputFind() {
+        Supplier<IntStream> streamSupplier = () -> IntStream.range(1, 100).limit(100).peek(x -> print(x + " "));
+
+        //单线流+查找第一个，始终获取第一个就退出循环
+        int findFirst = streamSupplier.get().findFirst().getAsInt();
+        printf("findFirst：%s%n", findFirst);
+
+        //多线流+查找第一个，因多线程，加上peek的打印日志线程可能与流的操作线程不是同一个，所以看到的日志会比findFirst()的结果多
+        //始终获取第一个就退出循环
+        int parallelFindFirst = streamSupplier.get().parallel().findFirst().getAsInt();
+        printf("parallel-findFirst：%s%n", parallelFindFirst);
+
+        //单线流：虽然findAny名字是随意获取一个，但我们都被骗了，其实始终获取的是第一个
+        int findAny = streamSupplier.get().findAny().getAsInt();
+        printf("findAny：%s%n", findAny);
+
+        //多线流：随意获取一个，但要多刷几遍才能看到效果
+        int parallelFindAny = streamSupplier.get().parallel().findAny().getAsInt();
+        printf("parallel-findAny：%s", parallelFindAny);
+    }
+
+    /**
+     * @return
+     * @Author budd
+     * @Description 基础Stream的聚合
+     * @Date 2020/10/20 16:28
+     * @Param
+     **/
+    @Test
+    public void testBasicOutputAggregation() {
+        Supplier<Stream<String>> supplier = () -> Stream.of("Hello", "Output", "Aggregation");
+
+        //count
+        printf("count()：%s", supplier.get().count());
+        //max
+        printf("max(Comparator)：%s", supplier.get().max(String.CASE_INSENSITIVE_ORDER).orElse(""));
+        //min
+        printf("min(Comparator)：%s", supplier.get().min(String.CASE_INSENSITIVE_ORDER).orElse(""));
+    }
+
+    /**
+     * @return
+     * @Author budd
+     * @Description IntStream的聚合
+     * @Date 2020/10/20 16:44
+     * @Param
+     **/
+    @Test
+    public void testIntOutputAggregation() {
+        Supplier<IntStream> supplier = () -> IntStream.of(1, 2, 3);
+
+        //average
+        printf("average()：%s", supplier.get().average().getAsDouble());
+        //max
+        printf("max()：%s", supplier.get().max().getAsInt());
+        //min
+        printf("min()：%s", supplier.get().min().getAsInt());
+        //sum
+        printf("sum()：%s", supplier.get().sum());
+        //summaryStatistics，一次性求出最大, 最小, 平均值, 求和, 个数
+        printf("summaryStatistics()：%s", supplier.get().summaryStatistics());
+    }
+    /**
+     * end
+     * 输出流
+     *
+     * @Date 2020年10月20日 17:13:42
+     **/
+
 }
