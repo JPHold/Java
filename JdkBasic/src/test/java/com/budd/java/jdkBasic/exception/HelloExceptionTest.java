@@ -7,6 +7,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import static com.budd.java.util.Print.print;
+import static com.budd.java.util.Print.printf;
+
 /**
  * 入门异常研究
  *
@@ -31,7 +34,7 @@ public class HelloExceptionTest {
                 throw new Exception();
             } catch (Exception e) {
                 for (StackTraceElement se : e.getStackTrace()) {
-                    System.out.println(se.getMethodName());
+                    print(se.getMethodName());
                 }
             }
         }
@@ -49,12 +52,12 @@ public class HelloExceptionTest {
     public void getStackTrace() {
         GetStackTraceClass getStackTraceClass = new GetStackTraceClass();
 
-        System.out.println("\n异常,方法调用链上所有方法的名称");
-        System.out.println("\n一层调用");
+        printf("%n异常,方法调用链上所有方法的名称");
+        printf("%n一层调用");
         getStackTraceClass.a();
-        System.out.println("\n二层调用");
+        printf("%n二层调用");
         getStackTraceClass.b();
-        System.out.println("\n三层调用");
+        printf("%n三层调用");
         getStackTraceClass.c();
     }
     // end:getStackTrace
@@ -70,15 +73,15 @@ public class HelloExceptionTest {
     @Test
     public void printStackTrace() {
 
-        System.out.println("\n打印异常栈");
-        System.out.println("以普通信息打印");
+        printf("%n打印异常栈");
+        print("以普通信息打印");
         try {
             throw new Exception();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
 
-        System.out.println("\n以错误信息打印");
+        printf("%n以错误信息打印");
         try {
             throw new Exception();
         } catch (Exception e) {
@@ -104,7 +107,7 @@ public class HelloExceptionTest {
             try {
                 fillA();
             } catch (Exception e) {
-                System.out.println("\nfillInStackTrace()之前");
+                printf("%nfillInStackTrace()之前");
                 e.printStackTrace();
                 throw (Exception) e.fillInStackTrace();
             }
@@ -118,7 +121,7 @@ public class HelloExceptionTest {
             FillStackTraceClass fillStackTrace = new FillStackTraceClass();
             fillStackTrace.fillB();
         } catch (Exception e) {
-            System.out.println("\nfillInStackTrace()之后");
+            printf("%nfillInStackTrace()之后");
             e.printStackTrace();
         }
     }
@@ -160,16 +163,16 @@ public class HelloExceptionTest {
     @Test
     public void initCause() {
         InitCauseClass initCauseClass = new InitCauseClass();
-        System.out.println("\ncause by置入携带");
+        printf("%ncause by置入携带");
         try {
-            System.out.println("\ninitCause(Throwable)方式");
+            printf("%ninitCause(Throwable)方式");
             initCauseClass.initCauseB();
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             Thread.sleep(1000);
-            System.out.println("\nnew Exception(Throwable)方式");
+            printf("%nnew Exception(Throwable)方式");
             initCauseClass.newCauseC();
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,7 +210,7 @@ public class HelloExceptionTest {
             throw new LocalizedMessageException();
         } catch (Exception e) {
             String localizedMessage = e.getLocalizedMessage();
-            System.out.println(localizedMessage);
+            print(localizedMessage);
         }
     }
     // end:getMessage和getLocalizedMessage
@@ -313,9 +316,11 @@ public class HelloExceptionTest {
     abstract class Inning {
         public Inning() throws BaseballException {
         }
+
         public void event() throws BaseballException {
             // Doesn't actually have to throw anything
         }
+
         public abstract void atBat() throws Strike, Foul;
 
         public void walk() {
@@ -333,6 +338,7 @@ public class HelloExceptionTest {
 
     interface Storm {
         public void event() throws RainedOut;
+
         public void rainHard() throws RainedOut;
     }
 
@@ -367,17 +373,18 @@ public class HelloExceptionTest {
         }
 
     }
+
     @Test
-    public void testExtendException(){
+    public void testExtendException() {
         try {
             StormyInning si = new StormyInning();
             si.atBat();
         } catch (PopFoul e) {
-            System.out.println("Pop foul");
+            print("Pop foul");
         } catch (RainedOut e) {
-            System.out.println("Rained out");
+            print("Rained out");
         } catch (BaseballException e) {
-            System.out.println("Generic baseball exception");
+            print("Generic baseball exception");
         }
         // Strike not thrown in derived version.
         try {
@@ -387,16 +394,15 @@ public class HelloExceptionTest {
             // You must catch the exceptions from the
             // base-class version of the method:
         } catch (Strike e) {
-            System.out.println("Strike");
+            print("Strike");
         } catch (Foul e) {
-            System.out.println("Foul");
+            print("Foul");
         } catch (RainedOut e) {
-            System.out.println("Rained out");
+            print("Rained out");
         } catch (BaseballException e) {
-            System.out.println("Generic baseball exception");
+            print("Generic baseball exception");
         }
     }
-
 
 
 }
