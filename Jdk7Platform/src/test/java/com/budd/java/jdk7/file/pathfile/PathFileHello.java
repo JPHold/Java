@@ -2,10 +2,12 @@ package com.budd.java.jdk7.file.pathfile;
 
 import org.junit.Test;
 
-import javax.lang.model.element.NestingKind;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 路径与文件类API初探
@@ -185,6 +187,57 @@ public class PathFileHello {
         Thread.sleep(3000);
         Files.delete(deletePath);
         System.out.println("删除成功");
+    }
+
+    /**
+     * 测试jdk7-Path/Files写入/读取码点
+     *
+     * @throws IOException
+     */
+    /**
+     * 制作码点组
+     *
+     * @return
+     */
+    private final String BASIC_CODEPOINT_PATH = ".\\src\\main\\resources\\string\\basicCodepointPath.txt";
+
+    private char[] makeBasicCodepoint(int[] codePointsIn) {
+        int[] codePoints = null;
+        if (codePointsIn == null)
+            codePoints = new int[]{0xd801, 0xd802, 0xdf00, 0xdf01, 0x34};
+        else codePoints = codePointsIn;
+
+        String codePointStr = new String(codePoints, 0, codePoints.length);
+        char[] codePointChars = codePointStr.toCharArray();
+
+        for (char singleChar : codePointChars) {
+            System.out.println(String.format("字符=%s,16进制=%s", singleChar, Integer.toHexString(singleChar)));
+        }
+        return codePointChars;
+    }
+
+    @Test
+    public void testFilesBasicCodePoint() throws IOException, InterruptedException {
+        Path plusCharPath = Paths.get(BASIC_CODEPOINT_PATH);
+        Files.createFile(plusCharPath);
+        try {
+            char[] codePointChars = makeBasicCodepoint(null);
+
+            List<String> codePointCharList = new ArrayList<String>();
+            for (char singleChar : codePointChars) {
+                codePointCharList.add(String.valueOf(singleChar));
+            }
+
+            Files.write(plusCharPath, codePointCharList, Charset.forName("utf-16"), StandardOpenOption.WRITE);
+            byte[] bytes = Files.readAllBytes(plusCharPath);
+            System.out.println(new String(bytes));
+
+        } finally {
+            //还原
+            Thread.sleep(5000);
+            Files.delete(plusCharPath);
+        }
+
     }
 
 }
