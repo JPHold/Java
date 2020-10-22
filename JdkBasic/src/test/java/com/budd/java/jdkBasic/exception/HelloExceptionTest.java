@@ -219,6 +219,24 @@ public class HelloExceptionTest {
      */
 
     /**
+     * start:异常多态，是否支持声明派生类异常却抛出基类异常
+     *
+     * @author HJP
+     * @return
+     * @date 2020年10月21日 21:53:50
+     * @Description 在JAVA7以下，会报错：Unhandled exception: com.budd.java.jdkBasic.exception.BaseException
+     */
+    @Test
+    public void testStateExtendThrowBasic() throws DerivedException, DerivedException1{
+        try{
+            throw  new DerivedException();
+        }catch (BaseException e){
+//            throw e;
+        }
+    }
+    // end:异常多态，是否支持声明派生类异常却抛出基类异常
+
+    /**
      * 基础实操
      */
     /**

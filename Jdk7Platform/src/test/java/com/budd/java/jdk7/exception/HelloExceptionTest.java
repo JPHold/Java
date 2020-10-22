@@ -40,4 +40,23 @@ public class HelloExceptionTest {
         oldProcessClose("111");
         newProcessClose("111");
     }
+
+    /**
+     * start:异常多态，是否支持声明派生类异常却抛出基类异常
+     *
+     * @return
+     * @author HJP
+     * @date 2020年10月21日 21:53:50
+     * @Description
+     */
+
+    @Test
+    public void testStateExtendThrowBasic() throws DerivedException,DerivedException1{
+        try {
+            throw new DerivedException();
+        } catch (BaseException e) {
+            throw e;
+        }
+    }
+    // end:异常多态，是否支持声明派生类异常却抛出基类异常
 }
