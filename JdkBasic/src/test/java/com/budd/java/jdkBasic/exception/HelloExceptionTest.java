@@ -1,5 +1,6 @@
 package com.budd.java.jdkBasic.exception;
 
+import com.budd.java.jdkBasic.exception.implThrows.*;
 import org.junit.Test;
 
 import java.util.ResourceBundle;
@@ -181,6 +182,21 @@ public class HelloExceptionTest {
     // end:initCause
 
     /**
+     * start:特例RunTimeException
+     *
+     * @return
+     * @author HJP
+     * @date 2020年10月22日 22:52:58
+     * @Description 抛出RunTimeException，无须捕获和在方法上声明
+     */
+    @Test
+    public void testNoThrowsRuntimeException() {
+        throw new RuntimeException();
+    }
+
+    // end:特例RunTimeException
+
+    /**
      * start:getMessage和getLocalizedMessage
      *
      * @author HJP
@@ -221,16 +237,16 @@ public class HelloExceptionTest {
     /**
      * start:异常多态，是否支持声明派生类异常却抛出基类异常
      *
-     * @author HJP
      * @return
+     * @author HJP
      * @date 2020年10月21日 21:53:50
      * @Description 在JAVA7以下，会报错：Unhandled exception: com.budd.java.jdkBasic.exception.BaseException
      */
     @Test
-    public void testStateExtendThrowBasic() throws DerivedException, DerivedException1{
-        try{
-            throw  new DerivedException();
-        }catch (BaseException e){
+    public void testStateExtendThrowBasic() throws DerivedException, DerivedException1 {
+        try {
+            throw new DerivedException();
+        } catch (BaseException e) {
 //            throw e;
         }
     }
@@ -322,103 +338,41 @@ public class HelloExceptionTest {
      * @date 2018年3月11日 上午9:58:24
      * @Description 方法带异常的继承和实现测试
      */
-    class BaseballException extends Exception {
-    }
-
-    class Foul extends BaseballException {
-    }
-
-    class Strike extends BaseballException {
-    }
-
-    abstract class Inning {
-        public Inning() throws BaseballException {
-        }
-
-        public void event() throws BaseballException {
-            // Doesn't actually have to throw anything
-        }
-
-        public abstract void atBat() throws Strike, Foul;
-
-        public void walk() {
-        } // Throws no checked exceptions
-    }
-
-    class StormException extends Exception {
-    }
-
-    class RainedOut extends StormException {
-    }
-
-    class PopFoul extends Foul {
-    }
-
-    interface Storm {
-        public void event() throws RainedOut;
-
-        public void rainHard() throws RainedOut;
-    }
-
-    public class StormyInning extends Inning implements Storm {
-        // OK to add new exceptions for constructors, but you
-        // must deal with the base constructor exceptions:
-        public StormyInning()
-                throws RainedOut, BaseballException {
-        }
-
-        public StormyInning(String s)
-                throws Foul, BaseballException {
-        }
-
-        // Regular methods must conform to base class:
-// void walk() throws PopFoul {} //Compile error
-        // Interface CANNOT add exceptions to existing
-        // methods from the base class:
-// public void event() throws RainedOut {}
-        // If the method doesn't already exist in the
-        // base class, the exception is OK:
-        public void rainHard() throws RainedOut {
-        }
-
-        // You can choose to not throw any exceptions,
-        // even if the base version does:
-        public void event() {
-        }
-
-        // Overridden methods can throw inherited exceptions:
-        public void atBat() throws PopFoul {
-        }
-
-    }
-
     @Test
     public void testExtendException() {
+
+        StormyInning si = null;
         try {
-            StormyInning si = new StormyInning();
-            si.atBat();
-        } catch (PopFoul e) {
-            print("Pop foul");
+            si = new StormyInning();
         } catch (RainedOut e) {
             print("Rained out");
         } catch (BaseballException e) {
             print("Generic baseball exception");
         }
-        // Strike not thrown in derived version.
+
+        //【7】当派生类引用调用方法时，catch的异常时是派生类预定义的异常
         try {
-            // What happens if you upcast?
-            Inning i = new StormyInning();
-            i.atBat();
-            // You must catch the exceptions from the
-            // base-class version of the method:
-        } catch (Strike e) {
-            print("Strike");
-        } catch (Foul e) {
-            print("Foul");
+            si.atBat();
+        } catch (PopFoul popFoul) {
+            print("Pop foul");
+        }
+
+        Inning i = null;
+        try {
+            i = new StormyInning();
         } catch (RainedOut e) {
             print("Rained out");
         } catch (BaseballException e) {
             print("Generic baseball exception");
+        }
+
+        //【7】当基类引用调用方法时，catch的异常时是基类/接口预定义的异常
+        try {
+            i.atBat();
+        } catch (Strike strike) {
+            print("Strike");
+        } catch (Foul foul) {
+            print("Foul");
         }
     }
 
