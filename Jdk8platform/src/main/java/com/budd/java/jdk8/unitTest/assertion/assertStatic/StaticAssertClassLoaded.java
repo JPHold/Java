@@ -1,4 +1,4 @@
-package com.budd.java.jdk8.unitTest.junit.assertion.assertStatic;
+package com.budd.java.jdk8.unitTest.assertion.assertStatic;
 
 public class StaticAssertClassLoaded {
     public void go() {

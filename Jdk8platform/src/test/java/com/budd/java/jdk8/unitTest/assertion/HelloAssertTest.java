@@ -1,6 +1,6 @@
 package com.budd.java.jdk8.unitTest.assertion;
 
-import com.budd.java.jdk8.unitTest.junit.assertion.assertStatic.StaticAssertClass;
+import com.budd.java.jdk8.unitTest.assertion.assertStatic.StaticAssertClass;
 import com.budd.java.jdk8.unitTest.junit.checkEa.CheckEnableAssertion;
 import org.junit.jupiter.api.Test;
 
