@@ -76,7 +76,7 @@ public class HelloGuavaAssertTest {
      *
      * @Date 2020年11月3日 23:05:08
      */
-    static void test(Consumer<String> c, String s) {
+    static void invokePreCondition(Consumer<String> c, String s) {
         try {
             printnb(s);
             c.accept(s);
@@ -91,50 +91,50 @@ public class HelloGuavaAssertTest {
     @Test
     public void testGuavaPreCondition() {
         print("checkNotNull");
-        test(s -> s = checkNotNull(s), "X");
-        test(s -> s = checkNotNull(s), null);
-        test(s -> s = checkNotNull(s, "s was null"), null);
+        invokePreCondition(s -> s = checkNotNull(s), "X");
+        invokePreCondition(s -> s = checkNotNull(s), null);
+        invokePreCondition(s -> s = checkNotNull(s, "s was null"), null);
 
         print();
         print("checkArgument");
-        test(s -> checkArgument(s == "Fozzie"), "Fozzie");
-        test(s -> checkArgument(s == "Fozzie"), "X");
-        test(s -> checkArgument(s == "Fozzie"), null);
+        invokePreCondition(s -> checkArgument(s == "Fozzie"), "Fozzie");
+        invokePreCondition(s -> checkArgument(s == "Fozzie"), "X");
+        invokePreCondition(s -> checkArgument(s == "Fozzie"), null);
 
         print();
         print("checkState");
-        test(s -> checkState(s.length() > 6), "Mortimer");
-        test(s -> checkState(s.length() > 6), "Mort");
-        test(s -> checkState(s.length() > 6), null);
+        invokePreCondition(s -> checkState(s.length() > 6), "Mortimer");
+        invokePreCondition(s -> checkState(s.length() > 6), "Mort");
+        invokePreCondition(s -> checkState(s.length() > 6), null);
 
         print();
         print("checkElementIndex");
-        test(s ->
+        invokePreCondition(s ->
                 checkElementIndex(6, s.length()), "Robert");
-        test(s ->
+        invokePreCondition(s ->
                 checkElementIndex(6, s.length()), "Bob");
-        test(s ->
+        invokePreCondition(s ->
                 checkElementIndex(6, s.length()), null);
 
         print();
         print("checkPositionIndex");
-        test(s ->
+        invokePreCondition(s ->
                 checkPositionIndex(6, s.length()), "Robert");
-        test(s ->
+        invokePreCondition(s ->
                 checkPositionIndex(6, s.length()), "Bob");
-        test(s ->
+        invokePreCondition(s ->
                 checkPositionIndex(6, s.length()), null);
-        test(s -> checkPositionIndexes(
+        invokePreCondition(s -> checkPositionIndexes(
                 0, 6, s.length()), "Hieronymus");
-        test(s -> checkPositionIndexes(
+        invokePreCondition(s -> checkPositionIndexes(
                 0, 10, s.length()), "Hieronymus");
-        test(s -> checkPositionIndexes(
+        invokePreCondition(s -> checkPositionIndexes(
                 0, 11, s.length()), "Hieronymus");
-        test(s -> checkPositionIndexes(
+        invokePreCondition(s -> checkPositionIndexes(
                 -1, 6, s.length()), "Hieronymus");
-        test(s -> checkPositionIndexes(
+        invokePreCondition(s -> checkPositionIndexes(
                 7, 6, s.length()), "Hieronymus");
-        test(s -> checkPositionIndexes(
+        invokePreCondition(s -> checkPositionIndexes(
                 0, 6, s.length()), null);
     }
 }
