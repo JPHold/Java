@@ -1,4 +1,4 @@
-package com.budd.java.jdk8.unitTest.junit.assertStatic;
+package com.budd.java.jdk8.unitTest.junit.assertion.assertStatic;
 
 import static com.budd.java.util.Print.print;
 
@@ -8,7 +8,7 @@ public class StaticAssertClass {
         //所有类
 //            ClassLoader.getSystemClassLoader().setDefaultAssertionStatus(true);
         //指定某个类
-        ClassLoader.getSystemClassLoader().setClassAssertionStatus("com.budd.java.jdk8.unitTest.junit.assertStatic.StaticAssertClassLoaded", true);
+        ClassLoader.getSystemClassLoader().setClassAssertionStatus("com.budd.java.jdk8.unitTest.junit.assertion.assertStatic.StaticAssertClassLoaded", true);
     }
 
     public void test() {
