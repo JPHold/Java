@@ -1,5 +1,6 @@
 package com.budd.java.jdk7.file.pathfile;
 
+import com.budd.java.jdk7.file.pathfile.basicinfo.PathInfo;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,6 +20,14 @@ import java.util.List;
 public class PathFileHello {
 
     private final static String ROOT_PATH = ".\\src\\main\\resources\\file\\pathfile\\";
+
+    /**
+     * path的基本信息
+     */
+    @Test
+    public void testBasicInfo() {
+        PathInfo.testBasicInfo();
+    }
 
     @Test
     public void testNormalize() {
