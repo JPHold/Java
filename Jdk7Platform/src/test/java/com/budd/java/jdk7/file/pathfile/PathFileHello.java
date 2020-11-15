@@ -1,5 +1,7 @@
 package com.budd.java.jdk7.file.pathfile;
 
+import static com.budd.java.util.Print.*;
+
 import com.budd.java.jdk7.file.pathfile.basicinfo.PathInfo;
 import org.junit.Test;
 
@@ -27,6 +29,37 @@ public class PathFileHello {
     @Test
     public void testBasicInfo() {
         PathInfo.testBasicInfo();
+    }
+
+    /**
+     * Path路径的各部分
+     *
+     * @date 2020年11月15日 11:03:53
+     */
+    @Test
+    public void testPartOfPath() {
+        System.setProperty("user.dir", "F:\\2019\\study\\Java\\Jdk7Platform\\src\\test\\java\\com\\budd\\java\\jdk7\\file\\pathfile");
+        print(System.getProperty("os.name"));
+
+        Path p = Paths.get("PathFileHello.java").toAbsolutePath();
+
+        print("获取path各个部分(使用getName(i))");
+        printf("%s：%s ：%s", "part", "start with", "end with");
+        for (int i = 0; i < p.getNameCount(); i++) {
+            Path pp = p.getName(i);
+            printf("%s：%s ：%s", pp, p.startsWith(pp), p.endsWith(pp));
+        }
+
+        //使用endsWith判断后缀是不行，可以使用toString字符串匹配
+        printf("---path.ends with '.java': %s", p.endsWith(".java"));
+        printf("---toString().ends with '.java': %s%n", p.toString().endsWith(".java"));
+
+        print("获取path各个部分(直接使用循环)");
+        printf("%s：%s ：%s", "part", "start with", "end with");
+        for (Path pp : p) {
+            printf("%s：%s ：%s", pp, p.startsWith(pp), p.endsWith(pp));
+        }
+        printf("---Starts with %s %s", p.getRoot(), p.startsWith(p.getRoot()));
     }
 
     @Test
