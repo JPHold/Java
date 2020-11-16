@@ -149,10 +149,11 @@ public class PathFileHello {
         printf("是否可执行：%s", Files.isExecutable(path));
         printf("是否可读：%s", Files.isReadable(path));
         printf("是否可写：%s", Files.isWritable(path));
-        printf("是否隐藏：%s%n", Files.isHidden(path));
+        printf("是否隐藏：%s", Files.isHidden(path));
         printf("是否符号链接：%s", Files.isSymbolicLink(path));
         printf("最后修改时间：%s", Files.getLastModifiedTime(path));
         printf("拥有者：%s", Files.getOwner(path));
+        printf("类型：%s%n", Files.probeContentType(path));
     }
 
     @Test
