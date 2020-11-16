@@ -8,9 +8,10 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 路径与文件类API初探
@@ -65,8 +66,8 @@ public class PathFileHello {
     @Test
     public void testNormalize() {
         Path path = Paths.get(ROOT_PATH, "t1.txt\\..\\t2.txt");
-        System.out.println(String.format("%s: %s", "原始的路径", path));
-        System.out.println(String.format("%s: %s", "格式化的真实路径", path.normalize()));
+        printf("%s: %s", "原始的路径", path);
+        printf("%s: %s", "格式化的真实路径", path.normalize());
     }
 
     @Test
@@ -76,13 +77,13 @@ public class PathFileHello {
 
             @Override
             public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                System.out.println(String.format("%s: %s,error: %s", "访问文件失败", file, exc.getCause().toString()));
+                printf("%s: %s,error: %s", "访问文件失败", file, exc.getCause().toString());
                 return FileVisitResult.CONTINUE;
             }
 
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                System.out.println(String.format("%s: %s", "开始访问文件夹", dir));
+                printf("%s: %s", "开始访问文件夹", dir);
                 if ("pathfile".equals(dir.getFileName().toString())) {
                     return FileVisitResult.CONTINUE;
                 }
@@ -91,79 +92,131 @@ public class PathFileHello {
 
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                System.out.println(String.format("%s: %s", "访问文件", file));
+                printf("%s: %s", "访问文件", file);
                 return FileVisitResult.CONTINUE;
             }
 
             @Override
             public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                System.out.println(String.format("%s: %s", "结束访问文件夹", dir));
+                printf("%s: %s", "结束访问文件夹", dir);
                 return FileVisitResult.CONTINUE;
             }
         });
     }
 
+    /**
+     * 测试创建目录、判断是否为目录，并删除该目录以多次测试
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testCreateDirectory() throws IOException, InterruptedException {
+        Path path = Paths.get(ROOT_PATH, "createDirectory");
+        try {
+            Path newPath = Files.createDirectory(path);
+            printf("创建目录的路径：%s", newPath);
+            printf("是否为目录：%s", Files.isDirectory(newPath));
+            Thread.sleep(3000);
+        } finally {
+            Files.deleteIfExists(path);
+        }
+    }
 
     @Test
-    public void testExists() throws IOException, InterruptedException {
+    public void testExists() {
         //测试文件存在
         Path filePath = Paths.get(ROOT_PATH, "t2.txt");
-        System.out.println("文件是否存在: " + Files.exists(filePath, LinkOption.NOFOLLOW_LINKS));
+        printf("文件是否存在: %s", Files.exists(filePath, LinkOption.NOFOLLOW_LINKS));
 
         //测试目录存在
         Path drPath = Paths.get(ROOT_PATH);
-        System.out.println("目录是否存在: " + Files.exists(drPath, LinkOption.NOFOLLOW_LINKS));
+        printf("目录是否存在: %s", Files.exists(drPath, LinkOption.NOFOLLOW_LINKS));
 
-        /**
-         * 测试软链接存在
-         */
-        Path linkDrPath = Paths.get(ROOT_PATH, "testlink");
-        Files.createDirectory(linkDrPath);//创建软链接目录
-        Path fileLinkPath = Paths.get(ROOT_PATH, "testlink//t2link.txt");
-        Path symbolicLinkPath = Files.createSymbolicLink(fileLinkPath, filePath);//创建软链接
-        System.out.println(String.format("文件是否为软链接(符号链接): %s", Files.isSymbolicLink(symbolicLinkPath)));
-        System.out.println(String.format("文件是否存在软链接(符号链接): %s", Files.exists(linkDrPath)));
+        //测试文件不存在
+        printf("文件是否不存在: %s", Files.notExists(drPath, LinkOption.NOFOLLOW_LINKS));
+    }
 
-        //删除软链接目录及文件
-        Thread.sleep(3000);
-        Files.walkFileTree(linkDrPath, new FileVisitor<Path>() {
-
-            @Override
-            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                System.out.println(String.format("%s: %s,error: %s", "访问文件失败", file, exc.getCause().toString()));
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                Files.delete(dir);
-                System.out.println("删除软链接(符号链接)目录/文件成功");
-                return FileVisitResult.CONTINUE;
-            }
-        });
+    /**
+     * 获取文件/目录的状态
+     *
+     * @date 2020年11月15日 17:53:56
+     */
+    private void showStateInfo(String title, Path path) throws IOException {
+        print(title);
+        //根据不同文件系统不同，采取不同的方式(读取文件权限、访问控制列表、其他文件属性)，测试改文件\目录是否能被访问
+        //isExecutable，可能有些文件系统，该操作不是原子性操作
+        printf("是否可执行：%s", Files.isExecutable(path));
+        printf("是否可读：%s", Files.isReadable(path));
+        printf("是否可写：%s", Files.isWritable(path));
+        printf("是否隐藏：%s%n", Files.isHidden(path));
+        printf("是否符号链接：%s", Files.isSymbolicLink(path));
+        printf("最后修改时间：%s", Files.getLastModifiedTime(path));
+        printf("拥有者：%s", Files.getOwner(path));
     }
 
     @Test
-    public void testCreateDirectory() {
-        Path path = Paths.get(ROOT_PATH, "thirdpathfile\\t1.txt");
-        try {
-            Path newPath = Files.createDirectory(path);
-            System.out.println("创建目录的路径" + newPath);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void testState() throws IOException {
+        Path filePath = Paths.get(ROOT_PATH, "t2.txt");
+        Path drPath = Paths.get(ROOT_PATH);
+
+        showStateInfo("文件", filePath);
+        showStateInfo("目录", drPath);
+    }
+
+    /**
+     * 获取大小(字节单位)
+     *
+     * @date 2020年11月15日 23:20:18
+     */
+    @Test
+    public void testSize() throws IOException {
+        Path filePath = Paths.get(ROOT_PATH, "t2.txt");
+        printf("大小：%s", Files.size(filePath));
+    }
+
+    /**
+     * 获取文件的存储位置(如设备、分区、卷，window下是卷：C盘、D盘等)的信息
+     * 下面以window为运行环境
+     *
+     * @date2020年11月15日 23:36:00
+     * http://www.1024sky.cn/blog/article/4889
+     * https://www.yuque.com/ican/canjava/managing-metadata-file-file-store-attributes#PRLWz
+     */
+    @Test
+    public void testFileStoreInfo() throws IOException {
+        Path filePath = Paths.get(ROOT_PATH, "t2.txt");
+        FileStore fileStore = Files.getFileStore(filePath);
+        printf("卷的名称：%s", fileStore.name());
+        printf("卷的总大小(字节)：%s", fileStore.getTotalSpace());
+        printf("卷的未使用大小(字节)：%s", fileStore.getUsableSpace());
+        printf("卷是否只读：%s", fileStore.isReadOnly());
+        printf("卷的文件系统：%s", fileStore.type());
+
+        printf("--------------------------------------------------------------------------------------------属性视图");
+
+        //获取当前文件系统支持的属性视图列表
+        Set<String> supportedFileAttributeViews = FileSystems.getDefault().supportedFileAttributeViews();
+        printf("文件系统所支持的属性视图：%s", supportedFileAttributeViews);
+
+        printf("%nFileAttributeView");
+        //获取支持属性视图
+        BasicFileAttributeView basicFileAttributeView = Files.getFileAttributeView(filePath, BasicFileAttributeView.class);
+        printf("基础属性视图(最后修改时间)：%s", basicFileAttributeView.readAttributes().lastModifiedTime());
+        //修改最后修改时间
+        basicFileAttributeView.setTimes(FileTime.fromMillis(System.currentTimeMillis()), null, null);
+        printf("基础属性视图(修改后的最后修改时间)：%s", basicFileAttributeView.readAttributes().lastModifiedTime());
+
+        printf("%nBasicFileAttributes");
+        BasicFileAttributes basicFileAttributes = Files.readAttributes(filePath, BasicFileAttributes.class);
+        printf("基础属性视图(最后修改时间)：%s", basicFileAttributes.lastModifiedTime());
+
+        //UNIX系统、LINUX等操作系统的文件系统
+        if (supportedFileAttributeViews.contains("posix")) {
+            printf("PosixFilePermissions：%s", Files.getPosixFilePermissions(filePath));
         }
     }
+
 
     @Test
     public void testCopy() throws IOException, InterruptedException {
@@ -174,7 +227,7 @@ public class PathFileHello {
 
 //            Path copyFilePath=Files.copy(sourceFilePath,targetFilePath);//默认不覆盖,存在时报错:java.nio.file.FileAlreadyExistsException
         Path copyFilePath = Files.copy(sourceFilePath, targetFilePath, StandardCopyOption.REPLACE_EXISTING);//覆盖内容
-        System.out.println(String.format("复制后的路径: %s", copyFilePath.normalize()));
+        printf("复制后的路径: %s", copyFilePath.normalize());
 
         //复制目录
         Path sourceDrPath = Paths.get(ROOT_PATH, "thirdpathfile");
@@ -182,14 +235,14 @@ public class PathFileHello {
 
 //            Path copyDirectoryPath=Files.copy(sourceDrPath,targetDrPath);//默认不覆盖,存在时报错:java.nio.file.FileAlreadyExistsException
         Path copyDirectoryPath = Files.copy(sourceDrPath, targetDrPath, StandardCopyOption.REPLACE_EXISTING);//覆蓋目录
-        System.out.println(String.format("复制后的路径: %s", copyDirectoryPath.normalize()));
+        printf("复制后的路径: %s", copyDirectoryPath.normalize());
 
         Thread.sleep(3000);
 
         Files.delete(targetFilePath);
         Files.delete(targetDrPath);
 
-        System.out.println("还原成功");
+        printf("还原成功");
     }
 
     @Test
@@ -201,7 +254,7 @@ public class PathFileHello {
 
 //            Path copyFilePath=Files.move(sourceFilePath,targetFilePath);
         Path copyFilePath = Files.move(sourceFilePath, targetFilePath, StandardCopyOption.REPLACE_EXISTING);//强制替换(包括内容)
-        System.out.println("文件移动后的路径" + copyFilePath.normalize());
+        printf("文件移动后的路径：%s", copyFilePath.normalize());
 
 
         //移动目录
@@ -210,14 +263,14 @@ public class PathFileHello {
 
 //            Path copyDirectoryPath=Files.move(sourceDrPath,targetDrPath);
         Path copyDirectoryPath = Files.move(sourceDrPath, targetDrPath, StandardCopyOption.REPLACE_EXISTING);//强制替换(包括内容)
-        System.out.println("目录移动后的路径" + copyDirectoryPath.normalize());
+        printf("目录移动后的路径：%s", copyDirectoryPath.normalize());
 
         Thread.sleep(3000);
 
         //还原文件和目录
         Files.move(targetFilePath, sourceFilePath, StandardCopyOption.REPLACE_EXISTING);//强制替换(包括内容)
         Files.move(targetDrPath, sourceDrPath, StandardCopyOption.REPLACE_EXISTING);//强制替换(包括内容)
-        System.out.println("还原成功");
+        printf("还原成功");
     }
 
     @Test
@@ -225,10 +278,10 @@ public class PathFileHello {
 
         Path deletePath = Paths.get(ROOT_PATH, "t5delete.txt");
         Files.createFile(deletePath);
-        System.out.println(String.format("创建文件: %s", deletePath.normalize()));
+        printf("创建文件: %s", deletePath.normalize());
         Thread.sleep(3000);
         Files.delete(deletePath);
-        System.out.println("删除成功");
+        printf("删除成功");
     }
 
     /**
@@ -253,7 +306,7 @@ public class PathFileHello {
         char[] codePointChars = codePointStr.toCharArray();
 
         for (char singleChar : codePointChars) {
-            System.out.println(String.format("字符=%s,16进制=%s", singleChar, Integer.toHexString(singleChar)));
+            printf("字符=%s,16进制=%s", singleChar, Integer.toHexString(singleChar));
         }
         return codePointChars;
     }
@@ -272,7 +325,7 @@ public class PathFileHello {
 
             Files.write(plusCharPath, codePointCharList, Charset.forName("utf-16"), StandardOpenOption.WRITE);
             byte[] bytes = Files.readAllBytes(plusCharPath);
-            System.out.println(new String(bytes));
+            printf(new String(bytes));
 
         } finally {
             //还原
