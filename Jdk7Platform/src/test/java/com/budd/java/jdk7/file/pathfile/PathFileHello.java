@@ -63,6 +63,74 @@ public class PathFileHello {
         printf("---Starts with %s %s", p.getRoot(), p.startsWith(p.getRoot()));
     }
 
+
+    /**
+     * @return void
+     * @Author budd
+     * @Description Path的增减操作
+     * @Date 2020/11/16 16:06
+     * @Param []
+     **/
+    Path path = Paths.get(".").toAbsolutePath().normalize();
+
+    void showAddSubtractPathInfo(String title, Path result) {
+        print(title);
+        printf("待减的路径：%s", result);
+        if (result.isAbsolute()) {
+            printf("绝对路径转变成相对当前path的相对路径：%s", path.relativize(result));
+        } else {
+            printf("相对路径(无须转变)：%s", result);
+        }
+        try {
+            printf("真实路径：%s%n", result.toRealPath());
+        } catch (IOException e) {
+            printf("真实路径报错(不存在)：%s%n", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testAddSubtractPaths() throws IOException {
+        String ROOT_PATH = "src\\test\\java\\com\\budd\\java\\jdk7\\file\\pathfile";
+        printf("当前系统：%s", System.getProperty("os.name"));
+        printf("当前基准路径：%s", path);
+
+        printf("----------------------------------------------------------------绝对路径进行relativize、resolve操作%n");
+
+        //相对路径处理
+        Path absolutePath = Paths.get(ROOT_PATH, "PathFileHello.java").toAbsolutePath();
+        showAddSubtractPathInfo("相对路径处理", absolutePath);
+
+        //拼接路径 + 相对路径处理
+        Path resolvePath = absolutePath.getParent().getParent()
+                .resolve("strings").resolve("..")
+                .resolve(absolutePath.getParent().getFileName());
+        showAddSubtractPathInfo("拼接路径 + 相对路径处理", resolvePath);
+
+        //拼接路径 + 格式化 + 相对路径处理
+        showAddSubtractPathInfo("拼接路径 + 格式化 + 相对路径处理", resolvePath.normalize());
+
+        printf("----------------------------------------------------------------../../ 相对路径进行relativize、resolve操作%n");
+
+        Path previousRelativizePath = Paths.get(ROOT_PATH, "..", "..");
+        showAddSubtractPathInfo("相对路径处理", previousRelativizePath);
+        showAddSubtractPathInfo("格式化 + 相对路径处理", previousRelativizePath.normalize());
+        showAddSubtractPathInfo("转成绝对路径，再格式化 + 相对路径处理", previousRelativizePath.toAbsolutePath().normalize());
+
+        printf("----------------------------------------------------------------./ 相对路径进行relativize、resolve操作%n");
+
+        Path currentAbsolutePath = Paths.get(ROOT_PATH, ".").toAbsolutePath();
+        Path currRelPath = currentAbsolutePath.resolve(previousRelativizePath);
+        showAddSubtractPathInfo("相对路径处理", currRelPath);
+        showAddSubtractPathInfo("格式化 + 相对路径处理", currRelPath.normalize());
+
+        printf("----------------------------------------------------------------空 相对路径进行relativize、resolve操作%n");
+
+        Path emptyPath = Paths.get(ROOT_PATH, "").toAbsolutePath();
+        showAddSubtractPathInfo("相对路径处理", emptyPath);
+        showAddSubtractPathInfo("在当前path的上级目录追加路径 + 相对路径处理", emptyPath.resolveSibling("Jdk8platform"));
+        showAddSubtractPathInfo("不存在的路径 + 相对路径处理", Paths.get(ROOT_PATH, "nonexistent"));
+    }
+
     @Test
     public void testNormalize() {
         Path path = Paths.get(ROOT_PATH, "t1.txt\\..\\t2.txt");
