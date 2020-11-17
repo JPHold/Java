@@ -139,59 +139,6 @@ public class PathFileHello {
     }
 
     @Test
-    public void testWalkFileTree() throws IOException {
-        Path path = Paths.get(ROOT_PATH);
-        Files.walkFileTree(path, new FileVisitor<Path>() {
-
-            @Override
-            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                printf("%s: %s,error: %s", "访问文件失败", file, exc.getCause().toString());
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                printf("%s: %s", "开始访问文件夹", dir);
-                if ("pathfile".equals(dir.getFileName().toString())) {
-                    return FileVisitResult.CONTINUE;
-                }
-                return FileVisitResult.SKIP_SUBTREE;
-            }
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                printf("%s: %s", "访问文件", file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                printf("%s: %s", "结束访问文件夹", dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-    }
-
-    /**
-     * 测试创建目录、判断是否为目录，并删除该目录以多次测试
-     *
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    @Test
-    public void testCreateDirectory() throws IOException, InterruptedException {
-        Path path = Paths.get(ROOT_PATH, "createDirectory");
-        try {
-            Path newPath = Files.createDirectory(path);
-            printf("创建目录的路径：%s", newPath);
-            printf("是否为目录：%s", Files.isDirectory(newPath));
-            Thread.sleep(3000);
-        } finally {
-            Files.deleteIfExists(path);
-        }
-    }
-
-    @Test
     public void testExists() {
         //测试文件存在
         Path filePath = Paths.get(ROOT_PATH, "t2.txt");
@@ -403,5 +350,71 @@ public class PathFileHello {
         }
 
     }
+
+
+    /**
+     * start：{目录}
+     */
+    /**
+     * 测试创建目录、判断是否为目录，并删除该目录以多次测试
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testCreateDirectory() throws IOException, InterruptedException {
+        Path path = Paths.get(ROOT_PATH, "createDirectory");
+        try {
+            Path newPath = Files.createDirectory(path);
+            printf("创建目录的路径：%s", newPath);
+            printf("是否为目录：%s", Files.isDirectory(newPath));
+            Thread.sleep(3000);
+        } finally {
+            Files.deleteIfExists(path);
+        }
+    }
+
+    /**
+     * 遍历目录和文件
+     * @date 2019年11月3日 12:48:00
+     * @throws IOException
+     */
+    @Test
+    public void testWalkFileTree() throws IOException {
+        Path path = Paths.get(ROOT_PATH);
+        Files.walkFileTree(path, new FileVisitor<Path>() {
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                printf("%s: %s,error: %s", "访问文件失败", file, exc.getCause().toString());
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                printf("%s: %s", "开始访问文件夹", dir);
+                if ("pathfile".equals(dir.getFileName().toString())) {
+                    return FileVisitResult.CONTINUE;
+                }
+                return FileVisitResult.SKIP_SUBTREE;
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                printf("%s: %s", "访问文件", file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                printf("%s: %s", "结束访问文件夹", dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    /**
+     * end：{目录}
+     */
 
 }
