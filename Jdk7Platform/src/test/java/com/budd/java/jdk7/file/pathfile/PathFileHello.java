@@ -191,47 +191,7 @@ public class PathFileHello {
         printf("大小：%s", Files.size(filePath));
     }
 
-    /**
-     * 获取文件的存储位置(如设备、分区、卷，window下是卷：C盘、D盘等)的信息
-     * 下面以window为运行环境
-     *
-     * @date2020年11月15日 23:36:00
-     * http://www.1024sky.cn/blog/article/4889
-     * https://www.yuque.com/ican/canjava/managing-metadata-file-file-store-attributes#PRLWz
-     */
-    @Test
-    public void testFileStoreInfo() throws IOException {
-        Path filePath = Paths.get(ROOT_PATH, "t2.txt");
-        FileStore fileStore = Files.getFileStore(filePath);
-        printf("卷的名称：%s", fileStore.name());
-        printf("卷的总大小(字节)：%s", fileStore.getTotalSpace());
-        printf("卷的未使用大小(字节)：%s", fileStore.getUsableSpace());
-        printf("卷是否只读：%s", fileStore.isReadOnly());
-        printf("卷的文件系统：%s", fileStore.type());
 
-        printf("--------------------------------------------------------------------------------------------属性视图");
-
-        //获取当前文件系统支持的属性视图列表
-        Set<String> supportedFileAttributeViews = FileSystems.getDefault().supportedFileAttributeViews();
-        printf("文件系统所支持的属性视图：%s", supportedFileAttributeViews);
-
-        printf("%nFileAttributeView");
-        //获取支持属性视图
-        BasicFileAttributeView basicFileAttributeView = Files.getFileAttributeView(filePath, BasicFileAttributeView.class);
-        printf("基础属性视图(最后修改时间)：%s", basicFileAttributeView.readAttributes().lastModifiedTime());
-        //修改最后修改时间
-        basicFileAttributeView.setTimes(FileTime.fromMillis(System.currentTimeMillis()), null, null);
-        printf("基础属性视图(修改后的最后修改时间)：%s", basicFileAttributeView.readAttributes().lastModifiedTime());
-
-        printf("%nBasicFileAttributes");
-        BasicFileAttributes basicFileAttributes = Files.readAttributes(filePath, BasicFileAttributes.class);
-        printf("基础属性视图(最后修改时间)：%s", basicFileAttributes.lastModifiedTime());
-
-        //UNIX系统、LINUX等操作系统的文件系统
-        if (supportedFileAttributeViews.contains("posix")) {
-            printf("PosixFilePermissions：%s", Files.getPosixFilePermissions(filePath));
-        }
-    }
 
 
     @Test
