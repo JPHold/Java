@@ -1,5 +1,6 @@
 package com.budd.java.jdk7.file.pathfile;
 
+import com.budd.java.jdk7.file.pathfile.directory.DirectoriesUtil;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.budd.java.util.Print.print;
 import static com.budd.java.util.Print.printf;
@@ -180,6 +183,95 @@ public class ProPathFileTest {
 
     /**
      * end：{文件系统}
+     */
+
+    /**
+     * start：路径监听
+     */
+    static Path statePath = Paths.get("statePath");
+
+    /**
+     * 测试单个path的状态变更
+     *
+     * @date 2020年11月17日 23:49:30
+     */
+    private static void delTxtFiles() {
+        try {
+            Files.walk(statePath)
+                    .filter(f -> f.toString().endsWith(".txt"))
+                    .forEach(f -> {
+                        try {
+                            printf("deleting：%s", f);
+                            Files.delete(f);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void testSinglePathStateChange() throws IOException, InterruptedException {
+        DirectoriesUtil.refreshTestDir();
+        DirectoriesUtil.populateTestDir();
+        Files.createFile(statePath.resolve("Hello.txt"));
+        WatchService watcher = FileSystems.getDefault().newWatchService();
+        statePath.register(watcher, StandardWatchEventKinds.ENTRY_DELETE);
+        Executors.newSingleThreadScheduledExecutor()
+                .schedule(ProPathFileTest::delTxtFiles,
+                        250, TimeUnit.MILLISECONDS);
+
+        //阻塞操作，等事件发生完毕
+        WatchKey key = watcher.take();
+        for (WatchEvent evt : key.pollEvents()) {
+            System.out.println("evt.context(): " + evt.context() +
+                    "\nevt.count(): " + evt.count() +
+                    "\nevt.kind(): " + evt.kind());
+            System.exit(0);
+        }
+    }
+
+    /**
+     * 测试多个path(深度)的状态变更
+     *
+     * @param dir
+     * @date 2020年11月18日 00:00:56
+     */
+    private static void watchDirStateChange(Path dir) {
+        try {
+            WatchService watcher =
+                    FileSystems.getDefault().newWatchService();
+            dir.register(watcher, StandardWatchEventKinds.ENTRY_DELETE);
+            Executors.newSingleThreadExecutor().submit(() -> {
+                try {
+                    WatchKey key = watcher.take();
+                    for (WatchEvent evt : key.pollEvents()) {
+                        printf("evt.context(): %s%nevt.count(): %s%nevt.kind(): ", evt.context(), evt.count(), evt.kind());
+                        System.exit(0);
+                    }
+                } catch (InterruptedException e) {
+                    return;
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void testMultiplePathStateChange() throws IOException {
+        DirectoriesUtil.refreshTestDir();
+        DirectoriesUtil.populateTestDir();
+        Files.walk(statePath)
+                .filter(Files::isDirectory)
+                .forEach(ProPathFileTest::watchDirStateChange);
+        delTxtFiles();
+    }
+
+    /**
+     * end：路径监听
      */
 
 }
