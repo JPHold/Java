@@ -1,18 +1,16 @@
 package com.budd.java.jdk7.file.pathfile;
 
-import static com.budd.java.util.Print.*;
-
 import com.budd.java.jdk7.file.pathfile.basicinfo.PathInfo;
-import com.budd.java.jdk7.file.pathfile.directory.DirectoriesUtil;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
-import java.nio.file.attribute.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import static com.budd.java.util.Print.print;
+import static com.budd.java.util.Print.printf;
 
 /**
  * 路径与文件类API初探
@@ -309,115 +307,5 @@ public class PathFileHello {
         }
 
     }
-
-
-    /**
-     * start：{目录}
-     */
-    /**
-     * 测试创建单级目录、判断是否为目录，并删除该目录以多次测试
-     *
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    @Test
-    public void testCreateSingleDirectory() throws IOException, InterruptedException {
-        Path singleDirectoryPath = Paths.get(ROOT_PATH, "singleDirectory");
-        DirectoriesUtil.walkDelete(singleDirectoryPath);
-        try {
-            Path newPath = Files.createDirectory(singleDirectoryPath);
-            printf("创建目录的路径：%s", newPath);
-            printf("是否为目录：%s", Files.isDirectory(newPath));
-            Thread.sleep(3000);
-        } finally {
-            DirectoriesUtil.walkDelete(singleDirectoryPath);
-        }
-    }
-
-    /**
-     * 测试创建多级目录
-     *
-     * @date 2020年11月18日 11:34:05
-     */
-    @Test
-    public void testCreateMultipleDirectory() throws IOException, InterruptedException {
-        Path directoryPath = Paths.get(ROOT_PATH, "multipleDirectory");
-        Path multipleDirectoryPath = Paths.get(ROOT_PATH, "multipleDirectory/error");
-        DirectoriesUtil.walkDelete(directoryPath);
-        try {
-            Path newPath = Files.createDirectories(multipleDirectoryPath);
-            printf("创建目录的路径：%s", newPath);
-            Thread.sleep(3000);
-        } finally {
-            DirectoriesUtil.walkDelete(directoryPath);
-        }
-    }
-
-    /**
-     * 遍历目录和文件
-     *
-     * @throws IOException
-     * @date 2019年11月3日 12:48:00
-     */
-    @Test
-    public void testWalkFileTree() throws IOException {
-        Path path = Paths.get(ROOT_PATH);
-        Files.walkFileTree(path, new FileVisitor<Path>() {
-
-            @Override
-            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                printf("%s: %s,error: %s", "访问文件失败", file, exc.getCause().toString());
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                printf("%s: %s", "开始访问文件夹", dir);
-                if ("pathfile".equals(dir.getFileName().toString())) {
-                    return FileVisitResult.CONTINUE;
-                }
-                return FileVisitResult.SKIP_SUBTREE;
-            }
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                printf("%s: %s", "访问文件", file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                printf("%s: %s", "结束访问文件夹", dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-    }
-
-    /**
-     * @return void
-     * @Author budd
-     * @Description 测试目录
-     * @Date 2020/11/17 11:04
-     * @Param []
-     **/
-    @Test
-    public void testWalkStream() throws IOException {
-        //创建测试目录test
-        DirectoriesUtil.refreshTestDir();
-        //在test目录下创建文件
-        Files.createFile(DirectoriesUtil.test.resolve("Hello.txt"));
-
-        //在test目录下创建多个组合路径的目录
-        DirectoriesUtil.populateTestDir();
-       Path tempdir = Files.createTempDirectory(DirectoriesUtil.test, "DIR_");
-        Files.createTempFile(tempdir, "pre", ".non");
-        /* Files.newDirectoryStream(Directories.test).forEach(System.out::println);
-        System.out.println("*********");
-        Files.walk(Directories.test).forEach(System.out::println);*/
-    }
-
-    /**
-     * end：{目录}
-     */
 
 }
