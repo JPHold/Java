@@ -166,16 +166,18 @@ public class HelloPathDirectoryTest {
      * @Param []
      **/
     @Test
-    public void testWalkStream() throws IOException {
+    public void testNewDirectoryStream() throws IOException {
         createPathWalkTestDirectoriesFiles();
         //不支持深度遍历
-        print("--------------------------------------------------------------------使用Files.newDirectoryStream遍历目录");
         Files.newDirectoryStream(DirectoriesUtil.test).forEach(Print::print);
+        deleteTestDirectory();
+    }
 
+    @Test
+    public void testWalkStream() throws IOException {
+        createPathWalkTestDirectoriesFiles();
         //支持深度遍历
-        print("----------------------------------------------------------------------------------------使用Files.walk");
         Files.walk(DirectoriesUtil.test).forEach(Print::print);
-
         deleteTestDirectory();
     }
 }
