@@ -1,6 +1,7 @@
 package com.budd.java.jdk7.file.pathfile;
 
 import com.budd.java.jdk7.file.pathfile.basicinfo.PathInfo;
+import com.budd.java.util.Print;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -307,5 +308,61 @@ public class PathFileHello {
         }
 
     }
+
+    /**
+     * start：文件读写
+     */
+    /**
+     * 读取文件(适用于小文件)
+     *
+     * @date 2020年11月19日 21:01:36
+     */
+    @Test
+    public void testFastRead() throws IOException {
+        Files.readAllLines(
+                Paths.get(ROOT_PATH, "潮剧介绍.txt"))
+                .stream()
+                .forEach(Print::print);
+    }
+
+    /**
+     * 读取文件(适用于大文件)
+     *
+     * @date 2020年11月19日 21:21:11
+     */
+    @Test
+    public void testBigRead() throws IOException {
+        //这里使用小文件进行测试
+        Files.lines(Paths.get(ROOT_PATH, "潮剧介绍.txt"))
+                .forEach(Print::print);
+    }
+
+    /**
+     * 写文件
+     *
+     * @date 2020年11月19日 21:02:04
+     */
+    @Test
+    public void testWrite() throws IOException, InterruptedException {
+        Path filePath = Paths.get(ROOT_PATH, "writeFile.txt");
+
+        print("----------------------------------------------------写入byte内容");
+        byte[] bytes = "写入byte内容".getBytes();
+        Files.write(filePath, bytes);
+        printf("大小: %s, 内容：%s", Files.size(filePath), Files.readAllLines(filePath));
+        Files.deleteIfExists(filePath);
+
+        print("----------------------------------------------------写入List内容");
+        List<String> lines = Files.readAllLines(
+                Paths.get(ROOT_PATH, "潮剧介绍.txt"));
+        Files.write(filePath, lines);
+        printf("大小: %s, 内容：%s", Files.size(filePath), Files.readAllLines(filePath));
+        Files.deleteIfExists(filePath);
+    }
+
+
+    /**
+     * end：文件读写
+     */
 
 }
