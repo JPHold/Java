@@ -1,7 +1,8 @@
 package com.budd.java.jdkBasic.string;
 
+import com.budd.java.jdkBasic.string.tostring.InfiniteRecursion;
+import com.budd.java.jdkBasic.string.tostring.NonInfiniteRecursion;
 import com.sun.istack.internal.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import org.junit.Test;
@@ -14,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+
+import static com.budd.java.util.Print.print;
 
 /**
  * 字符串入门研究
@@ -38,6 +41,22 @@ public class HelloStringTest {
         new String(new StringBuffer());//等于new StringBuffer().toString()
         new String(new StringBuilder());//等于new StringBuilder().toString()
         System.out.println("copyValueOf：" + String.copyValueOf("123".toCharArray()));
+    }
+
+    /**
+     * 测试toString中使用this，导致toString无限递归
+     *
+     * @date 2020年11月21日 19:19:06
+     */
+    @Test
+    public void testToStringRecursion() {
+        //正确
+        NonInfiniteRecursion nonInfiniteRecursion = new NonInfiniteRecursion();
+        print(nonInfiniteRecursion);
+
+        //异常：java.lang.StackOverflowError
+        InfiniteRecursion infiniteRecursion = new InfiniteRecursion();
+        print(infiniteRecursion);
     }
 
     /**
@@ -109,6 +128,7 @@ public class HelloStringTest {
             s = test;
         }
     }
+
     @Test
     public void testTipNull() {
         String nullStr = null;
