@@ -40,7 +40,7 @@ public class HelloStringTest {
 
         new String(new StringBuffer());//等于new StringBuffer().toString()
         new String(new StringBuilder());//等于new StringBuilder().toString()
-        System.out.println("copyValueOf：" + String.copyValueOf("123".toCharArray()));
+        print("copyValueOf：" + String.copyValueOf("123".toCharArray()));
     }
 
     /**
@@ -100,6 +100,45 @@ public class HelloStringTest {
     }
 
     /**
+     * 测试正则表达式
+     *
+     * @date 2020年11月22日 17:25:56
+     */
+    @Test
+    public void testRegularMatch() {
+        print("-----------------------------------------------基本语法例子");
+        print("-1234".matches("-?\\d+"));
+        print("1234".matches("-?\\d+"));
+        print("+1234".matches("-?\\d+"));
+        print("+1234".matches("(-|\\+)?\\d+"));
+    }
+
+    /**
+     * 测试以正则表达式分隔字符串
+     *
+     * @date 2020年11月22日 19:02:21
+     */
+    String knights = "Then, when you have found the shrubbery, " +
+            "you must cut down the mightiest tree in the " +
+            "forest...with... a herring!";
+
+    void split(String regex, int limit) {
+        print(Arrays.toString(knights.split(regex, limit)));
+    }
+
+    @Test
+    public void testSplitRegularMatch() {
+        print("-------------------------无限制分隔");
+        int limit = 0;
+        split(" ", limit);//无正则表达式：以空格分隔
+        split("\\W+", limit);//以非单词的正则表达式进行分隔
+        split("n\\W+", limit);//n后接非单词的正则表达式进行分隔
+
+        print("-------------------------有限制分隔");
+        split("\\w+", 1);//分隔一次
+    }
+
+    /**
      * 测试转换
      *
      * @throws UnsupportedEncodingException
@@ -113,19 +152,19 @@ public class HelloStringTest {
         byte[] b0 = baseStr.getBytes();
         byte[] b1 = baseStr.getBytes("utf-8");
         byte[] b2 = baseStr.getBytes(Charset.forName("utf-8"));
-        System.out.println("\n-----------string转byte[]");
-        System.out.println(String.format("未指定转换格式：%s", b0));
-        System.out.println(String.format("指定转换格式(utf-8)：%s", b0));
+        print("\n-----------string转byte[]");
+        print(String.format("未指定转换格式：%s", b0));
+        print(String.format("指定转换格式(utf-8)：%s", b0));
 
         /**
          * byte[]转string
          */
-        System.out.println("-----------byte[]转string");
+        print("-----------byte[]转string");
         String s0 = new String(b0);
         String s1 = new String(b0, Charset.forName("utf-8"));
 
-        System.out.println(String.format("未指定转换格式：%s", s0));
-        System.out.println(String.format("指定转换格式(utf-8)：%s", s1));
+        print(String.format("未指定转换格式：%s", s0));
+        print(String.format("指定转换格式(utf-8)：%s", s1));
 
     }
 
@@ -139,23 +178,23 @@ public class HelloStringTest {
         String s1 = "1";
         String s2 = s1 + "2";
         String s3 = s1 + 3;
-        System.out.println(s1);
-        System.out.println(s2);
-        System.out.println(s3);
+        print(s1);
+        print(s2);
+        print(s3);
 
-        System.out.println("循环直接拼接(不推荐)");
+        print("循环直接拼接(不推荐)");
         String str = "";
         for (int i = 0, size = 5; i < size; i++) {
             str += i;
         }
-        System.out.println(str);
+        print(str);
 
-        System.out.println("循环StringBuilder.append");
+        print("循环StringBuilder.append");
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0, size = 5; i < size; i++) {
             stringBuilder.append(i);
         }
-        System.out.println(stringBuilder);
+        print(stringBuilder);
     }
 
     /**
@@ -181,45 +220,45 @@ public class HelloStringTest {
      */
     @Test
     public void testCompare() {
-        System.out.println("equals比较(只比较String)");
+        print("equals比较(只比较String)");
         String s1 = "budd12";
         String s2 = s1;
-        System.out.println("equals比较：" + (s1.equals(s2)));
+        print("equals比较：" + (s1.equals(s2)));
 
-        System.out.println("-----------------");
-        System.out.println("contentEquals比较(比较CharSequence)");
+        print("-----------------");
+        print("contentEquals比较(比较CharSequence)");
         String s3 = "budd3";
         String s4 = "budd4";
         StringBuffer s5 = new StringBuffer("budd5");
         Segment s6 = new Segment("budd5".toCharArray(), 0, 13);
-        System.out.println("contentEquals(StringBuffer)：" + s3.contentEquals(s5));//同步比较
-        System.out.println("contentEquals(String)：" + s3.contentEquals(s4));//类型为String
-        System.out.println("contentEquals(Segment)：" + s3.contentEquals(s6));//类型为除String以外的CharSequence
+        print("contentEquals(StringBuffer)：" + s3.contentEquals(s5));//同步比较
+        print("contentEquals(String)：" + s3.contentEquals(s4));//类型为String
+        print("contentEquals(Segment)：" + s3.contentEquals(s6));//类型为除String以外的CharSequence
 
-        System.out.println("-----------------");
-        System.out.println("equalsIgnoreCase比较(忽略大小写)");
+        print("-----------------");
+        print("equalsIgnoreCase比较(忽略大小写)");
         String s7 = "budd7";
         String s8 = "budd7";
-        System.out.println("equalsIgnoreCase(String)：" + s7.equalsIgnoreCase(s8));
+        print("equalsIgnoreCase(String)：" + s7.equalsIgnoreCase(s8));
 
-        System.out.println("-----------------");
-        System.out.println("compare(compareToIgnoreCase)");
+        print("-----------------");
+        print("compare(compareToIgnoreCase)");
         String s9 = "budd9";
         String s10 = "budd10";
-        System.out.println("compare(存在字符不同)：" + s9.compareTo(s10));
+        print("compare(存在字符不同)：" + s9.compareTo(s10));
         String s11 = "budd11";
         String s12 = "budd123";
-        System.out.println("compare(字符相同,但长度不一致)：" + s11.compareTo(s12));
+        print("compare(字符相同,但长度不一致)：" + s11.compareTo(s12));
 
-        System.out.println("-----------------");
-        System.out.println("regionMatches(regionMatches(boolean))");
+        print("-----------------");
+        print("regionMatches(regionMatches(boolean))");
         String s13 = "budd13";
         String s14 = "Budd14";
-        System.out.println("regionMatches(not ignoreCase)：" + s13.regionMatches(0
+        print("regionMatches(not ignoreCase)：" + s13.regionMatches(0
                 , "b", 0, 1));
-        System.out.println("regionMatches(not ignoreCase)：" + s13.regionMatches(0
+        print("regionMatches(not ignoreCase)：" + s13.regionMatches(0
                 , "budd14", 0, 6));
-        System.out.println("regionMatches(yes ignoreCase)：" + s14.regionMatches(true, 0
+        print("regionMatches(yes ignoreCase)：" + s14.regionMatches(true, 0
                 , "B", 0, 1));
     }
 
@@ -228,22 +267,22 @@ public class HelloStringTest {
      */
     @Test
     public void testReplace() {
-        System.out.println("\nreplaceFirst");
-        System.out.println("指定正则替换首个字符：" + "budd".replaceFirst("[b]"
+        printf("%nreplaceFirst");
+        printf("指定正则替换首个字符：%s", "budd".replaceFirst("[b]"
                 , "老猿b"));
 
-        System.out.println("-----------------");
-        System.out.println("replaceAll");
-        System.out.println("指定正则替换所有字符：" + "budd".replaceAll("[d]"
+        print("-----------------");
+        print("replaceAll");
+        printf("指定正则替换所有字符：%s", "budd".replaceAll("[d]"
                 , "bu"));
 
-        System.out.println("-----------------");
-        System.out.println("replace");
-        System.out.println("指定字符替换字符：" + "budd".replace("b"
+        print("-----------------");
+        print("replace");
+        printf("指定字符替换字符：%s", "budd".replace("b"
                 , "老猿b"));
-        System.out.println("替换字符串带有特殊字符(通过replace保证转义)：" + "budd".replace("b"
+        printf("替换字符串带有特殊字符(通过replace保证转义)：%s", "budd".replace("b"
                 , "\\b"));
-        System.out.println("替换字符串带有特殊字符(没有转义会报错)：" + "budd".replaceAll("b"
+        printf("替换字符串带有特殊字符(没有转义会报错)：%s", "budd".replaceAll("b"
                 , "\\"));
     }
 
@@ -252,7 +291,7 @@ public class HelloStringTest {
      */
     @Test
     public void testLength() {
-        System.out.println("\n为什么数组获取长度是length，字符串获取长度是length()");
+        print("\n为什么数组获取长度是length，字符串获取长度是length()");
         int length1 = "budd".length();
         int length2 = new String[]{"budd"}.length;
     }
@@ -297,13 +336,13 @@ public class HelloStringTest {
                 //This call avoids memory leaking
                 //String subString = new String(leak.getSubString());
 
-                System.out.println("Extracted substring: " + subString);
+                print("Extracted substring: " + subString);
                 subStrings.add(subString);
             }
             //No release of buffer objects!!
-            System.out.println("Keeping the substrings means keeping the whole buffer!");
+            print("Keeping the substrings means keeping the whole buffer!");
             for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
-                System.out.println("List of subStrings: " + subStrings);
+                print("List of subStrings: " + subStrings);
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {
@@ -312,9 +351,9 @@ public class HelloStringTest {
                 System.gc();
             }
             //Releasing substring triggers release of buffer objects!!
-            System.out.println("Only releasing the substrings releases the whole buffer!");
+            print("Only releasing the substrings releases the whole buffer!");
             for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
-                System.out.println("List of subStrings: " + subStrings);
+                print("List of subStrings: " + subStrings);
                 subStrings.remove(0);
                 try {
                     Thread.sleep(5000);
@@ -356,19 +395,19 @@ public class HelloStringTest {
             }
 
             //Memory of longString is not released!!
-            System.out.println("Memory of long string is not released!");
+            print("Memory of long string is not released!");
 
             //Release the shot String reference and perform GC
             shortString = null;
             System.gc();
 
             //Memory of longString will be released!!
-            System.out.println("Memory of long string will be released!");
+            print("Memory of long string will be released!");
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException ignored) {
             }
-            System.out.println("Memory of long string should be released!");
+            print("Memory of long string should be released!");
             System.exit(0);
         }
 
@@ -391,7 +430,7 @@ public class HelloStringTest {
      */
     @Test
     public void testHashCode() {
-        System.out.println("hashCode：" + "budd".hashCode());
+        print("hashCode：" + "budd".hashCode());
     }
 
     /**
@@ -431,8 +470,8 @@ public class HelloStringTest {
 
         map.put(new HashCodeEqualsClass("blue"), "red");
         map.put(new HashCodeEqualsClass("blue"), "blue");
-        System.out.println("存储Map：" + map);
-        System.out.println("匹配到的值：" + map.get(new HashCodeEqualsClass("blue")));
+        print("存储Map：" + map);
+        print("匹配到的值：" + map.get(new HashCodeEqualsClass("blue")));
     }
 
     /**
@@ -440,38 +479,38 @@ public class HelloStringTest {
      */
     @Test
     public void testSwitch() {
-        System.out.println("\nint-switch");
+        print("\nint-switch");
         int i = 1;
         switch (i) {
             case 1:
-                System.out.println(1);
+                print(1);
                 break;
             case 2:
-                System.out.println(2);
+                print(2);
                 break;
             default:
                 break;
         }
 
-        System.out.println("-----------------");
-        System.out.println("char-switch");
+        print("-----------------");
+        print("char-switch");
 
         char c = '2';
         switch (c) {
             case '2':
-                System.out.println(2);
+                print(2);
                 break;
             default:
                 break;
         }
 
-        System.out.println("-----------------");
-        System.out.println("String-switch");
+        print("-----------------");
+        print("String-switch");
 
         String str = "3";
         switch (str) {
             case "3":
-                System.out.println("3");
+                print("3");
                 break;
             default:
                 break;
@@ -490,14 +529,14 @@ public class HelloStringTest {
          */
         String s1 = "hello12";
         String s2 = "hello12";
-        System.out.println("比较\"\"和\"\"：" + (s1 == s2));//输出是true
+        print("比较\"\"和\"\"：" + (s1 == s2));//输出是true
 
         /**
          * 比较new+""和""
          */
         String s3 = new String("hello34");
         String s4 = "hello34";
-        System.out.println("比较new+\"\"和+\"\"：" + (s3 == s4));//输出是false
+        print("比较new+\"\"和+\"\"：" + (s3 == s4));//输出是false
     }
 
     /**
@@ -510,54 +549,54 @@ public class HelloStringTest {
         /**
          * new.intern()与""比较
          */
-        System.out.println("new.intern()与\"\"比较");
+        print("new.intern()与\"\"比较");
         String s1 = new String("he") + "llo12";
         String s1Reference = s1.intern();
         String s2 = "hello12";
-        System.out.println("比较new和\"\"：" + (s2 == s1));//输出是true
-        System.out.println("比较new的intern引用和+\"\"：" + (s2 == s1Reference));//输出是true
+        print("比较new和\"\"：" + (s2 == s1));//输出是true
+        print("比较new的intern引用和+\"\"：" + (s2 == s1Reference));//输出是true
 
-        System.out.println("------------------");
+        print("------------------");
 
         /**
          * ""与new.intern()比较
          */
-        System.out.println("\"\"与new.intern()比较");
+        print("\"\"与new.intern()比较");
         String s3 = "hello345";
         String s4 = new String("he") + "llo345";
         String s4Reference = s4.intern();
         String s5 = "hello345";
-        System.out.println("比较\"\"与intern的源对象：" + (s5 == s4));//输出是false
-        System.out.println("比较\"\"与intern返回引用：" + (s5 == s4Reference));//输出是true
-        System.out.println("比较\"\"与intern前已存在对象：" + (s5 == s3));//输出是true
+        print("比较\"\"与intern的源对象：" + (s5 == s4));//输出是false
+        print("比较\"\"与intern返回引用：" + (s5 == s4Reference));//输出是true
+        print("比较\"\"与intern前已存在对象：" + (s5 == s3));//输出是true
 
-        System.out.println("------------------");
+        print("------------------");
 
         /**
          * new与new比较
          */
-        System.out.println("new与new比较");
+        print("new与new比较");
         String s6 = new String("hello678");
         String s7 = new String("hello678");
         String s7Reference = s7.intern();
         String s8 = "hello678";
-        System.out.println("比较new.intern()与new(与s2 == s1对比)：" + (s7Reference == s6));//输出是false
-        System.out.println("比较new.intern()与new(与s2 == s1对比)：" + (s7Reference == s7));//输出是false
-        System.out.println("比较new.intern()与源\"\"(与s7Reference == s7对比)：" + (s7Reference == s8));//输出是true
-        System.out.println("比较new与源\"\"(与s7Reference == s8对比)：" + (s6 == s8));//输出是false
+        print("比较new.intern()与new(与s2 == s1对比)：" + (s7Reference == s6));//输出是false
+        print("比较new.intern()与new(与s2 == s1对比)：" + (s7Reference == s7));//输出是false
+        print("比较new.intern()与源\"\"(与s7Reference == s7对比)：" + (s7Reference == s8));//输出是true
+        print("比较new与源\"\"(与s7Reference == s8对比)：" + (s6 == s8));//输出是false
 
-        System.out.println("------------------");
+        print("------------------");
 
         /**
          * 特殊new与new.intern()比较
          */
-        System.out.println("特殊new与new.intern()比较");
+        print("特殊new与new.intern()比较");
         String s9 = new String(new char[]{'漠', '然'}, 0, 2);
-        System.out.println("比较new String(char[]).intern()与new String(char[])：" + (s9.intern() == s9));//输出是true
+        print("比较new String(char[]).intern()与new String(char[])：" + (s9.intern() == s9));//输出是true
 
         String s10 = new StringBuilder("漠").append("然").toString();
-        System.out.println("比较new StringBuilder与源new StringBuilder.intern()：" + (s10.intern() == s10));//输出是false
-        System.out.println("比较new StringBuilder与源\"\"：" + (s10.intern() == s9));//输出是true
+        print("比较new StringBuilder与源new StringBuilder.intern()：" + (s10.intern() == s10));//输出是false
+        print("比较new StringBuilder与源\"\"：" + (s10.intern() == s9));//输出是true
 
     }
 
@@ -580,7 +619,7 @@ public class HelloStringTest {
 
             Files.write(plusCharPath, codePointCharList, Charset.forName("utf-16"), StandardOpenOption.WRITE);
             byte[] bytes = Files.readAllBytes(plusCharPath);
-            System.out.println(new String(bytes));
+            print(new String(bytes));
 
         } finally {
             //还原
@@ -635,7 +674,7 @@ public class HelloStringTest {
         char[] codePointChars = codePointStr.toCharArray();
 
         for (char singleChar : codePointChars) {
-            System.out.println(String.format("字符=%s,16进制=%s", singleChar, Integer.toHexString(singleChar)));
+            print(String.format("字符=%s,16进制=%s", singleChar, Integer.toHexString(singleChar)));
         }
         return codePointChars;
     }
@@ -651,13 +690,13 @@ public class HelloStringTest {
         String supplementStrs = new String(supplementCodePoints, 0, supplementCodePoints.length);
 
         System.out.print("\n***********************\n");
-        System.out.println(String.format("%s=%s", "字符串", supplementStrs));
-        System.out.println(String.format("%s=%s", "长度", supplementStrs.length()));//增补字符采用两个字节(高代理和低代理),所以总长度是4
-        System.out.println(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(0))));//高代理字符
-        System.out.println(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(1))));//低代理字符
-        System.out.println(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(2))));//高代理字符
-        System.out.println(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(3))));//低代理字符
-        System.out.println(String.format("%s=%s", "单个增补字符(codePointAt)", Integer.toHexString(supplementStrs.codePointAt(0))));
+        print(String.format("%s=%s", "字符串", supplementStrs));
+        print(String.format("%s=%s", "长度", supplementStrs.length()));//增补字符采用两个字节(高代理和低代理),所以总长度是4
+        print(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(0))));//高代理字符
+        print(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(1))));//低代理字符
+        print(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(2))));//高代理字符
+        print(String.format("%s=%s", "单个增补字符(charAt)", Integer.toHexString(supplementStrs.charAt(3))));//低代理字符
+        print(String.format("%s=%s", "单个增补字符(codePointAt)", Integer.toHexString(supplementStrs.codePointAt(0))));
 
         System.out.print("\n***********************\n");
         Path supplementPath = Paths.get(SUPPLEMENT_CHAR_PATH);
@@ -672,8 +711,8 @@ public class HelloStringTest {
         for (int i = 0; i < readSize; i++) {
             int supplementCodePoint = supplementDis.readInt();
             if (Character.isSupplementaryCodePoint(supplementCodePoint))
-                System.out.println(String.format("%s是增补字符", supplementCodePoint));
-            else System.out.println(String.format("%s不是增补字符", supplementCodePoint));
+                print(String.format("%s是增补字符", supplementCodePoint));
+            else print(String.format("%s不是增补字符", supplementCodePoint));
         }
 
         //还原
@@ -687,8 +726,8 @@ public class HelloStringTest {
     @Test
     public void testFunCodePoint() {
         makeBasicCodepoint(new int[]{0x0B8A});
-        System.out.println("\u0B8A");
-        System.out.println("ஊ");
+        print("\u0B8A");
+        print("ஊ");
     }
 
 }
