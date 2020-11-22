@@ -26,3 +26,7 @@ hs_err_pid*
 /Util/Util.iml
 /JdkBasic/JdkBasic.iml
 /production/
+/doc/doc.iml
+/.idea/
+/JdkBasic/target/
+/Jdk8platform.iml

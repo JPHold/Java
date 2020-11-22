@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-import static com.budd.java.util.Print.print;
+import static com.budd.java.util.Print.*;
 
 /**
  * 字符串入门研究
@@ -57,6 +57,46 @@ public class HelloStringTest {
         //异常：java.lang.StackOverflowError
         InfiniteRecursion infiniteRecursion = new InfiniteRecursion();
         print(infiniteRecursion);
+    }
+
+    /**
+     * 测试格式化输出
+     *
+     * @date 2020年11月22日 10:02:36
+     */
+    @Test
+    public void testSingleFormat() {
+        String format = "format：%d, %f%n";
+        int d = 1;
+        float f = 1.0f;
+
+        print("----------------------String.format");
+        String formatText = String.format(format, d, f);
+        printnb(formatText);
+
+        print("----------------------System.out.format和System.out.printf");
+        System.out.format(format, d, f);
+        System.out.printf(format, d, f);
+
+        print("----------------------格式化的原理是java.util.Formatter");
+        String formatterFormat = "使用java.util.Formatter格式化：%s%n";
+        PrintStream out = System.out;
+        Formatter formatter = new Formatter(out);
+        formatter.format(formatterFormat, "formatter");
+    }
+
+    /**
+     * 修饰符
+     *
+     * @date 2020年11月22日 11:10:10
+     */
+    @Test
+    public void testFormatModifier() {
+        System.out.printf("%-5s %5s %10s%n", "Item", "Qty", "Price");
+        String name = "orange";
+        int qty = 3;
+        float price = 5.5f;
+        System.out.printf("%-5s %5d %10.2f%n", name, qty, price);
     }
 
     /**
