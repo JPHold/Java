@@ -47,5 +47,30 @@ public class ProRegularExpressionTest {
         System.out.printf("加appendTail= %s%n", sbuf);
     }
 
+    /**
+     * 测试重置
+     */
+    private void matchContentAfterReset(Matcher m) {
+        while (m.find()) {
+            System.out.printf("%s ", m.group());
+        }
+
+        System.out.println();
+    }
+
+    @Test
+    public void testReset() {
+
+        //重置到字符串的起始位置(相当于重新匹配)
+        Matcher m = Pattern.compile("[frb][aiu][gx]")
+                .matcher("fix the rug with bags");
+        matchContentAfterReset(m);
+        m.reset();
+        matchContentAfterReset(m);
+
+        //重置上一个字符串的状态，匹配新的字符串
+        m.reset("fix the rig with rags");
+        matchContentAfterReset(m);
+    }
 
 }
