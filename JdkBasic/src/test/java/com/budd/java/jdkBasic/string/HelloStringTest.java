@@ -280,9 +280,9 @@ public class HelloStringTest {
         print("replace");
         printf("指定字符替换字符：%s", "budd".replace("b"
                 , "老猿b"));
-        printf("替换字符串带有特殊字符(通过replace保证转义)：%s", "budd".replace("b"
+        printf("替换字符串带有特殊字符(当作普通字符，直接输出)：%s", "budd".replace("b"
                 , "\\b"));
-        printf("替换字符串带有特殊字符(没有转义会报错)：%s", "budd".replaceAll("b"
+        printf("替换字符串带有特殊字符(没有跟需转义字符，会报错)：%s", "budd".replaceAll("b"
                 , "\\"));
     }
 
