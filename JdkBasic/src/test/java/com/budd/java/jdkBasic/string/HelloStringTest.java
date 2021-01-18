@@ -15,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Pattern;
 
 import static com.budd.java.util.Print.*;
 
@@ -136,6 +138,95 @@ public class HelloStringTest {
 
         print("-------------------------有限制分隔");
         split("\\w+", 1);//分隔一次
+    }
+
+    /**
+     * 测试jdk5出的Scanner，减轻拆解操作
+     *
+     * @date 2021年1月18日 20:50:36
+     */
+    @Test
+    public void testDefaultScanner() {
+        Scanner scanner = new Scanner(new BufferedReader(new StringReader("Sir Robin of Camelot\n22 1.61803")));
+
+        System.out.println(scanner.nextLine());
+        System.out.println(scanner.nextInt());
+        System.out.println(scanner.nextDouble());
+    }
+
+    /**
+     * 测试Scanner指定分隔符
+     *
+     * @date 2021年1月18日 20:50:47
+     */
+    @Test
+    public void testAppointDelimiterScanner() {
+        Scanner scanner = new Scanner("12, 42, 78, 99, 42");
+        scanner.useDelimiter("\\s*,\\s*");
+        Pattern delimiterPattern = scanner.delimiter();
+
+        while (scanner.hasNextInt()) {
+            System.out.println(scanner.nextInt());
+        }
+    }
+
+    /**
+     * 测试Scanner正则表达式扫描
+     *
+     * @date 2021年1月18日 20:59:52
+     */
+    @Test
+    public void testPatternScanner() {
+        String threatData =
+                "58.27.82.161@08/10/2015\n" +
+                        "204.45.234.40@08/11/2015\n" +
+                        "58.27.82.161@08/11/2015\n" +
+                        "58.27.82.161@08/12/2015\n" +
+                        "58.27.82.161@08/12/2015\n" +
+                        "[Next log section with different data format]";
+
+        Scanner scanner = new Scanner(threatData);
+        String pattern = "(\\d+[.]\\d+[.]\\d+[.]\\d+)@" +
+                "(\\d{2}/\\d{2}/\\d{4})";
+
+        while (scanner.hasNext(pattern)) {
+            scanner.next(pattern);
+            MatchResult match = scanner.match();
+            String ip = match.group(1);
+            String date = match.group(2);
+            System.out.format("Threat on %s from %s%n", date, ip);
+        }
+    }
+
+    /**
+     * 测试旧的分隔方式：StringTokenizer
+     *
+     * @date 2021年1月18日 23:34:37
+     */
+    @Test
+    public void testCompareStringTokenizer() {
+        String input = "But I'm not dead yet! I feel happy!";
+
+        System.out.println("---StringTokenizer");
+        StringTokenizer stoke = new StringTokenizer(input);
+        while (stoke.hasMoreElements()) {
+            System.out.printf("%s ", stoke.nextToken());
+        }
+        System.out.println();
+
+        System.out.println("---字符串split(正则表达式)");
+        String[] splitArray = input.split(" ");
+        for (String splitStr : splitArray) {
+            System.out.printf("%s ", splitStr);
+        }
+        System.out.println();
+
+        System.out.println("---Scanner");
+        Scanner scanner = new Scanner(input);
+        while (scanner.hasNext()) {
+            System.out.printf("%s ", scanner.next());
+        }
+        System.out.println();
     }
 
     /**
