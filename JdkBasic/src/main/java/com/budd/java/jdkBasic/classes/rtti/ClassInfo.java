@@ -16,4 +16,8 @@ public class ClassInfo {
     {
         print("调用实例方法");
     }
+
+    public class ChildClassInfo{
+
+    }
 }
