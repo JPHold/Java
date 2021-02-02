@@ -43,9 +43,5 @@ public class HelloArrayTest {
     public void testCreate3Array(){
         int[][][] a = {{{0,0,0,0},{0,0,0,0}},{{0,0,0,0},{0,0,0,0}}};
         print(Arrays.deepToString(a));
-
-        print("默认值");
-        int[][][] a1 = new int[2][2][4];
-        print(Arrays.deepToString(a1));
     }
 }
