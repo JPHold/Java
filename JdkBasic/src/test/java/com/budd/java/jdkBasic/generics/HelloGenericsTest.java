@@ -192,7 +192,7 @@ public class HelloGenericsTest {
      * 测试擦除后，自动反射获取准确类型
      * 因擦除原因，编译后，所有泛型消失。
      * 如何得知准确类型：
-     * 基于反射的运行时获得类型的信息，从内存获取值，从Object转为String(也可叫做RTTL)
+     * 基于反射的运行时获得类型的信息，从内存获取值，从Object转为String(也可叫做RTTI)
      */
     class BasicReflectEraseClass<T> {
 
